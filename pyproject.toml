@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "flow-py-sdk"
+version = "0.1.0"
+description = ""
+authors = ["Janez Podhostnik <janez.podhostnik@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+betterproto = {extras = ["compiler"], version = "^1.2.5"}
+grpcio-tools = "^1.33.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+example = 'flow_py_sdk.examples.main:run'
