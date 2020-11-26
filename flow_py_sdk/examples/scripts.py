@@ -14,16 +14,15 @@ class ScriptExample1(Example):
 
     async def run(self, ctx: ExampleContext):
         async with flow_client(host=ctx.access_node_host, port=ctx.access_node_port) as client:
-            await Script() \
-                .with_cadence_code(
-                f"""
+            script = Script(code=f"""
                     pub fun main() {{
                         let a = 1
                         let b = 1
                         log(a + b)
                     }}
-                """) \
-                .execute(client=client)
+                """)
+
+            await client.execute_script(script)
 
 
 class ScriptExample2(Example):
@@ -35,9 +34,7 @@ class ScriptExample2(Example):
         async with flow_client(host=ctx.access_node_host, port=ctx.access_node_port) as client:
             account_to_get_balance_from = ctx.service_account_address
 
-            await Script() \
-                .with_cadence_code(
-                f"""
+            script = Script(code=f"""
                     import FlowServiceAccount from {ctx.service_account_address}
 
                     pub fun main() {{
@@ -45,8 +42,9 @@ class ScriptExample2(Example):
                         let balance = FlowServiceAccount.defaultTokenBalance(acct)
                         log(balance)
                     }}
-                """) \
-                .execute(client=client)
+                """)
+
+            await client.execute_script(script)
 
 
 class ScriptExample3(Example):
@@ -61,9 +59,7 @@ class ScriptExample3(Example):
 
             account_to_get_balance_from = ctx.service_account_address
 
-            result = await Script() \
-                .with_cadence_code(
-                f"""
+            script = Script(code=f"""
                     import FlowServiceAccount from {ctx.service_account_address}
 
                     pub fun main(): UFix64 {{
@@ -71,10 +67,10 @@ class ScriptExample3(Example):
                         let balance = FlowServiceAccount.defaultTokenBalance(acct)
                         return balance
                     }}
-                """) \
-                .execute(client=client, at_block_id=block.id)
+                """)
 
-            log.info(f'Script returned result {str(result)}')
+            result = await client.execute_script(script, at_block_id=block.id)
+            log.info(f'Script returned result {result}')
 
 
 class ScriptExample4(Example):
@@ -89,9 +85,7 @@ class ScriptExample4(Example):
 
             account_to_get_balance_from = ctx.service_account_address
 
-            result = await Script() \
-                .with_cadence_code(
-                f"""
+            script = Script(code=f"""
                     import FlowServiceAccount from {ctx.service_account_address}
 
                     pub fun main(address: Address): UFix64 {{
@@ -100,7 +94,7 @@ class ScriptExample4(Example):
                         return balance
                     }}
                 """) \
-                .add_arguments(account_to_get_balance_from) \
-                .execute(client=client, at_block_height=block.height)
+                .add_arguments(account_to_get_balance_from)
 
-            log.info(f'Script returned result {str(result)}')
+            result = await client.execute_script(script, at_block_height=block.height)
+            log.info(f'Script returned result {result}')

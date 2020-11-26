@@ -174,17 +174,17 @@ class Address(Value):
         if len(value) > Address.address_length:
             raise Exception()  # TODO
 
-        self.value = bytes(Address.address_length - len(value)) + value
+        self.bytes = bytes(Address.address_length - len(value)) + value
 
     @classmethod
     def from_hex(cls, value: str) -> 'Address':
         return Address(bytes.fromhex(value.removeprefix(Address.address_prefix)))
 
     def hex(self) -> str:
-        return self.value.hex()
+        return self.bytes.hex()
 
     def hex_with_prefix(self) -> str:
-        return Address.address_prefix + self.value.hex()
+        return Address.address_prefix + self.bytes.hex()
 
     def __str__(self) -> str:
         return self.hex_with_prefix()
