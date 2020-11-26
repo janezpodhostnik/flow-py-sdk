@@ -1,22 +1,39 @@
-import json
+from typing import List
 
-from ..cadence.decode import cadence_object_hook
-from ..client import flow_client
+from flow_py_sdk.examples.scripts import *
+
+log = logging.getLogger(__name__)
 
 
-async def example():
-    async with flow_client(host="localhost", port=3569) as client:
-        response = await client.get_latest_block(is_sealed=True)
-        print(response.block.id.hex())
+async def run(ctx: ExampleContext):
+    examples: List[Example] = [
+        ScriptExample1(),
+        ScriptExample2(),
+        ScriptExample3(),
+        ScriptExample4()
+    ]
 
-        result = await client.execute_script_at_latest_block(script=b"""
-            import FlowServiceAccount from 0xf8d6e0586b0a20c7
+    i = 0
+    for example in examples:
+        i += 1
+        # noinspection PyBroadException
+        try:
+            await example.run(ctx)
+        except Exception:
+            log.error(f'{i}. {example.name} FAILED\n', exc_info=True, stack_info=True)
+            continue
+        log.info(f'{i}.{example.name} OK\n')
 
-            pub fun main(): UFix64 {
-                let acct = getAccount(0xf8d6e0586b0a20c7)
-                let balance = FlowServiceAccount.defaultTokenBalance(acct)
-                return balance
-            }
-            """)
-        cadence_value = json.loads(result.value, object_hook=cadence_object_hook)
-        print(cadence_value.value)
+# async def example2():
+#     async with flow_client(host="localhost", port=3569) as client:
+#         tx_result = await Tx(). \
+#             with_script("tx"). \
+#             add_arguments(Value(), Value()). \
+#             with_authorizer(). \
+#             with_refernce_block(). \
+#             with_proposal_key(). \
+#             with_reference_block_id(). \
+#             with_payer(). \
+#             with_payload_signature(). \
+#             with_envelope_signature(). \
+#             send(client=client, wait_for_seal=True)

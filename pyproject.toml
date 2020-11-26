@@ -5,7 +5,7 @@ description = ""
 authors = ["Janez Podhostnik <janez.podhostnik@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 betterproto = {extras = ["compiler"], version = "^1.2.5"}
 grpcio-tools = "^1.33.2"
 
