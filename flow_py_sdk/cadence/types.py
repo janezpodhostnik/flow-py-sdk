@@ -77,6 +77,15 @@ class Value(ABC):
     def type_str(cls) -> str:
         pass
 
+    def __eq__(self, other):
+        if isinstance(other, Value):
+            return str(self) == str(other)
+        return NotImplemented
+
+    def __hash__(self):
+        """Overrides the default implementation"""
+        return hash(str(self))
+
 
 class Void(Value):
     def __init__(self) -> None:
@@ -215,11 +224,13 @@ class Int(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            _valueKey: str(self.value)
+        }
 
     @classmethod
     def decode(cls, value) -> 'Value':
-        raise NotImplementedError()
+        return Int(int(value[_valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
@@ -633,19 +644,22 @@ class UFix64(Value):
 
 
 class Array(Value):
-    def __init__(self, value: List) -> None:
+    def __init__(self, value: List[Value]) -> None:
         super().__init__()
         self.value = value
 
     def __str__(self):
-        raise NotImplementedError()
+        return f'[{",".join([str(item) for item in self.value])}]'
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            _valueKey: [i.encode() for i in self.value]
+        }
 
     @classmethod
     def decode(cls, value) -> 'Value':
-        raise NotImplementedError()
+        obj = value[_valueKey]
+        return Array([decode(i) for i in obj])
 
     @classmethod
     def type_str(cls) -> str:
@@ -653,25 +667,32 @@ class Array(Value):
 
 
 class KeyValuePair(object):
-    def __init__(self, key, value) -> None:
+    def __init__(self, key: Value, value: Value) -> None:
         self.key = key
         self.value = value
 
 
 class Dictionary(Value):
-    def __init__(self, value: List[KeyValuePair]) -> None:
+    def __init__(self, value: List[KeyValuePair] = None) -> None:
         super().__init__()
         self.value = value
 
     def __str__(self):
-        raise NotImplementedError()
+        return f'{{{",".join([f"{{{item.key}:{item.value}}}" for item in self.value])}}}'
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            _valueKey: [{
+                _keyKey: i.key.encode(),
+                _valueKey: i.value.encode(),
+            } for i in self.value] if self.value is not None else None
+        }
 
     @classmethod
     def decode(cls, value) -> 'Value':
-        raise NotImplementedError()
+        obj = value[_valueKey]
+        items = [KeyValuePair(decode(item[_keyKey]), decode(item[_valueKey])) for item in obj]
+        return Dictionary(items)
 
     @classmethod
     def type_str(cls) -> str:

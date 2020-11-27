@@ -1,6 +1,7 @@
 from typing import List
 
 from flow_py_sdk.examples.scripts import *
+from flow_py_sdk.examples.transactions import TransactionExample1
 
 log = logging.getLogger(__name__)
 
@@ -10,7 +11,8 @@ async def run(ctx: ExampleContext):
         ScriptExample1(),
         ScriptExample2(),
         ScriptExample3(),
-        ScriptExample4()
+        ScriptExample4(),
+        TransactionExample1(),
     ]
 
     i = 0

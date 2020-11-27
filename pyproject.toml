@@ -8,6 +8,8 @@ authors = ["Janez Podhostnik <janez.podhostnik@gmail.com>"]
 python = "^3.9"
 betterproto = {extras = ["compiler"], version = "^1.2.5"}
 grpcio-tools = "^1.33.2"
+ecdsa = "^0.16.1"
+rlp = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
