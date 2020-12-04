@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from distutils.util import strtobool
-from typing import List, Dict, Any, Callable, Optional as pyOptional
+from typing import List, Any, Callable, Optional as pyOptional
 
 typeKey = "type"
 _valueKey = "value"
@@ -699,6 +699,166 @@ class Dictionary(Value):
         return _dictionaryTypeStr
 
 
+class Struct(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _structTypeStr
+
+
+class Resource(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _resourceTypeStr
+
+
+class Event(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _eventTypeStr
+
+
+class Contract(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _contractTypeStr
+
+
+class Link(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _linkTypeStr
+
+
+class Path(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _pathTypeStr
+
+
+class Type(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _typeTypeStr
+
+
+class Capability(Value):
+    def __init__(self, value=None) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        raise NotImplementedError()
+
+    def encode_value(self) -> dict:
+        raise NotImplementedError()
+
+    @classmethod
+    def decode(cls, value) -> 'Value':
+        raise NotImplementedError()
+
+    @classmethod
+    def type_str(cls) -> str:
+        return _capabilityTypeStr
+
+
 all_cadence_types: list = [
     Void,
     Optional,
@@ -727,6 +887,14 @@ all_cadence_types: list = [
     UFix64,
     Array,
     Dictionary,
+    Struct,
+    Resource,
+    Event,
+    Contract,
+    Link,
+    Path,
+    Type,
+    Capability,
 ]  # TODO try to constraint type to those that inherit Value
 
 all_cadence_decoders: dict[str, Callable[[Any], Value]] = {t.type_str(): t.decode for t in all_cadence_types if

@@ -16,3 +16,12 @@ class CadenceJsonEncoder(json.JSONEncoder):
         if isinstance(o, Value):
             return o.encode()
         return super().default(o)
+
+
+def encode_arguments(arguments: list[Value]) -> list[bytes]:
+    if arguments is None:
+        return []
+    # the separators and the new line are there to get an identical json as the flow-go-sdk does (usually).
+    # It doesnt need to be identical but it is convenient for comparative testing with the go-sdk.
+    return [(json.dumps(a, ensure_ascii=False, cls=CadenceJsonEncoder, separators=(',', ':')) + '\n').encode('utf-8')
+            for a in arguments]

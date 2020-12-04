@@ -1,18 +1,20 @@
+import logging
 from typing import List
 
-from flow_py_sdk.examples.scripts import *
-from flow_py_sdk.examples.transactions import TransactionExample1
+from flow_py_sdk.examples.common import ExampleContext, Example
+from flow_py_sdk.examples import scripts, transactions
 
 log = logging.getLogger(__name__)
 
 
 async def run(ctx: ExampleContext):
     examples: List[Example] = [
-        ScriptExample1(),
-        ScriptExample2(),
-        ScriptExample3(),
-        ScriptExample4(),
-        TransactionExample1(),
+        scripts.ScriptExample1(),
+        scripts.ScriptExample2(),
+        scripts.ScriptExample3(),
+        scripts.ScriptExample4(),
+        transactions.TransactionExample1(),
+        transactions.TransactionExample2(),
     ]
 
     i = 0

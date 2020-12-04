@@ -1,10 +1,10 @@
 import unittest
 
-from flow_py_sdk.cadence.types import Address, String, Int
+from flow_py_sdk.cadence import Address, String, Int
 from flow_py_sdk.tx import Tx, TxSignature
 
 
-class MyTestCase(unittest.TestCase):
+class TestTx(unittest.TestCase):
     def test_transaction_rlp_encoding(self):
         cases = [
             {
@@ -64,12 +64,13 @@ class MyTestCase(unittest.TestCase):
         ]
 
         for case in cases:
-            tx = case['tx']
-            payload = tx.payload_message().hex()
-            envelope = tx.envelope_message().hex()
+            with self.subTest(msg=case['name']):
+                tx = case['tx']
+                payload = tx.payload_message().hex()
+                envelope = tx.envelope_message().hex()
 
-            self.assertEqual(case['payload'], payload)
-            self.assertEqual(case['envelope'], envelope)
+                self.assertEqual(case['payload'], payload)
+                self.assertEqual(case['envelope'], envelope)
 
 
 def base_tx() -> Tx:
