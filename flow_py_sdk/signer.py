@@ -7,8 +7,8 @@ from ecdsa.curves import Curve
 
 
 class SignAlgo(Enum):
-    ECDSA_P256 = 1
-    ECDSA_secp256k1 = 2
+    ECDSA_P256 = 2
+    ECDSA_secp256k1 = 3
 
     @classmethod
     def from_string(cls, s: str) -> 'SignAlgo':

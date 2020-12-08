@@ -13,16 +13,10 @@ class ExampleContext(object):
     def __init__(self) -> None:
         super().__init__()
 
-        self.service_account_address: Address = Address.from_hex('f8d6e0586b0a20c7')
-        self.service_account_signer: Signer = InMemorySigner(
-            HashAlgo.SHA3_256,
-            SignAlgo.ECDSA_secp256k1,
-            'd7b1e643cdf601c5b3ca2cdabd731a563f100a42a2c658ece09572ae99295abf')
-        self.service_account_key_id: int = 0
         self.access_node_host: str = "localhost"
         self.access_node_port: int = 3569
 
-        # noinspection PyBroadException
+        self.service_account_key_id: int = 0
         try:
             with open('../flow.json') as json_file:
                 data = json.load(json_file)

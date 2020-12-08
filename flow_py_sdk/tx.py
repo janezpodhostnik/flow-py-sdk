@@ -6,6 +6,7 @@ import rlp
 
 from flow_py_sdk.cadence import Value, Address, encode_arguments
 from flow_py_sdk.proto.flow import entities
+from flow_py_sdk.frlp import rlp_encode_uint64
 from flow_py_sdk.signer import Signer
 
 log = logging.getLogger(__name__)
@@ -24,10 +25,6 @@ class TransactionStatus(Enum):
     TransactionStatusSealed = 4
     # TransactionStatusExpired is the status of an expired transaction.
     TransactionStatusExpired = 5
-
-
-def _rlp_encode_uint64(value: int) -> bytes:
-    return value.to_bytes(8, 'big', signed=False).lstrip(b'\0')
 
 
 class TxSignature(object):
@@ -85,10 +82,10 @@ class Tx(object):
             self.code.encode('utf-8') if self.code is not None else ''.encode('utf-8'),
             encode_arguments(self.arguments),
             self.reference_block_id,
-            _rlp_encode_uint64(self.gas_limit),
+            rlp_encode_uint64(self.gas_limit),
             self.proposal_key[0].bytes,
-            _rlp_encode_uint64(self.proposal_key[1]),
-            _rlp_encode_uint64(self.proposal_key[2]),
+            rlp_encode_uint64(self.proposal_key[1]),
+            rlp_encode_uint64(self.proposal_key[2]),
             self.payer.bytes,
             [a.bytes for a in self.authorizers]
         ]
@@ -100,8 +97,8 @@ class Tx(object):
         return rlp.encode([
             self._payload_form(),
             [[
-                s.signer_index.to_bytes(8, 'big', signed=False).lstrip(b'\0'),
-                s.key_id.to_bytes(8, 'big', signed=False).lstrip(b'\0'),
+                rlp_encode_uint64(s.signer_index),
+                rlp_encode_uint64(s.key_id),
                 s.signature
             ] for s in self.payload_signatures]
         ])
