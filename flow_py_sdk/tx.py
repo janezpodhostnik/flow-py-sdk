@@ -44,48 +44,46 @@ class TxSignature(object):
         return s
 
 
-class Tx(object):
-    def __init__(self, code: str) -> None:
+class ProposalKey(object):
+
+    def __init__(self, *, key_address: Address, key_id: int, key_sequence_number: int) -> None:
         super().__init__()
-        self.code: Optional[str] = code
+        self.key_address: Address = key_address
+        self.key_id: int = key_id
+        self.key_sequence_number: int = key_sequence_number
+
+
+class Tx(object):
+    def __init__(self, *,
+                 code: str,
+                 reference_block_id: bytes,
+                 payer: Address,
+                 proposal_key: ProposalKey
+                 ) -> None:
+        super().__init__()
+        self.code: str = code
+        self.reference_block_id: bytes = reference_block_id
+        self.payer: Address = payer
         self.arguments: list[Value] = []
-        self.reference_block_id: Optional[bytes] = None
         self.gas_limit: int = 100
-        self.payer: Optional[Address] = None
         self.authorizers: list[Address] = []
-        self.proposal_key: Optional[(Address, int, int)] = None
+        self.proposal_key: ProposalKey = proposal_key
         self.payload_signatures: list[TxSignature] = []
         self.envelope_signatures: list[TxSignature] = []
-
-    def with_payer(self, payer: Address) -> 'Tx':
-        self.payer = payer
-        return self
 
     def with_gas_limit(self, gas_limit) -> 'Tx':
         self.gas_limit = gas_limit
         return self
 
-    def with_code(self, code: Optional[str]) -> 'Tx':
-        self.code = code
-        return self
-
-    def with_reference_block_id(self, reference_block_id: bytes) -> 'Tx':
-        self.reference_block_id = reference_block_id
-        return self
-
-    def with_proposal_key(self, proposer: Address, key_id: int, sequence_number: int) -> 'Tx':
-        self.proposal_key = (proposer, key_id, sequence_number)
-        return self
-
     def _payload_form(self):
         return [
-            self.code.encode('utf-8') if self.code is not None else ''.encode('utf-8'),
+            self.code.encode('utf-8'),
             encode_arguments(self.arguments),
             self.reference_block_id,
             rlp_encode_uint64(self.gas_limit),
-            self.proposal_key[0].bytes,
-            rlp_encode_uint64(self.proposal_key[1]),
-            rlp_encode_uint64(self.proposal_key[2]),
+            self.proposal_key.key_address.bytes,
+            rlp_encode_uint64(self.proposal_key.key_id),
+            rlp_encode_uint64(self.proposal_key.key_sequence_number),
             self.payer.bytes,
             [a.bytes for a in self.authorizers]
         ]
@@ -114,11 +112,8 @@ class Tx(object):
             signers.append(address)
             seen[address] = True
 
-        if self.proposal_key is not None:
-            add_signer(self.proposal_key[0])
-
-        if self.payer is not None:
-            add_signer(self.payer)
+        add_signer(self.proposal_key.key_address)
+        add_signer(self.payer)
 
         for authorizer in self.authorizers:
             add_signer(authorizer)
@@ -157,9 +152,9 @@ class Tx(object):
         tx.authorizers = [a.bytes for a in self.authorizers]
 
         proposal_key = entities.TransactionProposalKey()
-        proposal_key.address = self.proposal_key[0].bytes if self.proposal_key is not None else None
-        proposal_key.key_id = self.proposal_key[1] if self.proposal_key is not None else None
-        proposal_key.sequence_number = self.proposal_key[2] if self.proposal_key is not None else None
+        proposal_key.address = self.proposal_key.key_address.bytes
+        proposal_key.key_id = self.proposal_key.key_id
+        proposal_key.sequence_number = self.proposal_key.key_sequence_number
 
         tx.proposal_key = proposal_key
         tx.payload_signatures = [s.rpc_form() for s in self.payload_signatures]

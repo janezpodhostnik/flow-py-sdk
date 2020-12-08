@@ -3,7 +3,7 @@ import json
 import logging
 import time
 from types import TracebackType
-from typing import Optional, Type, Annotated
+from typing import Optional, Type, Annotated, List
 
 from grpclib.client import Channel
 from grpclib.config import Configuration
@@ -11,7 +11,10 @@ from grpclib.encoding.base import CodecBase, StatusDetailsCodecBase
 from grpclib.metadata import Deadline
 
 from flow_py_sdk.cadence import Value, cadence_object_hook, encode_arguments
-from flow_py_sdk.proto.flow.access import AccessAPIStub, TransactionResultResponse
+from flow_py_sdk.proto.flow import entities
+from flow_py_sdk.proto.flow.access import AccessAPIStub, TransactionResultResponse, GetNetworkParametersResponse, \
+    EventsResponse, ExecuteScriptResponse, AccountResponse, GetAccountResponse, TransactionResponse, \
+    SendTransactionResponse, CollectionResponse, BlockResponse, BlockHeaderResponse, PingResponse, EventsResponseResult
 from flow_py_sdk.script import Script
 from flow_py_sdk.tx import Tx, TransactionStatus
 
@@ -33,6 +36,81 @@ class AccessAPI(AccessAPIStub):
             exc_tb: Optional[TracebackType],
     ) -> None:
         self.channel.close()
+
+    async def get_latest_block_header(self, *, is_sealed: bool = False) -> entities.BlockHeader:
+        response = await super().get_latest_block_header(is_sealed=is_sealed)
+        return response.block
+
+    async def get_block_header_by_i_d(self, *, id: bytes = b"") -> entities.BlockHeader:
+        response = await super().get_block_header_by_i_d(id=id)
+        return response.block
+
+    async def get_block_header_by_height(self, *, height: int = 0) -> entities.BlockHeader:
+        response = await super().get_block_header_by_height(height=height)
+        return response.block
+
+    async def get_latest_block(self, *, is_sealed: bool = False) -> entities.Block:
+        response = await super(AccessAPI, self).get_latest_block(is_sealed=is_sealed)
+        return response.block
+
+    async def get_block_by_i_d(self, *, id: bytes = b"") -> entities.Block:
+        response = await super().get_block_by_i_d(id=id)
+        return response.block
+
+    async def get_block_by_height(self, *, height: int = 0) -> entities.Block:
+        response = await super().get_block_by_height(height=height)
+        return response.block
+
+    async def get_collection_by_i_d(self, *, id: bytes = b"") -> entities.Collection:
+        response = await super().get_collection_by_i_d(id=id)
+        return response.collection
+
+    async def get_transaction(self, *, id: bytes = b"") -> entities.Transaction:
+        response = await super().get_transaction(id=id)
+        return response.transaction
+
+    async def get_account(self, *, address: bytes = b"") -> entities.Account:
+        response = await super().get_account(address=address)
+        return response.account
+
+    async def get_account_at_latest_block(self, *, address: bytes = b"") -> entities.Account:
+        response = await super().get_account_at_latest_block(address=address)
+        return response.account
+
+    async def get_account_at_block_height(self, *, address: bytes = b"", block_height: int = 0) -> entities.Account:
+        response = await super().get_account_at_block_height(address=address, block_height=block_height)
+        return response.account
+
+    async def execute_script_at_latest_block(self, *, script: bytes = b"",
+                                             arguments: List[bytes] = []) -> ExecuteScriptResponse:
+        response = await super().execute_script_at_latest_block(script=script, arguments=arguments)
+        return response
+
+    async def execute_script_at_block_i_d(self, *, block_id: bytes = b"", script: bytes = b"",
+                                          arguments: List[bytes] = []) -> ExecuteScriptResponse:
+        response = await super().execute_script_at_block_i_d(block_id=block_id, script=script, arguments=arguments)
+        return response
+
+    async def execute_script_at_block_height(self, *, block_height: int = 0, script: bytes = b"",
+                                             arguments: List[bytes] = []) -> ExecuteScriptResponse:
+        response = await super().execute_script_at_block_height(block_height=block_height, script=script,
+                                                                arguments=arguments)
+        return response
+
+    async def get_events_for_height_range(self, *, type: str = "", start_height: int = 0,
+                                          end_height: int = 0) -> List[EventsResponseResult]:
+        response = await super().get_events_for_height_range(type=type, start_height=start_height,
+                                                             end_height=end_height)
+        return response.results
+
+    async def get_events_for_block_i_ds(self, *, type: str = "",
+                                        block_ids: List[bytes] = []) -> List[EventsResponseResult]:
+        response = await super().get_events_for_block_i_ds(type=type, block_ids=block_ids)
+        return response.results
+
+    async def get_network_parameters(self) -> GetNetworkParametersResponse:
+        response = await super().get_network_parameters()
+        return response
 
     async def execute_script(self, script: Script,
                              at_block_id: Optional[bytes] = None,

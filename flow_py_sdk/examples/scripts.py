@@ -54,8 +54,7 @@ class ScriptExample3(Example):
 
     async def run(self, ctx: ExampleContext):
         async with flow_client(host=ctx.access_node_host, port=ctx.access_node_port) as client:
-            block_response = await client.get_latest_block(is_sealed=True)
-            block = block_response.block
+            block = await client.get_latest_block(is_sealed=True)
 
             account_to_get_balance_from = ctx.service_account_address
 
@@ -80,8 +79,7 @@ class ScriptExample4(Example):
 
     async def run(self, ctx: ExampleContext):
         async with flow_client(host=ctx.access_node_host, port=ctx.access_node_port) as client:
-            block_response = await client.get_latest_block(is_sealed=True)
-            block = block_response.block
+            block = await client.get_latest_block(is_sealed=True)
 
             account_to_get_balance_from = ctx.service_account_address
 
