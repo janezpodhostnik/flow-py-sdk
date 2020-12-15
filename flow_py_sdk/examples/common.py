@@ -18,7 +18,7 @@ class ExampleContext(object):
 
         self.service_account_key_id: int = 0
         try:
-            with open('../flow.json') as json_file:
+            with open('./flow.json') as json_file:
                 data = json.load(json_file)
                 self.service_account_address = Address.from_hex(data["accounts"]["service"]["address"])
                 self.service_account_signer = InMemorySigner(

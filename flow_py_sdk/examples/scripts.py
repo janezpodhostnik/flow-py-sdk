@@ -96,3 +96,15 @@ class ScriptExample4(Example):
 
             result = await client.execute_script(script, at_block_height=block.height)
             log.info(f'Script returned result {result}')
+
+
+class ScriptExample5(Example):
+
+    def __init__(self) -> None:
+        super().__init__('Get Account Code')
+
+    async def run(self, ctx: ExampleContext):
+        async with flow_client(host=ctx.access_node_host, port=ctx.access_node_port) as client:
+            script = await client.get_account_at_latest_block(address=ctx.service_account_address.bytes)
+
+            log.info(f'Account code {script.contracts}')

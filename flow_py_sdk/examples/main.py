@@ -13,8 +13,11 @@ async def run(ctx: ExampleContext):
         scripts.ScriptExample2(),
         scripts.ScriptExample3(),
         scripts.ScriptExample4(),
+        scripts.ScriptExample5(),
         transactions.TransactionExample1(),
         transactions.TransactionExample2(),
+        transactions.TransactionExample3(),
+        transactions.TransactionExample4(),
     ]
 
     i = 0
