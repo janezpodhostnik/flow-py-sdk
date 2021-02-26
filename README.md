@@ -1,6 +1,8 @@
 # flow-py-sdk
 
-Another unofficial flow blockchain python sdk
+Another unofficial flow blockchain python sdk.
+
+Under development! I do not recommend you use this
 
 ## Prerequisites
 

@@ -69,7 +69,7 @@ class Value(ABC):
 
     @classmethod
     @abstractmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         pass
 
     @classmethod
@@ -92,13 +92,13 @@ class Void(Value):
         super().__init__()
 
     def __str__(self):
-        return f'Void'
+        return f"Void"
 
     def encode_value(self) -> dict:
         return {}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         return Void()
 
     @classmethod
@@ -112,15 +112,13 @@ class Optional(Value):
         self.value = value
 
     def __str__(self):
-        return f'Optional[{str(self.value)}]'
+        return f"Optional[{str(self.value)}]"
 
     def encode_value(self) -> dict:
-        return {
-            _valueKey: self.value.encode() if self.value is not None else None
-        }
+        return {_valueKey: self.value.encode() if self.value is not None else None}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         if _valueKey not in value or value[_valueKey] is None:
             return Optional(None)
         return Optional(decode(value[_valueKey]))
@@ -139,12 +137,10 @@ class Bool(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        return {
-            _valueKey: self.value
-        }
+        return {_valueKey: self.value}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         return Bool(bool(strtobool(value[_valueKey])))
 
     @classmethod
@@ -161,12 +157,10 @@ class String(Value):
         return self.value
 
     def encode_value(self) -> dict:
-        return {
-            _valueKey: self.value
-        }
+        return {_valueKey: self.value}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         return String(str(value[_valueKey]))
 
     @classmethod
@@ -176,7 +170,7 @@ class String(Value):
 
 class Address(Value):
     address_length = 8
-    address_prefix = '0x'
+    address_prefix = "0x"
 
     def __init__(self, value: bytes) -> None:
         super().__init__()
@@ -186,7 +180,7 @@ class Address(Value):
         self.bytes = bytes(Address.address_length - len(value)) + value
 
     @classmethod
-    def from_hex(cls, value: str) -> 'Address':
+    def from_hex(cls, value: str) -> "Address":
         return Address(bytes.fromhex(value.removeprefix(Address.address_prefix)))
 
     def hex(self) -> str:
@@ -204,7 +198,7 @@ class Address(Value):
         }
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         addr = str(value[_valueKey])
         if addr[:2] != "0x":
             raise Exception()  # TODO
@@ -224,12 +218,10 @@ class Int(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        return {
-            _valueKey: str(self.value)
-        }
+        return {_valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         return Int(int(value[_valueKey]))
 
     @classmethod
@@ -249,7 +241,7 @@ class Int8(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -269,7 +261,7 @@ class Int16(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -289,7 +281,7 @@ class Int32(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -309,7 +301,7 @@ class Int64(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -329,7 +321,7 @@ class Int128(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -349,7 +341,7 @@ class Int256(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -369,7 +361,7 @@ class UInt(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -389,7 +381,7 @@ class UInt8(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -409,7 +401,7 @@ class UInt16(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -429,7 +421,7 @@ class UInt32(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -449,7 +441,7 @@ class UInt64(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -469,7 +461,7 @@ class UInt128(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -489,7 +481,7 @@ class UInt256(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -509,7 +501,7 @@ class Word8(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -529,7 +521,7 @@ class Word16(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -549,7 +541,7 @@ class Word32(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -569,7 +561,7 @@ class Word64(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -601,16 +593,14 @@ class Fix64(Value):
     def __str__(self):
         integer = int(self.value / fix64_factor)
         fraction = int(self.value % fix64_factor)
-        return f'{integer}.{fraction:08d}'
+        return f"{integer}.{fraction:08d}"
 
     def encode_value(self) -> dict:
-        return {
-            _valueKey: str(self)
-        }
+        return {_valueKey: str(self)}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
-        str_values = str(value[_valueKey]).split('.')
+    def decode(cls, value) -> "Value":
+        str_values = str(value[_valueKey]).split(".")
         return Fix64(int(str_values[0]) * fix64_factor + int(str_values[1]))
 
     @classmethod
@@ -626,16 +616,14 @@ class UFix64(Value):
     def __str__(self):
         integer = int(self.value / fix64_factor)
         fraction = int(self.value % fix64_factor)
-        return f'{integer}.{fraction:08d}'
+        return f"{integer}.{fraction:08d}"
 
     def encode_value(self) -> dict:
-        return {
-            _valueKey: str(self)
-        }
+        return {_valueKey: str(self)}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
-        str_values = str(value[_valueKey]).split('.')
+    def decode(cls, value) -> "Value":
+        str_values = str(value[_valueKey]).split(".")
         return Fix64(int(str_values[0]) * fix64_factor + int(str_values[1]))
 
     @classmethod
@@ -652,12 +640,10 @@ class Array(Value):
         return f'[{",".join([str(item) for item in self.value])}]'
 
     def encode_value(self) -> dict:
-        return {
-            _valueKey: [i.encode() for i in self.value]
-        }
+        return {_valueKey: [i.encode() for i in self.value]}
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         obj = value[_valueKey]
         return Array([decode(i) for i in obj])
 
@@ -678,20 +664,29 @@ class Dictionary(Value):
         self.value = value
 
     def __str__(self):
-        return f'{{{",".join([f"{{{item.key}:{item.value}}}" for item in self.value])}}}'
+        return (
+            f'{{{",".join([f"{{{item.key}:{item.value}}}" for item in self.value])}}}'
+        )
 
     def encode_value(self) -> dict:
         return {
-            _valueKey: [{
-                _keyKey: i.key.encode(),
-                _valueKey: i.value.encode(),
-            } for i in self.value] if self.value is not None else None
+            _valueKey: [
+                {
+                    _keyKey: i.key.encode(),
+                    _valueKey: i.value.encode(),
+                }
+                for i in self.value
+            ]
+            if self.value is not None
+            else None
         }
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         obj = value[_valueKey]
-        items = [KeyValuePair(decode(item[_keyKey]), decode(item[_valueKey])) for item in obj]
+        items = [
+            KeyValuePair(decode(item[_keyKey]), decode(item[_valueKey])) for item in obj
+        ]
         return Dictionary(items)
 
     @classmethod
@@ -711,7 +706,7 @@ class Struct(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -731,7 +726,7 @@ class Resource(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -751,7 +746,7 @@ class Event(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -771,7 +766,7 @@ class Contract(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -791,7 +786,7 @@ class Link(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -811,7 +806,7 @@ class Path(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -831,7 +826,7 @@ class Type(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -851,7 +846,7 @@ class Capability(Value):
         raise NotImplementedError()
 
     @classmethod
-    def decode(cls, value) -> 'Value':
+    def decode(cls, value) -> "Value":
         raise NotImplementedError()
 
     @classmethod
@@ -897,11 +892,16 @@ all_cadence_types: list = [
     Capability,
 ]  # TODO try to constraint type to those that inherit Value
 
-all_cadence_decoders: dict[str, Callable[[Any], Value]] = {t.type_str(): t.decode for t in all_cadence_types if
-                                                           issubclass(t, Value)}
+all_cadence_decoders: dict[str, Callable[[Any], Value]] = {
+    t.type_str(): t.decode for t in all_cadence_types if issubclass(t, Value)
+}
 
 
 def decode(obj: [dict[Any, Any]]) -> Value:
+    if isinstance(obj, Value):
+        # json decoder starts from bottom up, so its possible that this is already decoded
+        return obj
+
     type_ = obj[typeKey]
     if type_ in all_cadence_decoders:
         decoder = all_cadence_decoders[type_]

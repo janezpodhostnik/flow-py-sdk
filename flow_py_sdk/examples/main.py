@@ -27,6 +27,6 @@ async def run(ctx: ExampleContext):
         try:
             await example.run(ctx)
         except Exception:
-            log.error(f'{i}. {example.name} FAILED\n', exc_info=True, stack_info=True)
+            log.error(f"{i}. {example.name} FAILED\n", exc_info=True, stack_info=True)
             continue
-        log.info(f'{i}.{example.name} OK\n')
+        log.info(f"{i}.{example.name} OK\n")
