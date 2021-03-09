@@ -16,10 +16,12 @@ rlp = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+coloredlogs = "^15.0"
+toml = "^0.10.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-examples = 'flow_py_sdk.run_examples:run'
+examples = 'examples.main:run'

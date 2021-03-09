@@ -1,0 +1,26 @@
+version = 1
+
+[formatters.colored_console]
+"()" = "coloredlogs.ColoredFormatter"
+format = "[%(asctime)s] %(levelname)s: %(message)s"
+datefmt = "%H:%M:%S"
+
+[handlers]
+[handlers.console]
+class = "logging.StreamHandler"
+level = "INFO"
+formatter = "colored_console"
+stream = "ext://sys.stdout"
+
+[loggers]
+[loggers.examples]
+level = "DEBUG"
+handlers = ["console"]
+propagate = false
+[loggers.fow-py-sdk]
+level = "DEBUG"
+handlers = ["console"]
+propagate = false
+[loggers.root]
+level = "INFO"
+handlers = ["console"]

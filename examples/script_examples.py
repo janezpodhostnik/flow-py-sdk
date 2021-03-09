@@ -1,17 +1,20 @@
 import logging
 
-from flow_py_sdk.client import flow_client
-from flow_py_sdk.examples.common import ExampleContext, Example
-from flow_py_sdk.script import Script
+from examples.common import Example, Config, example_registry
+from flow_py_sdk import Script, flow_client
 
 log = logging.getLogger(__name__)
 
 
 class ScriptExample1(Example):
-    def __init__(self) -> None:
-        super().__init__("Script")
+    """
+    Runs a simple script
+    """
 
-    async def run(self, ctx: ExampleContext):
+    def __init__(self) -> None:
+        super().__init__(tag="S.1.", name="Run script", sort_order=101)
+
+    async def run(self, ctx: Config):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
@@ -29,15 +32,18 @@ class ScriptExample1(Example):
 
 
 class ScriptExample2(Example):
-    def __init__(self) -> None:
-        super().__init__("Script with import")
+    """
+    Runs a script that imports another contract.
+    """
 
-    async def run(self, ctx: ExampleContext):
+    def __init__(self) -> None:
+        super().__init__(tag="S.2.", name="Script with import", sort_order=102)
+
+    async def run(self, ctx: Config):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_to_get_balance_from = ctx.service_account_address
-
             script = Script(
                 code=f"""
                     import FlowServiceAccount from {ctx.service_account_address}
@@ -54,17 +60,21 @@ class ScriptExample2(Example):
 
 
 class ScriptExample3(Example):
-    def __init__(self) -> None:
-        super().__init__("Script with import and return")
+    """
+    Runs a script that imports another contract and returns a value
+    """
 
-    async def run(self, ctx: ExampleContext):
+    def __init__(self) -> None:
+        super().__init__(
+            tag="S.3", name="Script with import and return", sort_order=103
+        )
+
+    async def run(self, ctx: Config):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             block = await client.get_latest_block(is_sealed=True)
-
             account_to_get_balance_from = ctx.service_account_address
-
             script = Script(
                 code=f"""
                     import FlowServiceAccount from {ctx.service_account_address}
@@ -82,17 +92,21 @@ class ScriptExample3(Example):
 
 
 class ScriptExample4(Example):
-    def __init__(self) -> None:
-        super().__init__("Script with parameter, import and return")
+    """
+    Runs a script that imports another contract uses a parameter and returns a value
+    """
 
-    async def run(self, ctx: ExampleContext):
+    def __init__(self) -> None:
+        super().__init__(
+            tag="S.4.", name="Script with parameter, import and return", sort_order=104
+        )
+
+    async def run(self, ctx: Config):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             block = await client.get_latest_block(is_sealed=True)
-
             account_to_get_balance_from = ctx.service_account_address
-
             script = Script(
                 code=f"""
                     import FlowServiceAccount from {ctx.service_account_address}
@@ -107,18 +121,3 @@ class ScriptExample4(Example):
 
             result = await client.execute_script(script, at_block_height=block.height)
             log.info(f"Script returned result {result}")
-
-
-class ScriptExample5(Example):
-    def __init__(self) -> None:
-        super().__init__("Get Account Code")
-
-    async def run(self, ctx: ExampleContext):
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            script = await client.get_account_at_latest_block(
-                address=ctx.service_account_address.bytes
-            )
-
-            log.info(f"Account code {script.contracts}")

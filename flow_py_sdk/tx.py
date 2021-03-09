@@ -1,12 +1,11 @@
 import logging
 from enum import Enum
-from typing import Optional
 
 import rlp
 
 from flow_py_sdk.cadence import Value, Address, encode_arguments
-from flow_py_sdk.proto.flow import entities
 from flow_py_sdk.frlp import rlp_encode_uint64
+from flow_py_sdk.proto.flow import entities
 from flow_py_sdk.signer import Signer
 
 log = logging.getLogger(__name__)
@@ -28,8 +27,9 @@ class TransactionStatus(Enum):
 
 
 class TxSignature(object):
-
-    def __init__(self, address: Address, key_id: int, signer_index: int, signature: bytes) -> None:
+    def __init__(
+        self, address: Address, key_id: int, signer_index: int, signature: bytes
+    ) -> None:
         super().__init__()
         self.address: Address = address
         self.key_id: int = key_id
@@ -45,8 +45,9 @@ class TxSignature(object):
 
 
 class ProposalKey(object):
-
-    def __init__(self, *, key_address: Address, key_id: int, key_sequence_number: int) -> None:
+    def __init__(
+        self, *, key_address: Address, key_id: int, key_sequence_number: int
+    ) -> None:
         super().__init__()
         self.key_address: Address = key_address
         self.key_id: int = key_id
@@ -54,12 +55,14 @@ class ProposalKey(object):
 
 
 class Tx(object):
-    def __init__(self, *,
-                 code: str,
-                 reference_block_id: bytes = None,
-                 payer: Address = None,
-                 proposal_key: ProposalKey = None,
-                 ) -> None:
+    def __init__(
+        self,
+        *,
+        code: str,
+        reference_block_id: bytes = None,
+        payer: Address = None,
+        proposal_key: ProposalKey = None,
+    ) -> None:
         super().__init__()
         self.code: str = code
         self.reference_block_id: bytes = reference_block_id
@@ -71,25 +74,25 @@ class Tx(object):
         self.payload_signatures: list[TxSignature] = []
         self.envelope_signatures: list[TxSignature] = []
 
-    def with_gas_limit(self, gas_limit: int) -> 'Tx':
+    def with_gas_limit(self, gas_limit: int) -> "Tx":
         self.gas_limit = gas_limit
         return self
 
-    def with_reference_block_id(self, reference_block_id: bytes) -> 'Tx':
+    def with_reference_block_id(self, reference_block_id: bytes) -> "Tx":
         self.reference_block_id = reference_block_id
         return self
 
-    def with_payer(self, payer: Address) -> 'Tx':
+    def with_payer(self, payer: Address) -> "Tx":
         self.payer = payer
         return self
 
-    def with_proposal_key(self, proposal_key: ProposalKey) -> 'Tx':
+    def with_proposal_key(self, proposal_key: ProposalKey) -> "Tx":
         self.proposal_key = proposal_key
         return self
 
     def _payload_form(self):
         return [
-            self.code.encode('utf-8'),
+            self.code.encode("utf-8"),
             encode_arguments(self.arguments),
             self.reference_block_id,
             rlp_encode_uint64(self.gas_limit),
@@ -97,21 +100,26 @@ class Tx(object):
             rlp_encode_uint64(self.proposal_key.key_id),
             rlp_encode_uint64(self.proposal_key.key_sequence_number),
             self.payer.bytes,
-            [a.bytes for a in self.authorizers]
+            [a.bytes for a in self.authorizers],
         ]
 
     def payload_message(self) -> bytes:
         return rlp.encode(self._payload_form())
 
     def envelope_message(self) -> bytes:
-        return rlp.encode([
-            self._payload_form(),
-            [[
-                rlp_encode_uint64(s.signer_index),
-                rlp_encode_uint64(s.key_id),
-                s.signature
-            ] for s in self.payload_signatures]
-        ])
+        return rlp.encode(
+            [
+                self._payload_form(),
+                [
+                    [
+                        rlp_encode_uint64(s.signer_index),
+                        rlp_encode_uint64(s.key_id),
+                        s.signature,
+                    ]
+                    for s in self.payload_signatures
+                ],
+            ]
+        )
 
     def _signer_list(self) -> list[Address]:
         signers = []
@@ -132,31 +140,37 @@ class Tx(object):
 
         return signers
 
-    def with_payload_signature(self, address: Address, key_id: int, signer: Signer) -> 'Tx':
+    def with_payload_signature(
+        self, address: Address, key_id: int, signer: Signer
+    ) -> "Tx":
         if self._missing_fields_for_signing():
             raise Exception(
-                f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed")
+                f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
+            )
         signature = signer.sign(self.payload_message())
         signer_index = self._signer_list().index(address)
         ts = TxSignature(address, key_id, signer_index, signature)
         self.payload_signatures.append(ts)
         return self
 
-    def with_envelope_signature(self, address: Address, key_id: int, signer: Signer) -> 'Tx':
+    def with_envelope_signature(
+        self, address: Address, key_id: int, signer: Signer
+    ) -> "Tx":
         if self._missing_fields_for_signing():
             raise Exception(
-                f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed")
+                f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
+            )
         signature = signer.sign(self.envelope_message())
         signer_index = self._signer_list().index(address)
         ts = TxSignature(address, key_id, signer_index, signature)
         self.envelope_signatures.append(ts)
         return self
 
-    def add_authorizers(self, *args: Address) -> 'Tx':
+    def add_authorizers(self, *args: Address) -> "Tx":
         self.authorizers.extend(args)
         return self
 
-    def add_arguments(self, *args: Value) -> 'Tx':
+    def add_arguments(self, *args: Value) -> "Tx":
         self.arguments.extend(args)
         return self
 
@@ -171,7 +185,7 @@ class Tx(object):
 
     def to_grpc(self) -> entities.Transaction:
         tx = entities.Transaction()
-        tx.script = self.code.encode('utf-8')
+        tx.script = self.code.encode("utf-8")
         tx.arguments = encode_arguments(self.arguments)
         tx.reference_block_id = self.reference_block_id
         tx.gas_limit = self.gas_limit
