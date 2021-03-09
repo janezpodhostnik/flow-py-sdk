@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from typing import List
 
 import betterproto
-import grpclib
 
 from ..flow import entities
 

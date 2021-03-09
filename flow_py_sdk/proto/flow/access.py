@@ -6,7 +6,6 @@ from datetime import datetime
 from typing import List, Optional
 
 import betterproto
-import grpclib
 
 from ..flow import entities
 
