@@ -37,18 +37,25 @@ class _ExampleRegistry(object):
         """
         examples = sorted(self._examples.values(), key=lambda e: e.sort_order)
         for ex in examples:
-            # noinspection PyBroadException
-            log.info(f"=== RUNNING: [{ex.tag}] {ex.name} ===")
-            try:
-                await ex.run(cfg)
-            except Exception:
-                log.error(
-                    "==== PASSED ====\n",
-                    exc_info=True,
-                    stack_info=True,
-                )
-                continue
-            log.info("==== PASSED ====\n")
+            await self._run(cfg, ex)
+
+    async def run(self, cfg: Config, tag: str):
+        ex = self._examples[tag]
+        await self._run(cfg, ex)
+
+    async def _run(self, cfg: Config, ex: "Example"):
+        log.info(f"=== RUNNING: [{ex.tag}] {ex.name} ===")
+        # noinspection PyBroadException
+        try:
+            await ex.run(cfg)
+        except Exception:
+            log.error(
+                "==== FAILED ====\n",
+                exc_info=True,
+                stack_info=True,
+            )
+            return
+        log.info("==== PASSED ====\n")
 
 
 example_registry: _ExampleRegistry = _ExampleRegistry()

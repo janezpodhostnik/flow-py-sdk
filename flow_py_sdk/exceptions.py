@@ -16,3 +16,7 @@ class NotCadenceValueError(PySDKError):
         return NotCadenceValueError(
             f"Value {value} is not a cadence value. Cadence value expected."
         )
+
+
+class CadenceEncodingError(PySDKError):
+    pass

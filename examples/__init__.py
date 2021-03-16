@@ -7,6 +7,7 @@ import toml
 import examples.script_examples
 import examples.transaction_examples
 import examples.client_examples
+import examples.event_examples
 
 logging_config = toml.load(Path(__file__).parent.joinpath("./logging.toml"))
 logging.config.dictConfig(logging_config)
