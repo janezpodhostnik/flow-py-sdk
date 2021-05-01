@@ -1,3 +1,5 @@
+[![PyPI](https://img.shields.io/pypi/v/flow-py-sdk.svg)](https://pypi.org/project/flow-py-sdk/) 
+
 # flow-py-sdk
 
 Another unofficial flow blockchain python sdk.
