@@ -63,6 +63,10 @@ Start the Flow Emulator in the `examples` directory of this repository (tha is w
 - [ ] add more tests
 - [x] add CI for tests
 
+### CI
+
+- [ ] release automation
+
 ### Implementation
 
 - [ ] decode event payload from grpc

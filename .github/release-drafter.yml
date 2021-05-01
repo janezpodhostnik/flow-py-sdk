@@ -20,7 +20,6 @@ categories:
   - title: ':rotating_light: Testing'
     label: 'testing'
 change-template: '- $TITLE (#$NUMBER)'
-change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
     labels:
@@ -33,6 +32,4 @@ version-resolver:
       - 'patch'
   default: patch
 template: |
-  ## Changes
-
   $CHANGES
