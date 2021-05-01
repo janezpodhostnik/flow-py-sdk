@@ -5,6 +5,8 @@ categories:
     label: 'breaking'
   - title: ':construction_worker: Continuous Integration'
     label: 'ci'
+  - title: ':technologist: Examples'
+    label: 'examples'
   - title: ':books: Documentation'
     label: 'documentation'
   - title: ':rocket: Features'
