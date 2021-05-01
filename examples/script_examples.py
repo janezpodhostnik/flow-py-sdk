@@ -66,7 +66,7 @@ class ScriptExample3(Example):
 
     def __init__(self) -> None:
         super().__init__(
-            tag="S.3", name="Script with import and return", sort_order=103
+            tag="S.3.", name="Script with import and return", sort_order=103
         )
 
     async def run(self, ctx: Config):
