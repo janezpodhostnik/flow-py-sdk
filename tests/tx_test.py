@@ -1,23 +1,17 @@
 import unittest
 
 from flow_py_sdk.cadence import Address, String, Int
-from flow_py_sdk.tx import Tx, TxSignature
+from flow_py_sdk.tx import Tx, TxSignature, ProposalKey
 
 
 class TestTx(unittest.TestCase):
-    def test_transaction_rlp_encoding(self):
+    def test_transaction_rlp_encoding_is_consistent(self):
         cases = [
             {
                 "name": "Complete transaction",
                 "tx": base_tx(),
                 "payload": "f872b07472616e73616374696f6e207b2065786563757465207b206c6f67282248656c6c6f2c20576f726c64212229207d207dc0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a880000000000000001040a880000000000000001c9880000000000000001",
                 "envelope": "f899f872b07472616e73616374696f6e207b2065786563757465207b206c6f67282248656c6c6f2c20576f726c64212229207d207dc0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a880000000000000001040a880000000000000001c9880000000000000001e4e38004a0f7225388c1d69d57e6251c9fda50cbbf9e05131e5adb81e5aa0422402f048162",
-            },
-            {
-                "name": "Empty script",
-                "tx": base_tx().with_code(None),
-                "payload": "f84280c0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a880000000000000001040a880000000000000001c9880000000000000001",
-                "envelope": "f869f84280c0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a880000000000000001040a880000000000000001c9880000000000000001e4e38004a0f7225388c1d69d57e6251c9fda50cbbf9e05131e5adb81e5aa0422402f048162",
             },
             {
                 "name": "Empty reference block",
@@ -33,13 +27,25 @@ class TestTx(unittest.TestCase):
             },
             {
                 "name": "Empty proposal key ID",
-                "tx": base_tx().with_proposal_key(Address.from_hex("01"), 0, 10),
+                "tx": base_tx().with_proposal_key(
+                    proposal_key=ProposalKey(
+                        key_id=0,
+                        key_address=Address.from_hex("01"),
+                        key_sequence_number=10,
+                    )
+                ),
                 "payload": "f872b07472616e73616374696f6e207b2065786563757465207b206c6f67282248656c6c6f2c20576f726c64212229207d207dc0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a880000000000000001800a880000000000000001c9880000000000000001",
                 "envelope": "f899f872b07472616e73616374696f6e207b2065786563757465207b206c6f67282248656c6c6f2c20576f726c64212229207d207dc0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a880000000000000001800a880000000000000001c9880000000000000001e4e38004a0f7225388c1d69d57e6251c9fda50cbbf9e05131e5adb81e5aa0422402f048162",
             },
             {
                 "name": "Empty sequence number",
-                "tx": base_tx().with_proposal_key(Address.from_hex("01"), 4, 0),
+                "tx": base_tx().with_proposal_key(
+                    proposal_key=ProposalKey(
+                        key_id=4,
+                        key_address=Address.from_hex("01"),
+                        key_sequence_number=0,
+                    )
+                ),
                 "payload": "f872b07472616e73616374696f6e207b2065786563757465207b206c6f67282248656c6c6f2c20576f726c64212229207d207dc0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a8800000000000000010480880000000000000001c9880000000000000001",
                 "envelope": "f899f872b07472616e73616374696f6e207b2065786563757465207b206c6f67282248656c6c6f2c20576f726c64212229207d207dc0a0f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b2a8800000000000000010480880000000000000001c9880000000000000001e4e38004a0f7225388c1d69d57e6251c9fda50cbbf9e05131e5adb81e5aa0422402f048162",
             },
@@ -78,15 +84,17 @@ def base_tx() -> Tx:
         "f7225388c1d69d57e6251c9fda50cbbf9e05131e5adb81e5aa0422402f048162"
     )
     tx = (
-        Tx("""transaction { execute { log("Hello, World!") } }""")
-        .with_reference_block_id(
-            bytes.fromhex(
+        Tx(
+            code="""transaction { execute { log("Hello, World!") } }""",
+            reference_block_id=bytes.fromhex(
                 "f0e4c2f76c58916ec258f246851bea091d14d4247a2fc3e18694461b1816e13b"
-            )
+            ),
+            proposal_key=ProposalKey(
+                key_id=4, key_address=Address.from_hex("01"), key_sequence_number=10
+            ),
+            payer=Address.from_hex("01"),
         )
         .with_gas_limit(42)
-        .with_proposal_key(Address.from_hex("01"), 4, 10)
-        .with_payer(Address.from_hex("01"))
         .add_authorizers(Address.from_hex("01"))
     )
 

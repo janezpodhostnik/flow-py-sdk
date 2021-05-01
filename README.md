@@ -4,27 +4,39 @@ Another unofficial flow blockchain python sdk.
 
 Under development! I do not recommend you use this.
 
-If you do want to used do:
+If you do want to use it do:
 
 `pip install flow-py-sdk`
 
-## Prerequisites
+It supports python version 3.9 or higher
+
+##Contributing
+
+### Prerequisites
 
 - [poetry](https://python-poetry.org/docs/)
 - python 3.9^
 
-## Examples
+### Running tests
 
-First, install the [Flow CLI](https://docs.onflow.org/flow-cli).
+Tests can be run using `poetry`.
 
-Start the Flow Emulator in the main directory of this repository:
+```bash
+poetry run pytest
+```
+
+### Running the examples locally
+
+Install the [Flow CLI](https://docs.onflow.org/flow-cli).
+
+Start the Flow Emulator in the `examples` directory of this repository (tha is where the `flow.json` is).
 
 - `flow emulator start`
-- `poetry build` (only the first time)
 - `poetry install`
+- `poetry build` (only the first time)
 - `poetry run examples`
 
-## TODO
+## Roadmap to MVP
 
 ### Docs
 
@@ -40,13 +52,14 @@ Start the Flow Emulator in the main directory of this repository:
 - [ ] make each example runnable separately
 - [ ] write instructions for running examples
 - [ ] add more comments to examples
+- [x] add examples to ci
 - [ ] add more examples
 
 ### Tests
 
 - [ ] add cadence decode/encode tests
 - [ ] add more tests
-- [ ] add CI for tests
+- [x] add CI for tests
 
 ### Implementation
 
