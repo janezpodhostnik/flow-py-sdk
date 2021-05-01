@@ -14,6 +14,8 @@ jobs:
           python-version: 3.9
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2.0.0
+      - name: Install poetry-dynamic-versioning
+        run: pip install poetry-dynamic-versioning
       - name: Poetry - Install
         run: poetry install
       - name: Poetry - Build
