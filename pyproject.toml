@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flow-py-sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = "A python SKD for the flow blockchain"
 authors = ["Janez Podhostnik <janez.podhostnik@gmail.com>"]
 license = "MIT"
