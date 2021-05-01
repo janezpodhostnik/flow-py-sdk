@@ -14,7 +14,6 @@ grpcio-tools = "^1.33.2"
 ecdsa = "^0.16.1"
 rlp = "^2.0.1"
 grpclib = "^0.4.1"
-poetry-dynamic-versioning = "^0.12.6"
 
 [tool.poetry.dev-dependencies]
 coloredlogs = "^15.0"
