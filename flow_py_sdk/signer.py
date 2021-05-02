@@ -15,10 +15,10 @@ class SignAlgo(IntEnum):
     ECDSA_secp256k1 = 3
 
     @classmethod
-    def from_string(cls, s: str) -> 'SignAlgo':
+    def from_string(cls, s: str) -> "SignAlgo":
         return {
             "ECDSA_P256": SignAlgo.ECDSA_P256,
-            "ECDSA_secp256k1": SignAlgo.ECDSA_secp256k1
+            "ECDSA_secp256k1": SignAlgo.ECDSA_secp256k1,
         }[s]
 
 
@@ -29,7 +29,7 @@ class HashAlgo(IntEnum):
     SHA3_384 = 4
 
     @classmethod
-    def from_string(cls, s: str) -> 'HashAlgo':
+    def from_string(cls, s: str) -> "HashAlgo":
         return {
             "SHA2_256": HashAlgo.SHA2_256,
             "SHA2_384": HashAlgo.SHA2_384,
@@ -39,7 +39,6 @@ class HashAlgo(IntEnum):
 
 
 class Signer(ABC):
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -52,7 +51,9 @@ class InMemorySigner(Signer):
     def __init__(self, hash_algo: HashAlgo, sign_algo: SignAlgo, key_hex: str) -> None:
         super().__init__()
         self.hash_algo = hash_algo
-        self.key = SigningKey.from_string(bytes.fromhex(key_hex), curve=get_signing_curve(sign_algo))
+        self.key = SigningKey.from_string(
+            bytes.fromhex(key_hex), curve=get_signing_curve(sign_algo)
+        )
 
     def sign(self, message: bytes) -> bytes:
         m = create_hasher(self.hash_algo)
@@ -87,8 +88,14 @@ def get_signing_curve(sign_algo: SignAlgo) -> Curve:
 class AccountKey(object):
     weight_threshold: int = 1000
 
-    def __init__(self, *, public_key: bytes, sign_algo: SignAlgo, hash_algo: HashAlgo,
-                 weight: Optional[int] = None) -> None:
+    def __init__(
+        self,
+        *,
+        public_key: bytes,
+        sign_algo: SignAlgo,
+        hash_algo: HashAlgo,
+        weight: Optional[int] = None
+    ) -> None:
         super().__init__()
         self.index: Optional[int] = None
         self.public_key: bytes = public_key
@@ -99,12 +106,14 @@ class AccountKey(object):
         self.revoked: Optional[bool] = None
 
     def rlp(self) -> bytes:
-        return rlp.encode([
-            self.public_key,
-            frlp.rlp_encode_uint64(self.sign_algo.value),
-            frlp.rlp_encode_uint64(self.hash_algo.value),
-            frlp.rlp_encode_uint64(self.weight),
-        ])
+        return rlp.encode(
+            [
+                self.public_key,
+                frlp.rlp_encode_uint64(self.sign_algo.value),
+                frlp.rlp_encode_uint64(self.hash_algo.value),
+                frlp.rlp_encode_uint64(self.weight),
+            ]
+        )
 
     def hex(self):
         return self.rlp().hex()

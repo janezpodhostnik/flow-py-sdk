@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+      - name: Poetry - Install
+        run: poetry install
+      - name: Poetry - black check
+        run: poetry run black . --check
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+      - name: Poetry - Install
+        run: poetry install
+      - name: Poetry - pytest
+        run: poetry run pytest
+
+  integration-test:
+    name: Emulator Integration Tests
+    runs-on: ubuntu-latest
+    needs: test
+    services:
+      emulator:
+        image: gcr.io/flow-container-registry/emulator:latest
+        ports:
+          - 3569:3569
+        env:
+          FLOW_TRANSACTIONFEESENABLED: true
+          FLOW_VERBOSE: true
+          FLOW_SERVICEPRIVATEKEY: e3a17a480a72dc3a1e98d68fb026c89144843e352636756c79ddd5a1423f44dd
+          FLOW_SERVICEKEYSIGALGO: ECDSA_P256
+          FLOW_SERVICEKEYHASHALGO: SHA3_256
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+      - name: Poetry - Install
+        run: poetry install
+      - name: Poetry - Examples
+        run: poetry run examples
