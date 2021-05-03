@@ -8,10 +8,10 @@ from flow_py_sdk.tx import Tx, ProposalKey
 def create_account_template(
     *,
     keys: list[AccountKey],
-    contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None,
     reference_block_id: bytes = None,
     payer: cadence.Address = None,
-    proposal_key: ProposalKey = None
+    proposal_key: ProposalKey = None,
+    contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None
 ) -> Tx:
     if keys:
         cadence_public_keys = cadence.Array([cadence.String(k.hex()) for k in keys])

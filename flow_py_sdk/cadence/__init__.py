@@ -1,5 +1,11 @@
 from .decode import cadence_object_hook
 from .encode import CadenceJsonEncoder, encode_arguments
+from .events import (
+    Event,
+    BaseEvent,
+    EventTypeRegistry,
+    EventType,
+)
 from .types import (
     Value,
     Void,
@@ -31,7 +37,6 @@ from .types import (
     Dictionary,
     Struct,
     Resource,
-    Event,
     Contract,
     Link,
     Path,
@@ -39,4 +44,4 @@ from .types import (
     Capability,
     KeyValuePair,
 )
-from .common_events import AccountCreatedEvent
+from .events import AccountCreatedEvent

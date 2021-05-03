@@ -1,20 +1,18 @@
 from __future__ import annotations
+
 from distutils.util import strtobool
 from typing import (
     List,
-    Any,
-    Callable,
     Optional as pyOptional,
     Tuple,
-    Annotated,
-    TypeVar,
+    Type as pyType,
 )
 
 import flow_py_sdk.cadence.constants as c
 from flow_py_sdk.cadence.address import Address
+from flow_py_sdk.cadence.decode import decode, add_cadence_decoder
 from flow_py_sdk.cadence.location import decode_location, Location
 from flow_py_sdk.cadence.value import Value
-from flow_py_sdk.exceptions import CadenceEncodingError
 
 
 class Void(Value):
@@ -615,7 +613,7 @@ class Field(object):
         self.type: type = _type
 
 
-class _Composite(object):
+class Composite(object):
     def __init__(
         self,
         location: Location,
@@ -645,7 +643,7 @@ class _Composite(object):
         }
 
     @classmethod
-    def decode(cls, value) -> "_Composite":
+    def decode(cls, value) -> "Composite":
         type_id = value[c.idKey]
         location, qualified_identifier = decode_location(type_id)
         fields = value[c.fieldsKey]
@@ -654,11 +652,11 @@ class _Composite(object):
         field_types = []
 
         for field in fields:
-            field_value, field_type = _Composite._decode_composite_field(field)
+            field_value, field_type = Composite._decode_composite_field(field)
             field_values.append(field_value)
             field_types.append(field_type)
 
-        return _Composite(location, qualified_identifier, field_values, field_types)
+        return Composite(location, qualified_identifier, field_values, field_types)
 
     @classmethod
     def _decode_composite_field(cls, value) -> Tuple[Value, Field]:
@@ -694,84 +692,6 @@ class Parameter(object):
         self.label: str
         self.identifier: str
         self.type: Type
-
-
-class EventType(object):
-    def __init__(
-        self,
-        location: Location,
-        qualified_identifier: str,
-        fields: list[Field],
-        initializer: list[Parameter] = None,
-    ) -> None:
-        super().__init__()
-        self.location: Location = location
-        self.qualified_identifier: str = qualified_identifier
-        self.fields: list[Field] = fields
-        self.initializer: list[Parameter] = [] if initializer is None else initializer
-
-    def id(self) -> str:
-        return self.location.type_id(self.qualified_identifier)
-
-
-class Event(Value):
-    _event_types: dict = {}  # TODO find out how to type this correctly
-
-    def __init__(self, fields: list[Value], event_type: EventType) -> None:
-        super().__init__()
-        self.event_type: EventType = event_type
-        self.fields: list[Value] = fields
-
-    def __str__(self):
-        return _Composite.format_composite(
-            self.event_type.id(),
-            self.event_type.fields,
-            self.fields,
-        )
-
-    def encode_value(self) -> dict:
-        return _Composite.encode_composite(
-            c.eventTypeStr,
-            self.event_type.id(),
-            self.event_type.fields,
-            self.fields,
-        )
-
-    @classmethod
-    def decode(cls, value) -> "Value":
-        composite = _Composite.decode(value[c.valueKey])
-
-        event = Event(
-            composite.field_values,
-            EventType(
-                composite.location,
-                composite.qualified_identifier,
-                composite.field_types,
-            ),
-        )
-
-        if event.event_type.id() in event._event_types:
-            return event._event_types[event.event_type.id()].from_event(event)
-        return event
-
-    @classmethod
-    def type_str(cls) -> str:
-        return c.eventTypeStr
-
-    @classmethod
-    def from_event(cls, event: "Event") -> "Event":
-        return Event(
-            event.fields,
-            event.event_type,
-        )
-
-    @classmethod
-    def add_event_type(cls, event_type):  # TODO find out how to type this correctly
-        Event._event_types[event_type.event_id_constraint()] = event_type
-
-    @classmethod
-    def event_id_constraint(cls) -> str:
-        return ""
 
 
 class Contract(Value):
@@ -874,7 +794,7 @@ class Capability(Value):
         return c.capabilityTypeStr
 
 
-all_cadence_types: list = [
+cadence_types: list[pyType[Value]] = [
     Void,
     Optional,
     Bool,
@@ -904,31 +824,11 @@ all_cadence_types: list = [
     Dictionary,
     Struct,
     Resource,
-    Event,
     Contract,
     Link,
     Path,
-    Type,
     Capability,
-]  # TODO try to constraint type to those that inherit Value
+]
 
-all_cadence_decoders: dict[str, Callable[[Any], Value]] = {
-    t.type_str(): t.decode for t in all_cadence_types if issubclass(t, Value)
-}
-
-
-def decode(obj: [dict[Any, Any]]) -> Value:
-    # json decoder starts from bottom up, so its possible that this is already decoded or is part of a composite
-    if isinstance(obj, Value):
-        return obj
-    if c.valueKey in obj and isinstance(obj[c.valueKey], Value):
-        return obj
-    if c.fieldsKey in obj:
-        return obj
-
-    type_ = obj[c.typeKey]
-    if type_ in all_cadence_decoders:
-        decoder = all_cadence_decoders[type_]
-        return decoder(obj)
-
-    raise NotImplementedError()
+for t in cadence_types:
+    add_cadence_decoder(t)

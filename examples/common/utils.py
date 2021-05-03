@@ -25,7 +25,10 @@ def random_key_pair(
 
 
 async def random_account(
-    client: AccessAPI, ctx: Config
+    *,
+    client: AccessAPI,
+    ctx: Config,
+    contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None,
 ) -> (cadence.Address, AccountKey, Signer):
     pub, priv = random_key_pair(SignAlgo.ECDSA_secp256k1)
 
@@ -39,31 +42,34 @@ async def random_account(
     )
 
     tx = (
-        create_account_template(keys=[account_key])
-        .add_authorizers(ctx.service_account_address)
-        .with_reference_block_id(block.id)
-        .with_payer(ctx.service_account_address)
-        .with_proposal_key(
-            ProposalKey(
+        create_account_template(
+            keys=[account_key],
+            contracts=contracts,
+            reference_block_id=block.id,
+            payer=ctx.service_account_address,
+            proposal_key=ProposalKey(
                 key_address=ctx.service_account_address,
                 key_id=ctx.service_account_key_id,
                 key_sequence_number=proposer.keys[
                     ctx.service_account_key_id
                 ].sequence_number,
-            )
+            ),
         )
-        .with_payload_signature(
-            ctx.service_account_address, 0, ctx.service_account_signer
-        )
+        .add_authorizers(ctx.service_account_address)
         .with_envelope_signature(
             ctx.service_account_address, 0, ctx.service_account_signer
         )
     )
 
     result = await client.execute_transaction(tx)
+    new_addresses = [
+        e.value.address
+        for e in result.events
+        if isinstance(e.value, cadence.AccountCreatedEvent)
+    ]
 
     return (
-        None,
+        new_addresses[0],
         account_key,
         InMemorySigner(
             sign_algo=SignAlgo.ECDSA_secp256k1,

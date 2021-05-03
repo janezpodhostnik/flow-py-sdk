@@ -20,3 +20,7 @@ class NotCadenceValueError(PySDKError):
 
 class CadenceEncodingError(PySDKError):
     pass
+
+
+class CadenceIncorrectTypeError(PySDKError):
+    pass
