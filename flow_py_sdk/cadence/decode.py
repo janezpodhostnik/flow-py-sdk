@@ -4,7 +4,6 @@ from flow_py_sdk.cadence.value import Value
 
 import flow_py_sdk.cadence.constants as c
 
-
 _cadence_decoders: dict[str, Callable[[Any], Value]] = {}
 
 
@@ -16,7 +15,11 @@ def decode(obj: [dict[Any, Any]]) -> Value:
     # json decoder starts from bottom up, so its possible that this is already decoded or is part of a composite
     if isinstance(obj, Value):
         return obj
-    if c.valueKey in obj and isinstance(obj[c.valueKey], Value):
+    if (
+        c.valueKey in obj
+        and isinstance(obj[c.valueKey], Value)
+        and c.typeKey not in obj
+    ):
         return obj
     if c.fieldsKey in obj:
         return obj

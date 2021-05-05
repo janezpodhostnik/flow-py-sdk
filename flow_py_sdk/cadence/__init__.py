@@ -43,5 +43,8 @@ from .types import (
     Type,
     Capability,
     KeyValuePair,
+    ResourceType,
+    Field,
 )
 from .events import AccountCreatedEvent
+from .location import StringLocation, FlowLocation, AddressLocation, Location

@@ -69,6 +69,8 @@ class Bool(Value):
 
     @classmethod
     def decode(cls, value) -> "Value":
+        if isinstance(value[c.valueKey], bool):
+            return Bool(value[c.valueKey])
         return Bool(bool(strtobool(value[c.valueKey])))
 
     @classmethod
@@ -463,7 +465,7 @@ class Fix64(Value):
 
     def __str__(self):
         integer = int(self.value / c.fix64_factor)
-        fraction = int(self.value % c.fix64_factor)
+        fraction = int(abs(self.value) % c.fix64_factor)
         return f"{integer}.{fraction:08d}"
 
     def encode_value(self) -> dict:
@@ -472,7 +474,10 @@ class Fix64(Value):
     @classmethod
     def decode(cls, value) -> "Value":
         str_values = str(value[c.valueKey]).split(".")
-        return Fix64(int(str_values[0]) * c.fix64_factor + int(str_values[1]))
+        sign: int = -1 if int(str_values[0]) < 0 else 1
+        return Fix64(
+            sign * (abs(int(str_values[0])) * c.fix64_factor + int(str_values[1]))
+        )
 
     @classmethod
     def type_str(cls) -> str:
@@ -586,20 +591,55 @@ class Struct(Value):
         return c.structTypeStr
 
 
+class ResourceType(object):
+    def __init__(
+        self,
+        location: Location,
+        qualified_identifier: str,
+        fields: list[Field],
+        initializer: list[list[Parameter]] = None,
+    ):
+        self.location: Location = location
+        self.qualified_identifier: str = qualified_identifier
+        self.fields: list[Field] = fields
+        self.initializers: list[list[Parameter]] = initializer
+
+    def id(self) -> str:
+        return self.location.type_id(self.qualified_identifier)
+
+
 class Resource(Value):
-    def __init__(self, value=None) -> None:
+    def __init__(self, fields: list[Value], resource_type: ResourceType) -> None:
         super().__init__()
-        self.value = value
+        self.resource_type: ResourceType = resource_type
+        self.fields: list[Value] = fields
 
     def __str__(self):
-        raise NotImplementedError()
+        return Composite.format_composite(
+            self.resource_type.id(),
+            self.resource_type.fields,
+            self.fields,
+        )
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return Composite.encode_composite(
+            c.resourceTypeStr,
+            self.resource_type.id(),
+            self.resource_type.fields,
+            self.fields,
+        )
 
     @classmethod
     def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+        composite = Composite.decode(value[c.valueKey])
+
+        resource_type = ResourceType(
+            composite.location,
+            composite.qualified_identifier,
+            composite.field_types,
+        )
+
+        return Resource(composite.field_values, resource_type)
 
     @classmethod
     def type_str(cls) -> str:
