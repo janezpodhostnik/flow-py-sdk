@@ -35,14 +35,18 @@ from .types import (
     UFix64,
     Array,
     Dictionary,
-    Struct,
-    Resource,
     Contract,
     Link,
     Path,
-    Type,
     Capability,
     KeyValuePair,
+)
+from .composite import (
+    Type,
+    CompositeType,
+    Struct,
+    StructType,
+    Resource,
     ResourceType,
     Field,
 )

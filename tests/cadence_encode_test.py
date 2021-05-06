@@ -532,9 +532,9 @@ class TestTx(unittest.TestCase):
             "Resources",
             cadence.Array(
                 [
-                    cadence.Resource([cadence.Int(1)], _fooResourceType),
-                    cadence.Resource([cadence.Int(2)], _fooResourceType),
-                    cadence.Resource([cadence.Int(3)], _fooResourceType),
+                    cadence.Resource([cadence.Int(1)], _foo_resource_type),
+                    cadence.Resource([cadence.Int(2)], _foo_resource_type),
+                    cadence.Resource([cadence.Int(3)], _foo_resource_type),
                 ]
             ),
             """{"type":"Array","value":[
@@ -671,15 +671,15 @@ class TestTx(unittest.TestCase):
                 [
                     cadence.KeyValuePair(
                         cadence.String("a"),
-                        cadence.Resource([cadence.Int(1)], _fooResourceType),
+                        cadence.Resource([cadence.Int(1)], _foo_resource_type),
                     ),
                     cadence.KeyValuePair(
                         cadence.String("b"),
-                        cadence.Resource([cadence.Int(2)], _fooResourceType),
+                        cadence.Resource([cadence.Int(2)], _foo_resource_type),
                     ),
                     cadence.KeyValuePair(
                         cadence.String("c"),
-                        cadence.Resource([cadence.Int(3)], _fooResourceType),
+                        cadence.Resource([cadence.Int(3)], _foo_resource_type),
                     ),
                 ]
             ),
@@ -736,119 +736,199 @@ class TestTx(unittest.TestCase):
             ]
         )
 
-    # def testEncodeResource(self):
-    #     simple_resource = _EncodeTestParams(
-    #         "Simple",
-    #         cadence.Resource(
-    #             [cadence.UInt64(0), cadence.Int(42)], _fooResourceTypeWithUUID
-    #         ),
-    #         """
-    #         {
-    #           "type": "Resource",
-    #           "value": {
-    #             "id": "S.test.Foo",
-    #             "fields": [
-    #               { "name": "uuid", "value": { "type": "UInt64", "value": "0" } },
-    #               { "name": "bar", "value": { "type": "Int", "value": "42" } }
-    #             ]
-    #           }
-    #         }
-    #         """,
-    #     )
-    #     nested_resource = _EncodeTestParams(
-    #         "Simple",
-    #         cadence.Resource(
-    #             [cadence.UInt64(0), cadence.Int(42)], _fooResourceTypeWithUUID
-    #         ),
-    #         """
-    #         {
-    #           "type": "Resource",
-    #           "value": {
-    #             "id": "S.test.Foo",
-    #             "fields": [
-    #               { "name": "uuid", "value": { "type": "UInt64", "value": "0" } },
-    #               {
-    #                 "name": "bar",
-    #                 "value": {
-    #                   "type": "Resource",
-    #                   "value": {
-    #                     "id": "S.test.Bar",
-    #                     "fields": [
-    #                       { "name": "uuid", "value": { "type": "UInt64", "value": "0" } },
-    #                       { "name": "x", "value": { "type": "Int", "value": "42" } }
-    #                     ]
-    #                   }
-    #                 }
-    #               }
-    #             ]
-    #           }
-    #         }
-    #         """,
-    #     )
-    #
-    #     self._encodeAndDecodeAll([simple_resource, nested_resource])
+    def testEncodeResource(self):
+        foo_resource_type = cadence.ResourceType(
+            _test_location,
+            "Foo",
+            [
+                cadence.Field(
+                    "uuid",
+                    type(cadence.UInt64),
+                ),
+                cadence.Field(
+                    "bar",
+                    type(cadence.Int),
+                ),
+            ],
+        )
+
+        simple_resource = _EncodeTestParams(
+            "Simple",
+            cadence.Resource([cadence.UInt64(0), cadence.Int(42)], foo_resource_type),
+            """
+            {
+              "type": "Resource",
+              "value": {
+                "id": "S.test.Foo",
+                "fields": [
+                  { "name": "uuid", "value": { "type": "UInt64", "value": "0" } },
+                  { "name": "bar", "value": { "type": "Int", "value": "42" } }
+                ]
+              }
+            }
+            """,
+        )
+
+        bar_resource_type = cadence.ResourceType(
+            _test_location,
+            "Bar",
+            [
+                cadence.Field(
+                    "uuid",
+                    type(cadence.UInt64),
+                ),
+                cadence.Field(
+                    "x",
+                    type(cadence.Int),
+                ),
+            ],
+        )
+
+        foo_resource_type = cadence.ResourceType(
+            _test_location,
+            "Foo",
+            [
+                cadence.Field(
+                    "uuid",
+                    type(cadence.UInt64),
+                ),
+                cadence.Field(
+                    "bar",
+                    bar_resource_type,
+                ),
+            ],
+        )
+
+        nested_resource = _EncodeTestParams(
+            "Nested resource",
+            cadence.Resource(
+                [
+                    cadence.UInt64(0),
+                    cadence.Resource(
+                        [cadence.UInt64(0), cadence.Int(42)], bar_resource_type
+                    ),
+                ],
+                foo_resource_type,
+            ),
+            """
+            {
+              "type": "Resource",
+              "value": {
+                "id": "S.test.Foo",
+                "fields": [
+                  { "name": "uuid", "value": { "type": "UInt64", "value": "0" } },
+                  {
+                    "name": "bar",
+                    "value": {
+                      "type": "Resource",
+                      "value": {
+                        "id": "S.test.Bar",
+                        "fields": [
+                          { "name": "uuid", "value": { "type": "UInt64", "value": "0" } },
+                          { "name": "x", "value": { "type": "Int", "value": "42" } }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+            """,
+        )
+
+        self._encodeAndDecodeAll([simple_resource, nested_resource])
+
+    def testEncodeStruct(self):
+        simple_struct_type = cadence.StructType(
+            _test_location,
+            "FooStruct",
+            [
+                cadence.Field(
+                    "a",
+                    type(cadence.Int),
+                ),
+                cadence.Field(
+                    "b",
+                    type(cadence.String),
+                ),
+            ],
+        )
+
+        simple_struct = _EncodeTestParams(
+            "Simple",
+            cadence.Struct([cadence.Int(1), cadence.String("foo")], simple_struct_type),
+            """
+            {
+              "type": "Struct",
+              "value": {
+                "id": "S.test.FooStruct",
+                "fields": [
+                  { "name": "a", "value": { "type": "Int", "value": "1" } },
+                  { "name": "b", "value": { "type": "String", "value": "foo" } }
+                ]
+              }
+            }
+            """,
+        )
+
+        resource_struct_type = cadence.StructType(
+            _test_location,
+            "FooStruct",
+            [
+                cadence.Field(
+                    "a",
+                    type(cadence.String),
+                ),
+                cadence.Field(
+                    "b",
+                    _foo_resource_type,
+                ),
+            ],
+        )
+
+        resource_struct = _EncodeTestParams(
+            "Resources",
+            cadence.Struct(
+                [
+                    cadence.String("foo"),
+                    cadence.Resource([cadence.Int(42)], _foo_resource_type),
+                ],
+                resource_struct_type,
+            ),
+            """
+            {
+              "type": "Struct",
+              "value": {
+                "id": "S.test.FooStruct",
+                "fields": [
+                  { "name": "a", "value": { "type": "String", "value": "foo" } },
+                  {
+                    "name": "b",
+                    "value": {
+                      "type": "Resource",
+                      "value": {
+                        "id": "S.test.Foo",
+                        "fields": [
+                          { "name": "bar", "value": { "type": "Int", "value": "42" } }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+            """,
+        )
+
+        self._encodeAndDecodeAll([simple_struct, resource_struct])
 
 
-# 	t.Run("Nested resource", func(t *testing.T) {
-#
-# 		t.Parallel()
-#
-# 		script := `
-# 			pub resource Bar {
-# 				pub let x: Int
-#
-# 				init(x: Int) {
-# 					self.x = x
-# 				}
-# 			}
-#
-# 			pub resource Foo {
-# 				pub let bar: @Bar
-#
-# 				init(bar: @Bar) {
-# 					self.bar <- bar
-# 				}
-#
-# 				destroy() {
-# 					destroy self.bar
-# 				}
-# 			}
-#
-# 			pub fun main(): @Foo {
-# 				return <- create Foo(bar: <- create Bar(x: 42))
-# 			}
-# 		`
-#
-# 		expectedJSON := `{"type":"Resource","value":{"id":"S.test.Foo","fields":[{"name":"uuid","value":{"type":"UInt64","value":"0"}},{"name":"bar","value":{"type":"Resource","value":{"id":"S.test.Bar","fields":[{"name":"uuid","value":{"type":"UInt64","value":"0"}},{"name":"x","value":{"type":"Int","value":"42"}}]}}}]}}`
-#
-# 		v := convertValueFromScript(t, script)
-#
-# 		testEncodeAndDecode(t, v, expectedJSON)
-# 	})
-# }
+_test_location = cadence.StringLocation("test")
 
-
-_testLocation = cadence.StringLocation("test")
-
-_fooResourceType = cadence.ResourceType(
-    _testLocation,
+_foo_resource_type = cadence.ResourceType(
+    _test_location,
     "Foo",
     [
-        cadence.Field(
-            "bar",
-            type(cadence.Int),
-        ),
-    ],
-)
-
-_fooResourceTypeWithUUID = cadence.ResourceType(
-    _testLocation,
-    "Foo",
-    [
-        cadence.Field(
-            "uuid",
-            type(cadence.UInt64),
-        ),
         cadence.Field(
             "bar",
             type(cadence.Int),

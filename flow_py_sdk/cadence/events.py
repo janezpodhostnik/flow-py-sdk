@@ -6,28 +6,13 @@ from typing import Type
 from flow_py_sdk.cadence.value import Value
 from flow_py_sdk.cadence.address import Address
 from flow_py_sdk.cadence.decode import add_cadence_decoder
-from flow_py_sdk.cadence.location import Location
-from flow_py_sdk.cadence.types import Composite, Field, Parameter
+from flow_py_sdk.cadence.composite import Composite, CompositeType
 
 import flow_py_sdk.cadence.constants as c
 
 
-class EventType(object):
-    def __init__(
-        self,
-        location: Location,
-        qualified_identifier: str,
-        fields: list[Field],
-        initializer: list[Parameter] = None,
-    ) -> None:
-        super().__init__()
-        self.location: Location = location
-        self.qualified_identifier: str = qualified_identifier
-        self.fields: list[Field] = fields
-        self.initializer: list[Parameter] = [] if initializer is None else initializer
-
-    def id(self) -> str:
-        return self.location.type_id(self.qualified_identifier)
+class EventType(CompositeType):
+    pass
 
 
 class EventTypeRegistry(object):
