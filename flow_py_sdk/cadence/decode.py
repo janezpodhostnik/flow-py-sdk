@@ -12,16 +12,11 @@ def add_cadence_decoder(t: Type[Value]):
 
 
 def decode(obj: [dict[Any, Any]]) -> Value:
-    # json decoder starts from bottom up, so its possible that this is already decoded or is part of a composite
+    # json decoder starts from bottom up, so its possible that this is already decoded
     if isinstance(obj, Value):
         return obj
-    if (
-        c.valueKey in obj
-        and isinstance(obj[c.valueKey], Value)
-        and c.typeKey not in obj
-    ):
-        return obj
-    if c.fieldsKey in obj:
+    # if there is no type key we cant decode it directly, but it could be part of a dictionary or composite or path
+    if c.typeKey not in obj:
         return obj
 
     type_ = obj[c.typeKey]

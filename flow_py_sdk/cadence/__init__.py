@@ -35,11 +35,11 @@ from .types import (
     UFix64,
     Array,
     Dictionary,
-    Contract,
     Link,
     Path,
     Capability,
     KeyValuePair,
+    TypeValue,
 )
 from .composite import (
     Type,
@@ -48,6 +48,8 @@ from .composite import (
     StructType,
     Resource,
     ResourceType,
+    ContractType,
+    Contract,
     Field,
 )
 from .events import AccountCreatedEvent

@@ -111,6 +111,48 @@ class Resource(Value):
         return c.resourceTypeStr
 
 
+class ContractType(CompositeType):
+    pass
+
+
+class Contract(Value):
+    def __init__(self, fields: list[Value], resource_type: ContractType) -> None:
+        super().__init__()
+        self.resource_type: ContractType = resource_type
+        self.fields: list[Value] = fields
+
+    def __str__(self):
+        return Composite.format_composite(
+            self.resource_type.id(),
+            self.resource_type.fields,
+            self.fields,
+        )
+
+    def encode_value(self) -> dict:
+        return Composite.encode_composite(
+            c.contractTypeStr,
+            self.resource_type.id(),
+            self.resource_type.fields,
+            self.fields,
+        )
+
+    @classmethod
+    def decode(cls, value) -> "Value":
+        composite = Composite.decode(value[c.valueKey])
+
+        resource_type = ResourceType(
+            composite.location,
+            composite.qualified_identifier,
+            composite.field_types,
+        )
+
+        return Resource(composite.field_values, resource_type)
+
+    @classmethod
+    def type_str(cls) -> str:
+        return c.contractTypeStr
+
+
 class Field(object):
     def __init__(self, identifier: str, _type) -> None:
         super().__init__()
@@ -203,6 +245,7 @@ class Parameter(object):
 cadence_types: list[pyType[Value]] = [
     Struct,
     Resource,
+    Contract,
 ]
 
 for t in cadence_types:

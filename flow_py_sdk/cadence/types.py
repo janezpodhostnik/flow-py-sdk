@@ -571,40 +571,30 @@ class Dictionary(Value):
         return c.dictionaryTypeStr
 
 
-class Contract(Value):
-    def __init__(self, value=None) -> None:
-        super().__init__()
-        self.value = value
-
-    def __str__(self):
-        raise NotImplementedError()
-
-    def encode_value(self) -> dict:
-        raise NotImplementedError()
-
-    @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
-
-    @classmethod
-    def type_str(cls) -> str:
-        return c.contractTypeStr
-
-
 class Link(Value):
-    def __init__(self, value=None) -> None:
+    def __init__(self, target_path: Path, borrow_type: str) -> None:
         super().__init__()
-        self.value = value
+        self.target_path: Path = target_path
+        self.borrow_type: str = borrow_type
 
     def __str__(self):
-        raise NotImplementedError()
+        return f"Link<{self.borrow_type}>({self.target_path})"
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            c.valueKey: {
+                c.targetPathKey: self.target_path.encode(),
+                c.borrowTypeKey: self.borrow_type,
+            }
+        }
 
     @classmethod
     def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+        v = value[c.valueKey]
+        return Link(
+            decode(v[c.targetPathKey]).as_type(Path),
+            v[c.borrowTypeKey],
+        )
 
     @classmethod
     def type_str(cls) -> str:
@@ -612,19 +602,26 @@ class Link(Value):
 
 
 class Path(Value):
-    def __init__(self, value=None) -> None:
+    def __init__(self, domain: str, identifier: str) -> None:
         super().__init__()
-        self.value = value
+        self.domain: str = domain
+        self.identifier: str = identifier
 
     def __str__(self):
-        raise NotImplementedError()
+        return f"/{self.domain}/{self.identifier}"
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            c.valueKey: {c.domainKey: self.domain, c.identifierKey: self.identifier}
+        }
 
     @classmethod
     def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+        v = value[c.valueKey]
+        return Path(
+            v[c.domainKey],
+            v[c.identifierKey],
+        )
 
     @classmethod
     def type_str(cls) -> str:
@@ -632,19 +629,26 @@ class Path(Value):
 
 
 class TypeValue(Value):
-    def __init__(self, value=None) -> None:
+    def __init__(self, type_name: str = None) -> None:
         super().__init__()
-        self.value = value
+        self.type_name: str = type_name
 
     def __str__(self):
-        raise NotImplementedError()
+        return f"Type<{self.type_name}>()"
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            c.valueKey: {
+                c.staticTypeKey: (self.type_name if self.type_name is not None else "")
+            }
+        }
 
     @classmethod
     def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+        v = value[c.valueKey]
+        return TypeValue(
+            v[c.staticTypeKey] if v[c.staticTypeKey] != "" else None,
+        )
 
     @classmethod
     def type_str(cls) -> str:
@@ -699,7 +703,7 @@ cadence_types: list[pyType[Value]] = [
     UFix64,
     Array,
     Dictionary,
-    Contract,
+    TypeValue,
     Link,
     Path,
     Capability,

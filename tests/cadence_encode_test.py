@@ -922,6 +922,242 @@ class TestTx(unittest.TestCase):
 
         self._encodeAndDecodeAll([simple_struct, resource_struct])
 
+    def testEncodeEvent(self):
+        simple_event_type = cadence.EventType(
+            _test_location,
+            "FooEvent",
+            [
+                cadence.Field(
+                    "a",
+                    type(cadence.Int),
+                ),
+                cadence.Field(
+                    "b",
+                    type(cadence.String),
+                ),
+            ],
+        )
+        simple_event = _EncodeTestParams(
+            "Simple",
+            cadence.Event([cadence.Int(1), cadence.String("foo")], simple_event_type),
+            """
+            {
+              "type": "Event",
+              "value": {
+                "id": "S.test.FooEvent",
+                "fields": [
+                  { "name": "a", "value": { "type": "Int", "value": "1" } },
+                  { "name": "b", "value": { "type": "String", "value": "foo" } }
+                ]
+              }
+            }
+            """,
+        )
+
+        resource_event_type = cadence.EventType(
+            _test_location,
+            "FooEvent",
+            [
+                cadence.Field(
+                    "a",
+                    type(cadence.Int),
+                ),
+                cadence.Field(
+                    "b",
+                    _foo_resource_type,
+                ),
+            ],
+        )
+
+        resource_event = _EncodeTestParams(
+            "Resources",
+            cadence.Event(
+                [
+                    cadence.String("foo"),
+                    cadence.Resource([cadence.Int(42)], _foo_resource_type),
+                ],
+                resource_event_type,
+            ),
+            """
+            {
+              "type": "Event",
+              "value": {
+                "id": "S.test.FooEvent",
+                "fields": [
+                  { "name": "a", "value": { "type": "String", "value": "foo" } },
+                  {
+                    "name": "b",
+                    "value": {
+                      "type": "Resource",
+                      "value": {
+                        "id": "S.test.Foo",
+                        "fields": [
+                          { "name": "bar", "value": { "type": "Int", "value": "42" } }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+            """,
+        )
+
+        self._encodeAndDecodeAll([simple_event, resource_event])
+
+    def testEncodeContract(self):
+        simple_contract_type = cadence.ContractType(
+            _test_location,
+            "FooContract",
+            [
+                cadence.Field(
+                    "a",
+                    type(cadence.Int),
+                ),
+                cadence.Field(
+                    "b",
+                    type(cadence.String),
+                ),
+            ],
+        )
+        simple_contract = _EncodeTestParams(
+            "Simple",
+            cadence.Contract(
+                [cadence.Int(1), cadence.String("foo")], simple_contract_type
+            ),
+            """
+            {
+              "type": "Contract",
+              "value": {
+                "id": "S.test.FooContract",
+                "fields": [
+                  { "name": "a", "value": { "type": "Int", "value": "1" } },
+                  { "name": "b", "value": { "type": "String", "value": "foo" } }
+                ]
+              }
+            }
+            """,
+        )
+
+        resource_contract_type = cadence.ContractType(
+            _test_location,
+            "FooContract",
+            [
+                cadence.Field(
+                    "a",
+                    type(cadence.Int),
+                ),
+                cadence.Field(
+                    "b",
+                    _foo_resource_type,
+                ),
+            ],
+        )
+
+        resource_contract = _EncodeTestParams(
+            "Resources",
+            cadence.Contract(
+                [
+                    cadence.String("foo"),
+                    cadence.Resource([cadence.Int(42)], _foo_resource_type),
+                ],
+                resource_contract_type,
+            ),
+            """
+            {
+              "type": "Contract",
+              "value": {
+                "id": "S.test.FooContract",
+                "fields": [
+                  { "name": "a", "value": { "type": "String", "value": "foo" } },
+                  {
+                    "name": "b",
+                    "value": {
+                      "type": "Resource",
+                      "value": {
+                        "id": "S.test.Foo",
+                        "fields": [
+                          { "name": "bar", "value": { "type": "Int", "value": "42" } }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+            """,
+        )
+
+        self._encodeAndDecodeAll([simple_contract, resource_contract])
+
+    def testEncodeLink(self):
+        link = _EncodeTestParams(
+            "Link",
+            cadence.Link(
+                cadence.Path("storage", "foo"),
+                "Bar",
+            ),
+            """
+            {
+              "type": "Link",
+              "value": {
+                "targetPath": {
+                  "type": "Path",
+                  "value": { "domain": "storage", "identifier": "foo" }
+                },
+                "borrowType": "Bar"
+              }
+            }
+            """,
+        )
+
+        self._encodeAndDecodeAll([link])
+
+    def testEncodeType(self):
+        static_type = _EncodeTestParams(
+            "Static Type",
+            cadence.TypeValue(
+                "Int",
+            ),
+            """{"type":"Type","value":{"staticType":"Int"}}""",
+        )
+        no_static_type = _EncodeTestParams(
+            "No Static Type",
+            cadence.TypeValue(),
+            """{"type":"Type","value":{"staticType":""}}""",
+        )
+
+        self._encodeAndDecodeAll([static_type, no_static_type])
+
+
+# func TestEncodeType(t *testing.T) {
+#
+# 	t.Parallel()
+#
+# 	t.Run("with static type", func(t *testing.T) {
+#
+# 		t.Parallel()
+#
+# 		testEncodeAndDecode(
+# 			t,
+# 			cadence.TypeValue{
+# 				StaticType: "Int",
+# 			},
+# 			`{"type":"Type","value":{"staticType":"Int"}}`,
+# 		)
+#
+# 	})
+# 	t.Run("without static type", func(t *testing.T) {
+#
+# 		t.Parallel()
+#
+# 		testEncodeAndDecode(
+# 			t,
+# 			cadence.TypeValue{},
+# 			`{"type":"Type","value":{"staticType":""}}`,
+# 		)
+# 	})
+# }
 
 _test_location = cadence.StringLocation("test")
 

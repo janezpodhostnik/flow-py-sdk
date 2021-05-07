@@ -24,18 +24,10 @@ class EventTypeRegistry(object):
 
 
 class BaseEvent(Value, ABC):
-    def __init__(self) -> None:
+    def __init__(self, fields: list[Value], event_type: EventType) -> None:
         super().__init__()
-        self.event_type: EventType = None
-        self.fields: list[Value] = []
-
-    def set_fields(self, fields: list[Value], event_type: EventType):
         self.event_type: EventType = event_type
         self.fields: list[Value] = fields
-
-    @abstractmethod
-    def init_event(self):
-        pass
 
     def __str__(self):
         return Composite.format_composite(
@@ -71,9 +63,7 @@ class BaseEvent(Value, ABC):
         else:
             event_class = Event
 
-        event = event_class()
-        event.set_fields(composite.field_values, event_type)
-        event.init_event()
+        event = event_class(composite.field_values, event_type)
 
         return event
 
@@ -96,12 +86,9 @@ add_cadence_decoder(Event)
 
 
 class AccountCreatedEvent(BaseEvent):
-    def __init__(self) -> None:
-        super().__init__()
-        self.address: Address = None
-
-    def init_event(self):
-        self.address = self.fields[0].as_type(Address)
+    def __init__(self, fields: list[Value], event_type: EventType) -> None:
+        super().__init__(fields, event_type)
+        self.address: Address = self.fields[0].as_type(Address)
 
     @classmethod
     def event_id_constraint(cls) -> str:

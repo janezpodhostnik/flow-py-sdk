@@ -166,13 +166,10 @@ class EventExample3(Example):
             )
 
             class AddEvent(cadence.BaseEvent):
-                def __init__(self):
-                    super().__init__()
-                    self.x = 0
-                    self.y = 0
-                    self.sum = 0
-
-                def init_event(self):
+                def __init__(
+                    self, fields: list[cadence.Value], event_type: cadence.EventType
+                ):
+                    super().__init__(fields, event_type)
                     self.x = self.fields[0].as_type(cadence.Int).value
                     self.y = self.fields[1].as_type(cadence.Int).value
                     self.sum = self.fields[2].as_type(cadence.Int).value
