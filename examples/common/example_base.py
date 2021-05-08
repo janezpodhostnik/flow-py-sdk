@@ -37,33 +37,20 @@ class _ExampleRegistry(object):
         """
         examples = sorted(self._examples.values(), key=lambda e: e.sort_order)
         for ex in examples:
-            await _ExampleRegistry._run_one(cfg, ex)
+            await self._run(cfg, ex)
 
-    async def run(self, cfg: Config, ex_tag: str):
-        """Run one of the registered examples by tag
+    async def run(self, cfg: Config, tag: str):
+        ex = self._examples[tag]
+        await self._run(cfg, ex)
 
-        Parameters
-        ----------
-        cfg : Config
-            Environment configuration for the examples
-        ex_tag : str
-            The tag of the test to run
-        """
-        ex = self._examples[ex_tag]
-        if ex:
-            await _ExampleRegistry._run_one(cfg, ex)
-        else:
-            log.info(f"=== No Test With Tag: [{ex_tag}] ===")
-
-    # noinspection PyBroadException
-    @staticmethod
-    async def _run_one(cfg: Config, ex: "Example"):
+    async def _run(self, cfg: Config, ex: "Example"):
         log.info(f"=== RUNNING: [{ex.tag}] {ex.name} ===")
+        # noinspection PyBroadException
         try:
             await ex.run(cfg)
         except Exception:
             log.error(
-                "==== PASSED ====\n",
+                "==== FAILED ====\n",
                 exc_info=True,
                 stack_info=True,
             )

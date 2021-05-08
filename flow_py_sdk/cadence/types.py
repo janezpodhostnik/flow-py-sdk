@@ -1,90 +1,16 @@
-from abc import ABC, abstractmethod
+from __future__ import annotations
+
 from distutils.util import strtobool
-from typing import List, Any, Callable, Optional as pyOptional
+from typing import (
+    List,
+    Optional as pyOptional,
+    Type as pyType,
+)
 
-typeKey = "type"
-_valueKey = "value"
-_keyKey = "key"
-_nameKey = "name"
-_fieldsKey = "fields"
-_idKey = "id"
-_targetPathKey = "targetPath"
-_borrowTypeKey = "borrowType"
-_domainKey = "domain"
-_identifierKey = "identifier"
-_staticTypeKey = "staticType"
-_addressKey = "address"
-_pathKey = "path"
-
-_voidTypeStr = "Void"
-_optionalTypeStr = "Optional"
-_boolTypeStr = "Bool"
-_stringTypeStr = "String"
-_addressTypeStr = "Address"
-_intTypeStr = "Int"
-_int8TypeStr = "Int8"
-_int16TypeStr = "Int16"
-_int32TypeStr = "Int32"
-_int64TypeStr = "Int64"
-_int128TypeStr = "Int128"
-_int256TypeStr = "Int256"
-_uintTypeStr = "UInt"
-_uint8TypeStr = "UInt8"
-_uint16TypeStr = "UInt16"
-_uint32TypeStr = "UInt32"
-_uint64TypeStr = "UInt64"
-_uint128TypeStr = "UInt128"
-_uint256TypeStr = "UInt256"
-_word8TypeStr = "Word8"
-_word16TypeStr = "Word16"
-_word32TypeStr = "Word32"
-_word64TypeStr = "Word64"
-_fix64TypeStr = "Fix64"
-_ufix64TypeStr = "UFix64"
-_arrayTypeStr = "Array"
-_dictionaryTypeStr = "Dictionary"
-_structTypeStr = "Struct"
-_resourceTypeStr = "Resource"
-_eventTypeStr = "Event"
-_contractTypeStr = "Contract"
-_linkTypeStr = "Link"
-_pathTypeStr = "Path"
-_typeTypeStr = "Type"
-_capabilityTypeStr = "Capability"
-
-fix64_scale = int(8)
-fix64_factor = int(100_000_000)
-
-
-class Value(ABC):
-    def __init__(self) -> None:
-        super().__init__()
-
-    def encode(self) -> dict:
-        return {typeKey: self.type_str()} | self.encode_value()
-
-    @abstractmethod
-    def encode_value(self) -> dict:
-        pass
-
-    @classmethod
-    @abstractmethod
-    def decode(cls, value) -> "Value":
-        pass
-
-    @classmethod
-    @abstractmethod
-    def type_str(cls) -> str:
-        pass
-
-    def __eq__(self, other):
-        if isinstance(other, Value):
-            return str(self) == str(other)
-        return NotImplemented
-
-    def __hash__(self):
-        """Overrides the default implementation"""
-        return hash(str(self))
+import flow_py_sdk.cadence.constants as c
+from flow_py_sdk.cadence.address import Address
+from flow_py_sdk.cadence.decode import decode, add_cadence_decoder
+from flow_py_sdk.cadence.value import Value
 
 
 class Void(Value):
@@ -98,12 +24,12 @@ class Void(Value):
         return {}
 
     @classmethod
-    def decode(cls, value) -> "Value":
+    def decode(cls, value) -> Void:
         return Void()
 
     @classmethod
     def type_str(cls) -> str:
-        return _voidTypeStr
+        return c.voidTypeStr
 
 
 class Optional(Value):
@@ -115,17 +41,17 @@ class Optional(Value):
         return f"Optional[{str(self.value)}]"
 
     def encode_value(self) -> dict:
-        return {_valueKey: self.value.encode() if self.value is not None else None}
+        return {c.valueKey: self.value.encode() if self.value is not None else None}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        if _valueKey not in value or value[_valueKey] is None:
+    def decode(cls, value) -> Optional:
+        if c.valueKey not in value or value[c.valueKey] is None:
             return Optional(None)
-        return Optional(decode(value[_valueKey]))
+        return Optional(decode(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _optionalTypeStr
+        return c.optionalTypeStr
 
 
 class Bool(Value):
@@ -137,15 +63,17 @@ class Bool(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        return {_valueKey: self.value}
+        return {c.valueKey: self.value}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        return Bool(bool(strtobool(value[_valueKey])))
+    def decode(cls, value) -> Bool:
+        if isinstance(value[c.valueKey], bool):
+            return Bool(value[c.valueKey])
+        return Bool(bool(strtobool(value[c.valueKey])))
 
     @classmethod
     def type_str(cls) -> str:
-        return _boolTypeStr
+        return c.boolTypeStr
 
 
 class String(Value):
@@ -157,56 +85,15 @@ class String(Value):
         return self.value
 
     def encode_value(self) -> dict:
-        return {_valueKey: self.value}
+        return {c.valueKey: self.value}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        return String(str(value[_valueKey]))
-
-    @classmethod
-    def type_str(cls) -> str:
-        return _stringTypeStr
-
-
-class Address(Value):
-    address_length = 8
-    address_prefix = "0x"
-
-    def __init__(self, value: bytes) -> None:
-        super().__init__()
-        if len(value) > Address.address_length:
-            raise Exception()  # TODO
-
-        self.bytes = bytes(Address.address_length - len(value)) + value
-
-    @classmethod
-    def from_hex(cls, value: str) -> "Address":
-        return Address(bytes.fromhex(value.removeprefix(Address.address_prefix)))
-
-    def hex(self) -> str:
-        return self.bytes.hex()
-
-    def hex_with_prefix(self) -> str:
-        return Address.address_prefix + self.bytes.hex()
-
-    def __str__(self) -> str:
-        return self.hex_with_prefix()
-
-    def encode_value(self) -> dict:
-        return {
-            _valueKey: self.hex_with_prefix(),
-        }
-
-    @classmethod
-    def decode(cls, value) -> "Value":
-        addr = str(value[_valueKey])
-        if addr[:2] != "0x":
-            raise Exception()  # TODO
-        return Address.from_hex(addr)
+    def decode(cls, value) -> String:
+        return String(str(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _addressTypeStr
+        return c.stringTypeStr
 
 
 class Int(Value):
@@ -218,15 +105,15 @@ class Int(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        return {_valueKey: str(self.value)}
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        return Int(int(value[_valueKey]))
+    def decode(cls, value) -> Int:
+        return Int(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _intTypeStr
+        return c.intTypeStr
 
 
 class Int8(Value):
@@ -238,15 +125,15 @@ class Int8(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Int8:
+        return Int8(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _int8TypeStr
+        return c.int8TypeStr
 
 
 class Int16(Value):
@@ -258,15 +145,15 @@ class Int16(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Int16:
+        return Int16(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _int16TypeStr
+        return c.int16TypeStr
 
 
 class Int32(Value):
@@ -278,15 +165,15 @@ class Int32(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Int32:
+        return Int32(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _int32TypeStr
+        return c.int32TypeStr
 
 
 class Int64(Value):
@@ -298,15 +185,15 @@ class Int64(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Int64:
+        return Int64(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _int64TypeStr
+        return c.int64TypeStr
 
 
 class Int128(Value):
@@ -318,15 +205,15 @@ class Int128(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Int128:
+        return Int128(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _int128TypeStr
+        return c.int128TypeStr
 
 
 class Int256(Value):
@@ -338,15 +225,15 @@ class Int256(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Int256:
+        return Int256(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _int256TypeStr
+        return c.int256TypeStr
 
 
 class UInt(Value):
@@ -358,15 +245,15 @@ class UInt(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> UInt:
+        return UInt(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _uintTypeStr
+        return c.uintTypeStr
 
 
 class UInt8(Value):
@@ -378,15 +265,15 @@ class UInt8(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> UInt8:
+        return UInt8(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _uint8TypeStr
+        return c.uint8TypeStr
 
 
 class UInt16(Value):
@@ -398,15 +285,15 @@ class UInt16(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> UInt16:
+        return UInt16(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _uint16TypeStr
+        return c.uint16TypeStr
 
 
 class UInt32(Value):
@@ -418,15 +305,15 @@ class UInt32(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> UInt32:
+        return UInt32(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _uint32TypeStr
+        return c.uint32TypeStr
 
 
 class UInt64(Value):
@@ -438,15 +325,15 @@ class UInt64(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> UInt64:
+        return UInt64(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _uint64TypeStr
+        return c.uint64TypeStr
 
 
 class UInt128(Value):
@@ -458,15 +345,15 @@ class UInt128(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> UInt128:
+        return UInt128(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _uint128TypeStr
+        return c.uint128TypeStr
 
 
 class UInt256(Value):
@@ -478,15 +365,15 @@ class UInt256(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> UInt256:
+        return UInt256(int(value[c.valueKey]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _uint256TypeStr
+        return c.uint256TypeStr
 
 
 class Word8(Value):
@@ -498,15 +385,15 @@ class Word8(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Word8:
+        return Word8(value[c.valueKey])
 
     @classmethod
     def type_str(cls) -> str:
-        return _word8TypeStr
+        return c.word8TypeStr
 
 
 class Word16(Value):
@@ -518,15 +405,15 @@ class Word16(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Word16:
+        return Word16(value[c.valueKey])
 
     @classmethod
     def type_str(cls) -> str:
-        return _word16TypeStr
+        return c.word16TypeStr
 
 
 class Word32(Value):
@@ -538,15 +425,15 @@ class Word32(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Word32:
+        return Word32(value[c.valueKey])
 
     @classmethod
     def type_str(cls) -> str:
-        return _word32TypeStr
+        return c.word32TypeStr
 
 
 class Word64(Value):
@@ -558,31 +445,15 @@ class Word64(Value):
         return str(self.value)
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {c.valueKey: str(self.value)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Word64:
+        return Word64(value[c.valueKey])
 
     @classmethod
     def type_str(cls) -> str:
-        return _word64TypeStr
-
-
-# def _parse_fixed_point(value: str):
-#     parts = value.split('.')
-#     if len(parts) != 2:
-#         raise Exception()  # TODO
-#
-#     integerStr = parts[0]
-#     fractionalStr = parts[1]
-#
-#     scale = len(fractionalStr)
-#
-#     if fractionalStr[0] != '+' and fractionalStr[0] !=  '-':
-#         raise Exception()  # TODO
-#
-#     negative = False
+        return c.word64TypeStr
 
 
 class Fix64(Value):
@@ -591,21 +462,24 @@ class Fix64(Value):
         self.value: int = value
 
     def __str__(self):
-        integer = int(self.value / fix64_factor)
-        fraction = int(self.value % fix64_factor)
+        integer = int(self.value / c.fix64_factor)
+        fraction = int(abs(self.value) % c.fix64_factor)
         return f"{integer}.{fraction:08d}"
 
     def encode_value(self) -> dict:
-        return {_valueKey: str(self)}
+        return {c.valueKey: str(self)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        str_values = str(value[_valueKey]).split(".")
-        return Fix64(int(str_values[0]) * fix64_factor + int(str_values[1]))
+    def decode(cls, value) -> Fix64:
+        str_values = str(value[c.valueKey]).split(".")
+        sign: int = -1 if int(str_values[0]) < 0 else 1
+        return Fix64(
+            sign * (abs(int(str_values[0])) * c.fix64_factor + int(str_values[1]))
+        )
 
     @classmethod
     def type_str(cls) -> str:
-        return _fix64TypeStr
+        return c.fix64TypeStr
 
 
 class UFix64(Value):
@@ -614,21 +488,21 @@ class UFix64(Value):
         self.value: int = value
 
     def __str__(self):
-        integer = int(self.value / fix64_factor)
-        fraction = int(self.value % fix64_factor)
+        integer = int(self.value / c.fix64_factor)
+        fraction = int(self.value % c.fix64_factor)
         return f"{integer}.{fraction:08d}"
 
     def encode_value(self) -> dict:
-        return {_valueKey: str(self)}
+        return {c.valueKey: str(self)}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        str_values = str(value[_valueKey]).split(".")
-        return Fix64(int(str_values[0]) * fix64_factor + int(str_values[1]))
+    def decode(cls, value) -> UFix64:
+        str_values = str(value[c.valueKey]).split(".")
+        return Fix64(int(str_values[0]) * c.fix64_factor + int(str_values[1]))
 
     @classmethod
     def type_str(cls) -> str:
-        return _ufix64TypeStr
+        return c.ufix64TypeStr
 
 
 class Array(Value):
@@ -640,16 +514,16 @@ class Array(Value):
         return f'[{",".join([str(item) for item in self.value])}]'
 
     def encode_value(self) -> dict:
-        return {_valueKey: [i.encode() for i in self.value]}
+        return {c.valueKey: [i.encode() for i in self.value]}
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        obj = value[_valueKey]
+    def decode(cls, value) -> Array:
+        obj = value[c.valueKey]
         return Array([decode(i) for i in obj])
 
     @classmethod
     def type_str(cls) -> str:
-        return _arrayTypeStr
+        return c.arrayTypeStr
 
 
 class KeyValuePair(object):
@@ -670,10 +544,10 @@ class Dictionary(Value):
 
     def encode_value(self) -> dict:
         return {
-            _valueKey: [
+            c.valueKey: [
                 {
-                    _keyKey: i.key.encode(),
-                    _valueKey: i.value.encode(),
+                    c.keyKey: i.key.encode(),
+                    c.valueKey: i.value.encode(),
                 }
                 for i in self.value
             ]
@@ -682,179 +556,142 @@ class Dictionary(Value):
         }
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        obj = value[_valueKey]
+    def decode(cls, value) -> Dictionary:
+        obj = value[c.valueKey]
         items = [
-            KeyValuePair(decode(item[_keyKey]), decode(item[_valueKey])) for item in obj
+            KeyValuePair(decode(item[c.keyKey]), decode(item[c.valueKey]))
+            for item in obj
         ]
         return Dictionary(items)
 
     @classmethod
     def type_str(cls) -> str:
-        return _dictionaryTypeStr
-
-
-class Struct(Value):
-    def __init__(self, value=None) -> None:
-        super().__init__()
-        self.value = value
-
-    def __str__(self):
-        raise NotImplementedError()
-
-    def encode_value(self) -> dict:
-        raise NotImplementedError()
-
-    @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
-
-    @classmethod
-    def type_str(cls) -> str:
-        return _structTypeStr
-
-
-class Resource(Value):
-    def __init__(self, value=None) -> None:
-        super().__init__()
-        self.value = value
-
-    def __str__(self):
-        raise NotImplementedError()
-
-    def encode_value(self) -> dict:
-        raise NotImplementedError()
-
-    @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
-
-    @classmethod
-    def type_str(cls) -> str:
-        return _resourceTypeStr
-
-
-class Event(Value):
-    def __init__(self, value=None) -> None:
-        super().__init__()
-        self.value = value
-
-    def __str__(self):
-        raise NotImplementedError()
-
-    def encode_value(self) -> dict:
-        raise NotImplementedError()
-
-    @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
-
-    @classmethod
-    def type_str(cls) -> str:
-        return _eventTypeStr
-
-
-class Contract(Value):
-    def __init__(self, value=None) -> None:
-        super().__init__()
-        self.value = value
-
-    def __str__(self):
-        raise NotImplementedError()
-
-    def encode_value(self) -> dict:
-        raise NotImplementedError()
-
-    @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
-
-    @classmethod
-    def type_str(cls) -> str:
-        return _contractTypeStr
+        return c.dictionaryTypeStr
 
 
 class Link(Value):
-    def __init__(self, value=None) -> None:
+    def __init__(self, target_path: Path, borrow_type: str) -> None:
         super().__init__()
-        self.value = value
+        self.target_path: Path = target_path
+        self.borrow_type: str = borrow_type
 
     def __str__(self):
-        raise NotImplementedError()
+        return f"Link<{self.borrow_type}>({self.target_path})"
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            c.valueKey: {
+                c.targetPathKey: self.target_path.encode(),
+                c.borrowTypeKey: self.borrow_type,
+            }
+        }
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Link:
+        v = value[c.valueKey]
+        return Link(
+            decode(v[c.targetPathKey]).as_type(Path),
+            v[c.borrowTypeKey],
+        )
 
     @classmethod
     def type_str(cls) -> str:
-        return _linkTypeStr
+        return c.linkTypeStr
 
 
 class Path(Value):
-    def __init__(self, value=None) -> None:
+    def __init__(self, domain: str, identifier: str) -> None:
         super().__init__()
-        self.value = value
+        self.domain: str = domain
+        self.identifier: str = identifier
 
     def __str__(self):
-        raise NotImplementedError()
+        return f"/{self.domain}/{self.identifier}"
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            c.valueKey: {c.domainKey: self.domain, c.identifierKey: self.identifier}
+        }
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Path:
+        v = value[c.valueKey]
+        return Path(
+            v[c.domainKey],
+            v[c.identifierKey],
+        )
 
     @classmethod
     def type_str(cls) -> str:
-        return _pathTypeStr
+        return c.pathTypeStr
 
 
-class Type(Value):
-    def __init__(self, value=None) -> None:
+class TypeValue(Value):
+    def __init__(self, type_name: str = None) -> None:
         super().__init__()
-        self.value = value
+        self.type_name: str = type_name
 
     def __str__(self):
-        raise NotImplementedError()
+        return f"Type<{self.type_name}>()"
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            c.valueKey: {
+                c.staticTypeKey: (self.type_name if self.type_name is not None else "")
+            }
+        }
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> TypeValue:
+        v = value[c.valueKey]
+        return TypeValue(
+            v[c.staticTypeKey] if v[c.staticTypeKey] != "" else None,
+        )
 
     @classmethod
     def type_str(cls) -> str:
-        return _typeTypeStr
+        return c.typeTypeStr
 
 
 class Capability(Value):
-    def __init__(self, value=None) -> None:
+    def __init__(self, path: Path, address: Address, borrow_type: str) -> None:
         super().__init__()
-        self.value = value
+        self.address = address
+        self.path = path
+        self.borrow_type = borrow_type
 
     def __str__(self):
-        raise NotImplementedError()
+        type_arg = (
+            ""
+            if self.borrow_type is None or self.borrow_type == ""
+            else f"<{self.borrow_type}>"
+        )
+        return f"Capability{type_arg}(address: {self.address}, path: {self.path})"
 
     def encode_value(self) -> dict:
-        raise NotImplementedError()
+        return {
+            c.valueKey: {
+                c.pathKey: self.path.encode(),
+                c.addressKey: self.address.encode_value()[c.valueKey],
+                c.borrowTypeKey: self.borrow_type
+                if self.borrow_type is not None
+                else "",
+            }
+        }
 
     @classmethod
-    def decode(cls, value) -> "Value":
-        raise NotImplementedError()
+    def decode(cls, value) -> Capability:
+        v = value[c.valueKey]
+        path = decode(v[c.pathKey]).as_type(Path)
+        address = Address.decode({c.valueKey: v[c.addressKey]})
+        return Capability(path, address, v[c.borrowTypeKey])
 
     @classmethod
     def type_str(cls) -> str:
-        return _capabilityTypeStr
+        return c.capabilityTypeStr
 
 
-all_cadence_types: list = [
+cadence_types: list[pyType[Value]] = [
     Void,
     Optional,
     Bool,
@@ -882,29 +719,11 @@ all_cadence_types: list = [
     UFix64,
     Array,
     Dictionary,
-    Struct,
-    Resource,
-    Event,
-    Contract,
+    TypeValue,
     Link,
     Path,
-    Type,
     Capability,
-]  # TODO try to constraint type to those that inherit Value
+]
 
-all_cadence_decoders: dict[str, Callable[[Any], Value]] = {
-    t.type_str(): t.decode for t in all_cadence_types if issubclass(t, Value)
-}
-
-
-def decode(obj: [dict[Any, Any]]) -> Value:
-    if isinstance(obj, Value):
-        # json decoder starts from bottom up, so its possible that this is already decoded
-        return obj
-
-    type_ = obj[typeKey]
-    if type_ in all_cadence_decoders:
-        decoder = all_cadence_decoders[type_]
-        return decoder(obj)
-
-    raise NotImplementedError()
+for t in cadence_types:
+    add_cadence_decoder(t)

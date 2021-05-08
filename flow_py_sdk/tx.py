@@ -4,6 +4,7 @@ from enum import Enum
 import rlp
 
 from flow_py_sdk.cadence import Value, Address, encode_arguments
+from flow_py_sdk.exceptions import NotCadenceValueError
 from flow_py_sdk.frlp import rlp_encode_uint64
 from flow_py_sdk.proto.flow import entities
 from flow_py_sdk.signer import Signer
@@ -171,6 +172,9 @@ class Tx(object):
         return self
 
     def add_arguments(self, *args: Value) -> "Tx":
+        for arg in args:
+            if not isinstance(arg, Value):
+                raise NotCadenceValueError.from_value(arg)
         self.arguments.extend(args)
         return self
 
