@@ -32,7 +32,7 @@ class Address(Value):
         }
 
     @classmethod
-    def decode(cls, value) -> "Value":
+    def decode(cls, value) -> "Address":
         addr = str(value[c.valueKey])
         if addr[:2] != "0x":
             raise Exception()  # TODO

@@ -53,7 +53,7 @@ class Struct(Value):
         )
 
     @classmethod
-    def decode(cls, value) -> "Value":
+    def decode(cls, value) -> Struct:
         composite = Composite.decode(value[c.valueKey])
 
         struct_type = StructType(
@@ -95,7 +95,7 @@ class Resource(Value):
         )
 
     @classmethod
-    def decode(cls, value) -> "Value":
+    def decode(cls, value) -> Resource:
         composite = Composite.decode(value[c.valueKey])
 
         resource_type = ResourceType(
@@ -137,16 +137,16 @@ class Contract(Value):
         )
 
     @classmethod
-    def decode(cls, value) -> "Value":
+    def decode(cls, value) -> Contract:
         composite = Composite.decode(value[c.valueKey])
 
-        resource_type = ResourceType(
+        contract_type = ContractType(
             composite.location,
             composite.qualified_identifier,
             composite.field_types,
         )
 
-        return Resource(composite.field_values, resource_type)
+        return Contract(composite.field_values, contract_type)
 
     @classmethod
     def type_str(cls) -> str:

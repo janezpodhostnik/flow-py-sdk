@@ -49,7 +49,7 @@ class BaseEvent(Value, ABC):
         return c.eventTypeStr
 
     @classmethod
-    def decode(cls, value) -> "Value":
+    def decode(cls, value) -> BaseEvent:
         composite = Composite.decode(value[c.valueKey])
 
         event_type = EventType(
@@ -74,9 +74,6 @@ class BaseEvent(Value, ABC):
 
 
 class Event(BaseEvent):
-    def init_event(self):
-        pass
-
     @classmethod
     def event_id_constraint(cls) -> str:
         return ""

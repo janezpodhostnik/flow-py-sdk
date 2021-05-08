@@ -13,6 +13,10 @@ class _EncodeTestParams:
 
 
 class TestTx(unittest.TestCase):
+    """
+    Cadence encoding/decoding tests were adapted from: https://github.com/onflow/cadence/blob/master/encoding/json/encoding_test.go
+    """
+
     def _encodeAndDecodeAll(self, tests: list[_EncodeTestParams]):
         for test in tests:
             with self.subTest(msg=test.name):
@@ -390,8 +394,6 @@ class TestTx(unittest.TestCase):
         )
 
     def testEncodeWord8(self):
-        self.skipTest("not implemented yet")
-
         self._encodeAndDecodeAll(
             [
                 _EncodeTestParams(
@@ -408,8 +410,6 @@ class TestTx(unittest.TestCase):
         )
 
     def testEncodeWord16(self):
-        self.skipTest("not implemented yet")
-
         self._encodeAndDecodeAll(
             [
                 _EncodeTestParams(
@@ -426,8 +426,6 @@ class TestTx(unittest.TestCase):
         )
 
     def testEncodeWord32(self):
-        self.skipTest("not implemented yet")
-
         self._encodeAndDecodeAll(
             [
                 _EncodeTestParams(
@@ -444,8 +442,6 @@ class TestTx(unittest.TestCase):
         )
 
     def testEncodeWord64(self):
-        self.skipTest("not implemented yet")
-
         self._encodeAndDecodeAll(
             [
                 _EncodeTestParams(
@@ -528,7 +524,7 @@ class TestTx(unittest.TestCase):
                 "value":[{"type":"Int","value":"1"},{"type":"Int","value":"2"},{"type":"Int","value":"3"}]}""",
         )
 
-        resourceArray = _EncodeTestParams(
+        resource_array = _EncodeTestParams(
             "Resources",
             cadence.Array(
                 [
@@ -551,7 +547,7 @@ class TestTx(unittest.TestCase):
             [
                 empty_array,
                 int_array,
-                resourceArray,
+                resource_array,
             ]
         )
 
@@ -1129,35 +1125,47 @@ class TestTx(unittest.TestCase):
 
         self._encodeAndDecodeAll([static_type, no_static_type])
 
+    def testEncodeCapability(self):
+        capability = _EncodeTestParams(
+            "Capability",
+            cadence.Capability(
+                cadence.Path("storage", "foo"),
+                cadence.Address.from_hex("0x0000000102030405"),
+                "Int",
+            ),
+            """
+            {
+              "type": "Capability",
+              "value": {
+                "path": {
+                  "type": "Path",
+                  "value": { "domain": "storage", "identifier": "foo" }
+                },
+                "borrowType": "Int",
+                "address": "0x0000000102030405"
+              }
+            }
+            """,
+        )
 
-# func TestEncodeType(t *testing.T) {
+        self._encodeAndDecodeAll([capability])
+
+
+# func TestEncodeCapability(t *testing.T) {
 #
 # 	t.Parallel()
 #
-# 	t.Run("with static type", func(t *testing.T) {
-#
-# 		t.Parallel()
-#
-# 		testEncodeAndDecode(
-# 			t,
-# 			cadence.TypeValue{
-# 				StaticType: "Int",
-# 			},
-# 			`{"type":"Type","value":{"staticType":"Int"}}`,
-# 		)
-#
-# 	})
-# 	t.Run("without static type", func(t *testing.T) {
-#
-# 		t.Parallel()
-#
-# 		testEncodeAndDecode(
-# 			t,
-# 			cadence.TypeValue{},
-# 			`{"type":"Type","value":{"staticType":""}}`,
-# 		)
-# 	})
+# 	testEncodeAndDecode(
+# 		t,
+# 		cadence.Capability{
+# 			Path:       cadence.Path{Domain: "storage", Identifier: "foo"},
+# 			Address:    cadence.BytesToAddress([]byte{1, 2, 3, 4, 5}),
+# 			BorrowType: "Int",
+# 		},
+# 		`{"type":"Capability","value":{"path":{"type":"Path","value":{"domain":"storage","identifier":"foo"}},"borrowType":"Int","address":"0x0000000102030405"}}`,
+# 	)
 # }
+
 
 _test_location = cadence.StringLocation("test")
 
