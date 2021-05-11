@@ -20,6 +20,9 @@ coloredlogs = "^15.0"
 toml = "^0.10.2"
 black = "^21.4b2"
 pytest = "^6.2.3"
+mkdocs = "^1.1.2"
+mkdocs-material = "^7.1.4"
+mkdocstrings = "^0.15.0"
 
 [tool.poetry-dynamic-versioning]
 enable = true

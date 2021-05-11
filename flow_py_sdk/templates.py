@@ -46,7 +46,6 @@ def create_account_template(
                     }
                 }
             """,
-            # TODO: figure out a base template so these parameters dont need to be passed through everytime
             reference_block_id=reference_block_id,
             payer=payer,
             proposal_key=proposal_key,
