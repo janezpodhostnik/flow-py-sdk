@@ -43,7 +43,7 @@ class Signer(ABC):
         super().__init__()
 
     @abstractmethod
-    def sign(self, message: bytes) -> bytes:
+    def sign(self, message: bytes, tag: bytes) -> bytes:
         pass
 
 
@@ -55,9 +55,12 @@ class InMemorySigner(Signer):
             bytes.fromhex(key_hex), curve=get_signing_curve(sign_algo)
         )
 
-    def sign(self, message: bytes) -> bytes:
+    def sign(self, message: bytes, tag: bytes) -> bytes:
         m = create_hasher(self.hash_algo)
-        m.update(message)
+        if tag:
+            m.update(tag + message)
+        else:
+            m.update(message)
         hash_ = m.digest()
         return self.key.sign_digest_deterministic(hash_)
 
