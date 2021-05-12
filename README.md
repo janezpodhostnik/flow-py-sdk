@@ -4,7 +4,7 @@
 
 Another unofficial flow blockchain python sdk.
 
-Under development! I do not recommend you use this.
+Under development! Currently this is close to an "MVP" it is mostly missing docs and organization.
 
 If you do want to use it, install it with:
 
@@ -64,40 +64,3 @@ To run specific examples you can use the tag of the examples:
 e.g.:
 
 `poetry run examples T.1. T.2. S.4.`
-
-## Roadmap to MVP
-
-Items that would need to be done for `flow-py-sdk` to be considered fully usable. Any contributions to items on this list (or not) are very welcome.
-
-### Docs
-
-- [ ] Create docs folder
-- [ ] Usage example docs:
-    - [ ] using the emulator
-    - [ ] create account
-- [ ] contribution docs
-
-### Examples
-
-- [x] move examples folder to root folder
-- [x] make each example runnable separately
-- [x] write instructions for running examples
-- [ ] add more comments to examples
-- [x] add examples to ci
-- [ ] add more examples
-
-### Tests
-
-- [ ] add cadence decode/encode tests
-- [ ] add more tests
-- [x] add CI for tests
-
-### CI
-
-- [x] release automation
-
-### Implementation
-
-- [ ] decode event payload from grpc
-- [ ] implement TODOs in cadence decode/encode
-- [ ] add an easy way to subscribe to blockchain events

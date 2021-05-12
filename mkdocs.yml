@@ -1,0 +1,20 @@
+site_name: Python Flow SDK
+theme: material
+
+plugins:
+  - search
+  - mkdocstrings
+
+nav:
+  - Overview: overview.md
+  - Installation: installation.md
+  - 'Usage Overview': usage.md
+  - Examples: examples.md
+  - Concepts:
+      - Scripts: scripts.md
+      - Transactions: transactions.md
+      - 'Cadence Types': cadence_types.md 
+      - Events: events.md
+  - Contributing: contributing.md
+  - Roadmap: roadmap.md
+      
