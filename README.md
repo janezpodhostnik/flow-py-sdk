@@ -4,7 +4,7 @@
 
 Another unofficial flow blockchain python sdk.
 
-Under development! I do not recommend you use this.
+Under development! Currently this is close to an "MVP" it is mostly missing docs and organization.
 
 If you do want to use it, install it with:
 
