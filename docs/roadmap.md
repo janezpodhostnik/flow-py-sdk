@@ -9,10 +9,10 @@ Items that need to be addressed for `flow-py-sdk` to be considered usable. At wh
 ### Docs
 
 - [x] Create docs folder
-    - [ ] setup mkdocs
+    - [x] setup mkdocs
 - [ ] Usage example docs:
-    - [ ] using the emulator
     - [ ] create account
+    - [ ] transfer flow
 - [ ] contribution docs
 
 ### Examples
