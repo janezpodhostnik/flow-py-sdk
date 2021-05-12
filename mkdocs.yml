@@ -6,7 +6,7 @@ plugins:
   - mkdocstrings
 
 nav:
-  - Overview: overview.md
+  - Overview: index.md
   - Installation: installation.md
   - 'Usage Overview': usage.md
   - Examples: examples.md
