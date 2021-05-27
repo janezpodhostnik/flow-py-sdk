@@ -4,7 +4,7 @@ Current Version: [![PyPI](https://img.shields.io/pypi/v/flow-py-sdk.svg)](https:
 
 # flow-py-sdk
 
-Another unofficial flow blockchain python sdk.
+Another unofficial flow blockchain python sdk. Which can be found here: https://janezpodhostnik.github.io/flow-py-sdk/.
 
 Under development! Currently this is close to an "MVP" it is mostly missing more of: docs, tests, examples and organization.
 

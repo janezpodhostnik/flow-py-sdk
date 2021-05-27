@@ -1,0 +1,8 @@
+[run]
+branch = True
+
+[report]
+include =
+        ./flow_py_sdk/*
+omit =
+        ./flow_py_sdk/proto/*

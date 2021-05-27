@@ -18,6 +18,11 @@ jobs:
         run: pip install poetry-dynamic-versioning
       - name: Poetry - Install
         run: poetry install
+      - name: Poetry - Cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
       - name: Poetry - Build
         run: poetry build
       - name: Poetry - Publish
