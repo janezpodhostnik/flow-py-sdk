@@ -1,6 +1,4 @@
-# Installation
-
-#### 2. Run the emulator
+# Running the emulator
 
 To run the examples, the [flow emulator](https://github.com/onflow/flow-emulator) needs to be running locally. 
 To do that you can use the following instructions or the instructions directly at https://github.com/onflow/flow-emulator.
