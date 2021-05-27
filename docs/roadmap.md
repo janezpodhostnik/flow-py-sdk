@@ -42,4 +42,4 @@ Items that need to be addressed for `flow-py-sdk` to be considered usable. At wh
 
 ## Future roadmap
 
-- [ ] Add an easy way to subscribe to blockchain events
+See the issues open in the github [milestones](https://github.com/janezpodhostnik/flow-py-sdk/milestones)
