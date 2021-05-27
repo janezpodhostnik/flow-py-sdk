@@ -25,13 +25,15 @@ jobs:
           python-version: 3.9
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2.0.0
-      - name: Poetry - Install
-        run: poetry install
       - name: Poetry - Cache
+        id: poetry-cache
         uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+      - name: Poetry - Install
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: poetry install
       - name: Poetry - black check
         run: poetry run black . --check
 
@@ -47,13 +49,15 @@ jobs:
           python-version: 3.9
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2.0.0
-      - name: Poetry - Install
-        run: poetry install
       - name: Poetry - Cache
+        id: poetry-cache
         uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+      - name: Poetry - Install
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: poetry install
       - name: Poetry - pytest
         run: poetry run pytest
 
@@ -70,19 +74,27 @@ jobs:
           python-version: 3.9
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2.0.0
-      - name: Poetry - Install
-        run: poetry install
       - name: Poetry - Cache
+        id: poetry-cache
         uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+      - name: Poetry - Install
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: poetry install
       - name: Poetry - coverage report
-        run: poetry run coverage report -m
-      - name: "Upload coverage to Codecov"
+        run: poetry run coverage xml
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: unittests
+          env_vars: OS,PYTHON
           fail_ci_if_error: true
+          path_to_write_report: ./coverage/codecov_report.txt
+          verbose: true
 
   integration-test:
     name: Emulator Integration Tests
@@ -108,12 +120,14 @@ jobs:
           python-version: 3.9
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2.0.0
-      - name: Poetry - Install
-        run: poetry install
       - name: Poetry - Cache
+        id: poetry-cache
         uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+      - name: Poetry - Install
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: poetry install
       - name: Poetry - Examples
         run: poetry run examples

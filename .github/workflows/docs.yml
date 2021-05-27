@@ -21,12 +21,14 @@ jobs:
           python-version: 3.9
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2.0.0
-      - name: Poetry - Install
-        run: poetry install
       - name: Poetry - Cache
+        id: poetry-cache
         uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+      - name: Poetry - Install
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: poetry install
       - name: Poetry - mkdocs deploy
         run: poetry run mkdocs gh-deploy --force
