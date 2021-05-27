@@ -1,4 +1,5 @@
-[![PyPI](https://img.shields.io/pypi/v/flow-py-sdk.svg)](https://pypi.org/project/flow-py-sdk/) 
+[![PyPI](https://img.shields.io/pypi/v/flow-py-sdk.svg)](https://pypi.org/project/flow-py-sdk/)
+[![codecov](https://codecov.io/gh/janezpodhostnik/flow-py-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/codecov/example-go)
 
 
 See the [DOCS](https://janezpodhostnik.github.io/flow-py-sdk)!
@@ -7,7 +8,7 @@ See the [DOCS](https://janezpodhostnik.github.io/flow-py-sdk)!
 
 Another unofficial flow blockchain python sdk.
 
-Under development! Currently this is close to an "MVP" it is mostly missing more of: docs, tests, examples and organization.
+Under development! Currently, this is close to an "MVP" it is mostly missing more of: docs, tests, examples and organization.
 
 If you do want to use it, install it with:
 
