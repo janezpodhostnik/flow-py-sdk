@@ -1,6 +1,6 @@
 # Contributing
 
-Any contributions are ery welcome.
+Any contributions are very welcome.
 
 If you would like to contribute to the code, the best place to start is to run the [examples](./examples.md) locally. After that your environment will be set up for development.
 
