@@ -2,25 +2,24 @@ from typing import Annotated
 
 from ecdsa import SigningKey
 
-from flow_py_sdk import cadence
-from flow_py_sdk.client import AccessAPI
 from examples.common.config import Config
-from flow_py_sdk.signer import (
-    get_signing_curve,
+from flow_py_sdk import (
+    cadence,
+    AccessAPI,
     SignAlgo,
     AccountKey,
     Signer,
     HashAlgo,
     InMemorySigner,
+    create_account_template,
+    ProposalKey,
 )
-from flow_py_sdk.templates import create_account_template
-from flow_py_sdk.tx import ProposalKey
 
 
 def random_key_pair(
     sign_algo: SignAlgo,
 ) -> (Annotated[bytes, "public key"], Annotated[bytes, "private key"]):
-    sk = SigningKey.generate(curve=get_signing_curve(sign_algo))
+    sk = SigningKey.generate(curve=sign_algo.get_signing_curve())
     return sk.verifying_key.to_string(), sk.to_string()
 
 
