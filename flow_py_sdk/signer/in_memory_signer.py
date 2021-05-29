@@ -6,11 +6,15 @@ from flow_py_sdk.signer.signer import Signer
 
 
 class InMemorySigner(Signer):
-    def __init__(self, hash_algo: HashAlgo, sign_algo: SignAlgo, key_hex: str) -> None:
+    """The InMemorySigner used for signing transaction and messaged given a private key hex."""
+
+    def __init__(
+        self, *, hash_algo: HashAlgo, sign_algo: SignAlgo, private_key_hex: str
+    ) -> None:
         super().__init__()
         self.hash_algo = hash_algo
         self.key = ecdsa.SigningKey.from_string(
-            bytes.fromhex(key_hex), curve=sign_algo.get_signing_curve()
+            bytes.fromhex(private_key_hex), curve=sign_algo.get_signing_curve()
         )
 
     def sign(self, message: bytes, tag: bytes) -> bytes:
@@ -21,6 +25,3 @@ class InMemorySigner(Signer):
             m.update(message)
         hash_ = m.digest()
         return self.key.sign_digest_deterministic(hash_)
-
-    def public_key(self) -> bytes:
-        return self.key.verifying_key.to_string()

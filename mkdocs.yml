@@ -13,9 +13,13 @@ nav:
   - Concepts:
       - Scripts: scripts.md
       - Transactions: transactions.md
-      - 'Cadence Types': cadence_types.md 
+      - 'Cadence Types': cadence_types.md
       - Events: events.md
   - Contributing: contributing.md
   - 'Working with the Flow emulator': emulator.md
   - Roadmap: roadmap.md
+
+markdown_extensions:
+  - toc:
+      permalink: True
       

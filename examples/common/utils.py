@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from ecdsa import SigningKey
+import ecdsa
 
 from examples.common.config import Config
 from flow_py_sdk import (
@@ -19,7 +19,7 @@ from flow_py_sdk import (
 def random_key_pair(
     sign_algo: SignAlgo,
 ) -> (Annotated[bytes, "public key"], Annotated[bytes, "private key"]):
-    sk = SigningKey.generate(curve=sign_algo.get_signing_curve())
+    sk = ecdsa.SigningKey.generate(curve=sign_algo.get_signing_curve())
     return sk.verifying_key.to_string(), sk.to_string()
 
 
@@ -73,6 +73,6 @@ async def random_account(
         InMemorySigner(
             sign_algo=SignAlgo.ECDSA_secp256k1,
             hash_algo=HashAlgo.SHA3_256,
-            key_hex=priv.hex(),
+            private_key_hex=priv.hex(),
         ),
     )
