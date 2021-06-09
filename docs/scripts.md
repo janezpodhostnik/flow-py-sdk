@@ -7,7 +7,7 @@ examples [here](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examp
 
 ## Sending scripts
 
-To following code can be used to send a script to an access ot the emulator.
+To following code can be used to send a script to an access node or the emulator.
 
 ```py
 from flow_py_sdk import flow_client, Script
@@ -27,7 +27,7 @@ async with flow_client(host=access_node_host, port=access_node_port) as client:
     await client.execute_script(script)
 ```
 
-If this script is sent to the emulator, the log will be visible in the emulator output.
+When sending this script to an emulator, the log output will be visible in the emulator output.
 
 ## Getting script results
 

@@ -3,42 +3,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Dict, List
 
-from flow_py_sdk import cadence
-from flow_py_sdk.cadence import Value, cadence_object_hook
+from flow_py_sdk.account_key import AccountKey
+from flow_py_sdk.cadence import cadence_object_hook
 from flow_py_sdk.proto.flow import entities, access
-
-
-class AccountKey(object):
-    def __init__(
-        self,
-        index: int,
-        public_key: bytes,
-        sign_algo: int,
-        hash_algo: int,
-        weight: int,
-        sequence_number: int,
-        revoked: bool,
-    ) -> None:
-        super().__init__()
-        self.index: int = index
-        self.public_key: bytes = public_key
-        self.sign_algo: int = sign_algo
-        self.hash_algo: int = hash_algo
-        self.weight: int = weight
-        self.sequence_number: int = sequence_number
-        self.revoked: bool = revoked
-
-    @classmethod
-    def from_proto(cls, proto: entities.AccountKey) -> "AccountKey":
-        return AccountKey(
-            index=proto.index,
-            public_key=proto.public_key,
-            sign_algo=proto.sign_algo,
-            hash_algo=proto.hash_algo,
-            weight=proto.weight,
-            sequence_number=proto.sequence_number,
-            revoked=proto.revoked,
-        )
 
 
 class Account(object):

@@ -36,7 +36,6 @@ def _padded_domain_tag(s: str) -> bytes:
         raise PySDKError(
             f"domain tag {s} cannot be longer than {DomainTagLength} bytes"
         )
-    log.warning((encoded + bytearray(DomainTagLength - len(s))).hex())
     return encoded + bytearray(DomainTagLength - len(s))
 
 

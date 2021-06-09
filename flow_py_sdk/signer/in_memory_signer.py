@@ -1,3 +1,5 @@
+from typing import Optional
+
 import ecdsa
 
 from flow_py_sdk.signer.hash_algo import HashAlgo
@@ -17,7 +19,7 @@ class InMemorySigner(Signer):
             bytes.fromhex(private_key_hex), curve=sign_algo.get_signing_curve()
         )
 
-    def sign(self, message: bytes, tag: bytes) -> bytes:
+    def sign(self, message: bytes, tag: Optional[bytes] = None) -> bytes:
         m = self.hash_algo.create_hasher()
         if tag:
             m.update(tag + message)
