@@ -1,6 +1,6 @@
 import logging
 
-from examples.common import Example, Config, example_registry
+from examples.common import Example, Config
 from flow_py_sdk import Script, flow_client
 
 log = logging.getLogger(__name__)

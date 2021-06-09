@@ -498,7 +498,7 @@ class UFix64(Value):
     @classmethod
     def decode(cls, value) -> UFix64:
         str_values = str(value[c.valueKey]).split(".")
-        return Fix64(int(str_values[0]) * c.fix64_factor + int(str_values[1]))
+        return UFix64(int(str_values[0]) * c.fix64_factor + int(str_values[1]))
 
     @classmethod
     def type_str(cls) -> str:

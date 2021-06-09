@@ -7,26 +7,14 @@
   },
   "contracts": {},
   "networks": {
-    "emulator": {
-      "host": "127.0.0.1:3569",
-      "chain": "flow-emulator"
-    },
-    "mainnet": {
-      "host": "access.mainnet.nodes.onflow.org:9000",
-      "chain": "flow-mainnet"
-    },
-    "testnet": {
-      "host": "access.devnet.nodes.onflow.org:9000",
-      "chain": "flow-testnet"
-    }
+    "emulator": "127.0.0.1:3569"
   },
   "accounts": {
     "emulator-account": {
       "address": "f8d6e0586b0a20c7",
       "keys": "e3a17a480a72dc3a1e98d68fb026c89144843e352636756c79ddd5a1423f44dd",
       "sigAlgorithm": "ECDSA_P256",
-      "hashAlgorithm": "SHA3_256",
-      "chain": "flow-emulator"
+      "hashAlgorithm": "SHA3_256"
     }
   },
   "deployments": {}

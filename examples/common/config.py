@@ -24,13 +24,13 @@ class Config(object):
                     data["accounts"]["emulator-account"]["address"]
                 )
                 self.service_account_signer = InMemorySigner(
-                    HashAlgo.from_string(
+                    hash_algo=HashAlgo.from_string(
                         data["accounts"]["emulator-account"]["hashAlgorithm"]
                     ),
-                    SignAlgo.from_string(
+                    sign_algo=SignAlgo.from_string(
                         data["accounts"]["emulator-account"]["sigAlgorithm"]
                     ),
-                    data["accounts"]["emulator-account"]["keys"],
+                    private_key_hex=data["accounts"]["emulator-account"]["keys"],
                 )
         except Exception:
             log.warning(

@@ -1,7 +1,7 @@
 from typing import Annotated
 
 import flow_py_sdk.cadence as cadence
-from flow_py_sdk.signer import AccountKey
+from flow_py_sdk.account_key import AccountKey
 from flow_py_sdk.tx import Tx, ProposalKey
 
 
