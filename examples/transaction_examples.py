@@ -93,9 +93,6 @@ class TransactionExample2(Example):
                     ),
                 )
                 .add_authorizers(ctx.service_account_address)
-                .with_payload_signature(
-                    ctx.service_account_address, 0, ctx.service_account_signer
-                )
                 .with_envelope_signature(
                     ctx.service_account_address, 0, ctx.service_account_signer
                 )
@@ -161,9 +158,6 @@ class TransactionExample3(Example):
                 .add_authorizers(ctx.service_account_address)
                 .add_arguments(cadence_public_keys)
                 .add_arguments(cadence_contracts)
-                .with_payload_signature(
-                    ctx.service_account_address, 0, ctx.service_account_signer
-                )
                 .with_envelope_signature(
                     ctx.service_account_address, 0, ctx.service_account_signer
                 )
