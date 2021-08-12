@@ -232,7 +232,60 @@ class StringLocation(Location):
         return "S"
 
 
-_location_types = [AddressLocation, FlowLocation, StringLocation]
+class ScriptLocation(Location):
+    def __init__(
+        self,
+        location: str,
+    ) -> None:
+        super().__init__()
+        self.location: str = location
+
+    def __str__(self) -> str:
+        return f"{self.location}"
+
+    def id(self) -> str:
+        return f"{self.prefix()}.{self.location}"
+
+    def type_id(self, qualified_identifier: str) -> str:
+        return f"{self.prefix()}.{self.location}.{qualified_identifier}"
+
+    def qualified_identifier(self, type_id: str) -> str:
+        pieces = type_id.split(".", 3)
+        if len(pieces) < 3:
+            return ""
+        return pieces[2]
+
+    @classmethod
+    def decode(
+        cls, type_id: str
+    ) -> Tuple["ScriptLocation", Annotated[str, "qualified identifier"]]:
+        err_prefix = "invalid script location type ID"
+        if not type_id:
+            raise CadenceEncodingError(f"{err_prefix}: missing prefix.")
+
+        parts = type_id.split(".", 3)
+
+        if len(parts) == 1:
+            raise CadenceEncodingError(f"{err_prefix}: missing location.")
+        if len(parts) == 2:
+            raise CadenceEncodingError(f"{err_prefix}: missing qualified identifier.")
+
+        if parts[0] != cls.prefix():
+            CadenceEncodingError(
+                f"{err_prefix}: invalid prefix, expected {cls.prefix()} got {parts[0]}."
+            )
+        qualified_identifier = parts[2]
+
+        location = ScriptLocation(parts[1])
+
+        return location, qualified_identifier
+
+    @classmethod
+    def prefix(cls) -> str:
+        return "s"
+
+
+_location_types = [AddressLocation, FlowLocation, StringLocation, ScriptLocation]
 
 
 def decode_location(
