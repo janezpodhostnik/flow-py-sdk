@@ -124,7 +124,7 @@ cython = ["cython"]
 
 [[package]]
 name = "ecdsa"
-version = "0.16.1"
+version = "0.17.0"
 description = "ECDSA cryptographic signature library (pure python)"
 category = "main"
 optional = false
@@ -668,7 +668,7 @@ telegram = ["requests"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "642a3551314ac323279b9d8413b2cbae6f41157129b581a12d5e65465f39da5b"
+content-hash = "b5036fe2e3e014bc6c364bc14901c2c08c18aca920bef0b1343c286f426a8804"
 
 [metadata.files]
 appdirs = [
@@ -760,8 +760,8 @@ cytoolz = [
     {file = "cytoolz-0.11.0.tar.gz", hash = "sha256:c64f3590c3eb40e1548f0d3c6b2ccde70493d0b8dc6cc7f9f3fec0bb3dcd4222"},
 ]
 ecdsa = [
-    {file = "ecdsa-0.16.1-py2.py3-none-any.whl", hash = "sha256:881fa5e12bb992972d3d1b3d4dfbe149ab76a89f13da02daa5ea1ec7dea6e747"},
-    {file = "ecdsa-0.16.1.tar.gz", hash = "sha256:cfc046a2ddd425adbd1a78b3c46f0d1325c657811c0f45ecc3a0a6236c1e50ff"},
+    {file = "ecdsa-0.17.0-py2.py3-none-any.whl", hash = "sha256:5cf31d5b33743abe0dfc28999036c849a69d548f994b535e527ee3cb7f3ef676"},
+    {file = "ecdsa-0.17.0.tar.gz", hash = "sha256:b9f500bb439e4153d0330610f5d26baaf18d17b8ced1bc54410d189385ea68aa"},
 ]
 eth-hash = [
     {file = "eth-hash-0.3.1.tar.gz", hash = "sha256:aee46d9c43b98ac6d4ddf957cf75d4d0a5174ee814cc6b53dd6134dcedb459bf"},

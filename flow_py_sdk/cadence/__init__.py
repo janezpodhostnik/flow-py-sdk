@@ -53,4 +53,10 @@ from .composite import (
     Field,
 )
 from .events import AccountCreatedEvent
-from .location import StringLocation, FlowLocation, AddressLocation, Location
+from .location import (
+    StringLocation,
+    FlowLocation,
+    AddressLocation,
+    Location,
+    ScriptLocation,
+)
