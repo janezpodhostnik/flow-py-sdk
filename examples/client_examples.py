@@ -12,7 +12,7 @@ class ClientExample1(Example):
     """
 
     def __init__(self) -> None:
-        super().__init__(tag="C.1.", name="Get Account Code", sort_order=51)
+        super().__init__(tag="C.1.", name="Get Account Contracts", sort_order=51)
 
     async def run(self, ctx: Config):
         async with flow_client(
@@ -22,4 +22,4 @@ class ClientExample1(Example):
                 address=ctx.service_account_address.bytes
             )
 
-            log.info(f"Account code {script.contracts}")
+            log.info(f"Account contracts length {len(script.contracts)}")
