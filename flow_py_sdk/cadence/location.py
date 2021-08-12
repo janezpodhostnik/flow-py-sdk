@@ -119,7 +119,7 @@ class AddressLocation(Location):
             raise CadenceEncodingError(f"{err_prefix}: missing qualified identifier.")
 
         if parts[0] != cls.prefix():
-            CadenceEncodingError(
+            raise CadenceEncodingError(
                 f"{err_prefix}: invalid prefix, expected {cls.prefix()} got {parts[0]}."
             )
 
@@ -174,7 +174,7 @@ class FlowLocation(Location):
             raise CadenceEncodingError(f"{err_prefix}: missing qualified identifier.")
 
         if parts[0] != cls.prefix():
-            CadenceEncodingError(
+            raise CadenceEncodingError(
                 f"{err_prefix}: invalid prefix, expected {cls.prefix()} got {parts[0]}."
             )
         qualified_identifier = parts[1]
@@ -227,7 +227,7 @@ class StringLocation(Location):
             raise CadenceEncodingError(f"{err_prefix}: missing qualified identifier.")
 
         if parts[0] != cls.prefix():
-            CadenceEncodingError(
+            raise CadenceEncodingError(
                 f"{err_prefix}: invalid prefix, expected {cls.prefix()} got {parts[0]}."
             )
         qualified_identifier = parts[2]
@@ -280,7 +280,7 @@ class ScriptLocation(Location):
             raise CadenceEncodingError(f"{err_prefix}: missing qualified identifier.")
 
         if parts[0] != cls.prefix():
-            CadenceEncodingError(
+            raise CadenceEncodingError(
                 f"{err_prefix}: invalid prefix, expected {cls.prefix()} got {parts[0]}."
             )
         qualified_identifier = parts[2]

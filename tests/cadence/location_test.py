@@ -63,6 +63,10 @@ class TestLocation(unittest.TestCase):
             with self.assertRaises(CadenceEncodingError):
                 cadence.AddressLocation.decode("A.0000000000000001")
 
+        with self.subTest(msg=f"invalid prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.AddressLocation.decode("s.0000000000000001.t")
+
         with self.subTest(msg=f"decode"):
             location, identifier = cadence.AddressLocation.decode(
                 "A.0000000000000001.test"
@@ -89,12 +93,44 @@ class TestLocation(unittest.TestCase):
 
         with self.subTest(msg=f"missing qualified identifier"):
             with self.assertRaises(CadenceEncodingError):
-                cadence.AddressLocation.decode("s.test")
+                cadence.ScriptLocation.decode("s.test")
+
+        with self.subTest(msg=f"invalid prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.ScriptLocation.decode("A.test.t")
 
         with self.subTest(msg=f"decode"):
             location, identifier = cadence.ScriptLocation.decode("s.test.T")
             self.assertEqual(
                 cadence.ScriptLocation("test"),
+                location,
+            )
+            self.assertEqual(
+                "T",
+                identifier,
+            )
+
+    def testDecodeStringLocation(self):
+        with self.subTest(msg=f"missing prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.StringLocation.decode("")
+
+        with self.subTest(msg=f"missing location"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.StringLocation.decode("S")
+
+        with self.subTest(msg=f"missing qualified identifier"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.StringLocation.decode("S.test")
+
+        with self.subTest(msg=f"invalid prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.StringLocation.decode("A.test.t")
+
+        with self.subTest(msg=f"decode"):
+            location, identifier = cadence.StringLocation.decode("S.test.T")
+            self.assertEqual(
+                cadence.StringLocation("test"),
                 location,
             )
             self.assertEqual(
