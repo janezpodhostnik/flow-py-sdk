@@ -2,6 +2,7 @@ import unittest
 from dataclasses import dataclass
 
 from flow_py_sdk import cadence
+from flow_py_sdk.exceptions import CadenceEncodingError
 
 
 class TestLocation(unittest.TestCase):
@@ -48,3 +49,16 @@ class TestLocation(unittest.TestCase):
             with self.subTest(msg=f"{case} type_id"):
                 location_id = case.location.type_id(type_id_str)
                 self.assertEqual(case.expected_type_id, location_id)
+
+    def testDecodeAddressLocation(self):
+        with self.subTest(msg=f"missing prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.AddressLocation.decode("")
+
+        with self.subTest(msg=f"missing location"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.AddressLocation.decode("A")
+
+        with self.subTest(msg=f"missing qualified identifier"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.AddressLocation.decode("A.0000000000000001")

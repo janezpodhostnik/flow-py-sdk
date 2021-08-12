@@ -68,6 +68,15 @@ class Location(ABC):
     def prefix(cls) -> str:
         pass
 
+    def __eq__(self, other):
+        if isinstance(other, Location):
+            return str(self) == str(other)
+        return NotImplemented
+
+    def __hash__(self):
+        """Overrides the default implementation"""
+        return hash(str(self))
+
 
 class AddressLocation(Location):
     def __init__(self, address: Address, name: str) -> None:
