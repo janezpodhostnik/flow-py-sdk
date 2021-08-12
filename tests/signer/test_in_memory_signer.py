@@ -16,26 +16,37 @@ class TestInMemorySigner(TestCase):
             # HashAlgo.SHA3_384,
         ]
 
+        tags = [True, False]
+
         for sign_algo in s:
             for hash_algo in h:
-                with self.subTest(f"sign_algo: {sign_algo}, hash_algo: {hash_algo}"):
-                    private_key = ecdsa.SigningKey.generate(
-                        curve=sign_algo.get_signing_curve()
-                    )
+                for tag in tags:
+                    with self.subTest(
+                        f"sign_algo: {sign_algo}, hash_algo: {hash_algo}, tag: {tag}"
+                    ):
+                        private_key = ecdsa.SigningKey.generate(
+                            curve=sign_algo.get_signing_curve()
+                        )
 
-                    signer = InMemorySigner(
-                        sign_algo=sign_algo,
-                        hash_algo=hash_algo,
-                        private_key_hex=private_key.to_string().hex(),
-                    )
+                        signer = InMemorySigner(
+                            sign_algo=sign_algo,
+                            hash_algo=hash_algo,
+                            private_key_hex=private_key.to_string().hex(),
+                        )
+                        if tag:
+                            signature = signer.sign(b"some_message", b"some_tag")
+                        else:
+                            signature = signer.sign(b"some_message")
 
-                    signature = signer.sign(b"some_message", b"some_tag")
-                    hasher = hash_algo.create_hasher()
-                    hasher.update(b"some_tagsome_message")
-                    _hash = hasher.digest()
+                        hasher = hash_algo.create_hasher()
+                        if tag:
+                            hasher.update(b"some_tagsome_message")
+                        else:
+                            hasher.update(b"some_message")
+                        _hash = hasher.digest()
 
-                    valid = private_key.get_verifying_key().verify_digest(
-                        signature, _hash
-                    )
+                        valid = private_key.get_verifying_key().verify_digest(
+                            signature, _hash
+                        )
 
-                    self.assertTrue(valid)
+                        self.assertTrue(valid)

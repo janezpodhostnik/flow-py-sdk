@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 
 
 class Signer(ABC):
@@ -11,7 +12,7 @@ class Signer(ABC):
         super().__init__()
 
     @abstractmethod
-    def sign(self, message: bytes, tag: bytes) -> bytes:
+    def sign(self, message: bytes, tag: Optional[bytes] = None) -> bytes:
         """The signe method signs a message with a tag and returns the signature
 
         Parameters

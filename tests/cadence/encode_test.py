@@ -12,7 +12,7 @@ class _EncodeTestParams:
     expected: str
 
 
-class TestTx(unittest.TestCase):
+class TestEncode(unittest.TestCase):
     """
     Cadence encoding/decoding tests were adapted from: https://github.com/onflow/cadence/blob/master/encoding/json/encoding_test.go
     """

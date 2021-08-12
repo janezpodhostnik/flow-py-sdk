@@ -1,8 +1,10 @@
+from __future__ import annotations
 from typing import Optional
 
 import rlp
 
-from flow_py_sdk import frlp
+from flow_py_sdk.frlp import rlp_encode_uint64
+from flow_py_sdk.proto.flow import entities
 from flow_py_sdk.signer import SignAlgo, HashAlgo
 
 
@@ -30,11 +32,25 @@ class AccountKey(object):
         return rlp.encode(
             [
                 self.public_key,
-                frlp.rlp_encode_uint64(self.sign_algo.value),
-                frlp.rlp_encode_uint64(self.hash_algo.value),
-                frlp.rlp_encode_uint64(self.weight),
+                rlp_encode_uint64(self.sign_algo.value),
+                rlp_encode_uint64(self.hash_algo.value),
+                rlp_encode_uint64(self.weight),
             ]
         )
 
     def hex(self):
         return self.rlp().hex()
+
+    @classmethod
+    def from_proto(cls, k: entities.AccountKey) -> AccountKey:
+        ak = AccountKey(
+            public_key=k.public_key,
+            hash_algo=HashAlgo(k.hash_algo),
+            sign_algo=SignAlgo(k.sign_algo),
+            weight=k.weight,
+        )
+        ak.index = k.index
+        ak.revoked = k.revoked
+        ak.sequence_number = k.sequence_number
+
+        return ak
