@@ -62,3 +62,42 @@ class TestLocation(unittest.TestCase):
         with self.subTest(msg=f"missing qualified identifier"):
             with self.assertRaises(CadenceEncodingError):
                 cadence.AddressLocation.decode("A.0000000000000001")
+
+        with self.subTest(msg=f"decode"):
+            location, identifier = cadence.AddressLocation.decode(
+                "A.0000000000000001.test"
+            )
+            self.assertEqual(
+                cadence.AddressLocation(
+                    cadence.Address.from_hex("0x0000000000000001"), "test"
+                ),
+                location,
+            )
+            self.assertEqual(
+                "test",
+                identifier,
+            )
+
+    def testDecodeScriptLocation(self):
+        with self.subTest(msg=f"missing prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.ScriptLocation.decode("")
+
+        with self.subTest(msg=f"missing location"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.ScriptLocation.decode("s")
+
+        with self.subTest(msg=f"missing qualified identifier"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.AddressLocation.decode("s.test")
+
+        with self.subTest(msg=f"decode"):
+            location, identifier = cadence.ScriptLocation.decode("s.test.T")
+            self.assertEqual(
+                cadence.ScriptLocation("test"),
+                location,
+            )
+            self.assertEqual(
+                "T",
+                identifier,
+            )
