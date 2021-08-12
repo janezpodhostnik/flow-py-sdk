@@ -11,7 +11,7 @@ repository = "https://github.com/janezpodhostnik/flow-py-sdk"
 python = "^3.9"
 betterproto = {extras = ["compiler"], version = "^1.2.5"}
 grpcio-tools = "^1.33.2"
-ecdsa = "^0.16.1"
+ecdsa = "v0.17.0"
 rlp = "^2.0.1"
 grpclib = "^0.4.1"
 
