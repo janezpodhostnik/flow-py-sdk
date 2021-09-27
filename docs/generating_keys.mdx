@@ -1,0 +1,71 @@
+---
+title: Generating Keys
+contentType: HOWTO
+---
+
+Flow uses [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm)
+to control access to user accounts. Each key pair can be used in combination with
+the SHA2-256 or SHA3-256 hashing algorithms.
+### Supported Algorithms
+
+Hashing algorithms that is supported in Flow:
+- SHA2_256
+- SHA2_384
+- SHA3_256
+- SHA3_384
+
+Sgining algorithms that is supported in Flow:
+- SECP256k1
+- SECP256k1
+
+Here's a full list of the supported signature and hash algorithms: [Flow Signature & Hash Algorithms](https://docs.onflow.org/concepts/accounts-and-keys/#supported-signature--hash-algorithms)
+
+Here's how to generate an ECDSA private and public keys for the P-256 (secp256r1) curve:
+
+```python
+from ecdsa import NIST384p,SigningKey
+private_key = SigningKey.generate()
+public_key = private_key.get_verifying_key()
+
+# Also you can use seed string for creating keys
+# note: this is only an example, please use a secure random generator for the key seed
+
+secexp = randrange_from_seed__trytryagain(seed, sign_algo.get_signing_curve().order)
+private_key = SigningKey.from_secret_exponent(secexp, curve = sign_algo.get_signing_curve())
+
+```
+
+The private key can then be encoded as bytes (i.e. for storage):
+
+```python
+encPrivateKey := privateKey.encode()
+```
+
+A private key has an accompanying public key:
+
+```python
+public_key = private_key.get_verifying_key()
+```
+
+### Other methods
+There are two other methods for creating account key
+
+#### from_proto
+if you want to retrieve account key of an excisting account from Flow, you can use this method.
+
+```python
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+account = loop.run_until_complete(get_account_from_proto())
+acc_key = AccountKey.from_proto(account.keys[0])
+```
+notice an account can as multiple keys so you should choose one you want.
+
+#### from_seed 
+using this method You can easily create a pair key. this method use ECDSA library as describe above for creating private and public key.
+It return an AccountKey and InMemorySigner Object that can be use for further actions.
+
+```python
+# note: this is only an example, please use a secure random generator for the key seed
+get_account_key_from_seed(seed = "elephant ears space cowboy octopus rodeo potato cannon pineapple")
+```

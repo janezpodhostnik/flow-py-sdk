@@ -69,6 +69,20 @@ class AccessAPI(AccessAPIStub):
         return response.block
 
     async def get_block_by_i_d(self, *, id: bytes = b"") -> entities.Block:
+        """
+        Get a block Using its ID.
+
+        Parameters
+        ----------
+        id : bytes
+            ID of requested block.
+        
+        Returns
+        -------
+        entities.Block
+            Return requested block.
+
+        """
         response = await super().get_block_by_i_d(id=id)
         return entities.Block.from_proto(response.block)
 
@@ -85,18 +99,62 @@ class AccessAPI(AccessAPIStub):
         return entities.Transaction.from_proto(response.transaction)
 
     async def get_account(self, *, address: bytes = b"") -> entities.Account:
+        """
+        Gets an account Using its address.
+
+        Parameters
+        ----------
+        address : bytes
+            address of requested account.
+        
+        Returns
+        -------
+        entities.Account
+            Return requested account.
+            
+        """
         response = await super().get_account(address=address)
         return entities.Account.from_proto(response.account)
 
     async def get_account_at_latest_block(
         self, *, address: bytes = b""
     ) -> entities.Account:
+        """
+        gets an account by address at the latest sealed block.
+
+        Parameters
+        ----------
+        address : bytes
+            address of requested account.
+        
+        Returns
+        -------
+        entities.Account
+            Return requested account.
+            
+        """
         response = await super().get_account_at_latest_block(address=address)
         return entities.Account.from_proto(response.account)
 
     async def get_account_at_block_height(
         self, *, address: bytes = b"", block_height: int = 0
     ) -> entities.Account:
+        """
+        gets an account by address at the given block height.
+
+        Parameters
+        ----------
+        address : bytes
+            address of requested account.
+        block_height : int
+            Desired block height.
+        
+        Returns
+        -------
+        entities.Account
+            Return requested account.
+            
+        """
         response = await super().get_account_at_block_height(
             address=address, block_height=block_height
         )
