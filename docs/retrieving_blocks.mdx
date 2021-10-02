@@ -1,0 +1,56 @@
+---
+title: Retrieving Blocks
+description: How to retrieve blocks using the Flow Python SDK
+contentType: HOWTO
+---
+
+A block contains the following fields:
+
+- `ID` - The ID (hash) of the block.
+- `ParentBlockID` - The ID of the previous block in the chain.
+- `Height` - The height of the block in the chain.
+- `CollectionGuarantees` - The list of collections included in the block.
+- `BlockSeal` - The list of block seals.
+- `signatures` - BLS signatures of consensus nodes.
+
+You can use the `GetLatestBlock` method to fetch the latest sealed or unsealed block:
+
+```python
+# First Step : Create a client to connect to the flow blockchain
+# flow_client function creates a client using the host and port
+async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        block = await client.get_latest_block(
+            is_sealed = False
+            # or is_sealed = True can be used for reteriving sealed block
+        )
+        print("Block :\n")
+        print(block.__dict__)
+```
+You can use the `get_block_by_i_d` method to fetch the specific block with desired ID:
+
+```python
+async with flow_client(
+    host=ctx.access_node_host, port=ctx.access_node_port
+) as client:
+    latest_block = await client.get_latest_block()
+    block = await client.get_block_by_height(
+        height = latest_block.height
+    )
+    print("Block :\n")
+    print(block.__dict__)
+```
+Also `get_block_by_height` method can be used to fetch the specific block with desired height:
+
+```python
+async with flow_client(
+    host=ctx.access_node_host, port=ctx.access_node_port
+) as client:
+    latest_block = await client.get_latest_block()
+    block = await client.get_block_by_height(
+        height = latest_block.height
+    )
+    print("Block :\n")
+    print(block.__dict__)
+```

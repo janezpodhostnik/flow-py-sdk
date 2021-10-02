@@ -1,0 +1,24 @@
+---
+title: Retrieving collections
+description: How to retrieve collections using the Flow python SDK
+contentType: HOWTO
+---
+
+A collection is a batch of transactions that have been included in a block. Collections are used to improve consensus throughput by increasing the number of transactions per block.
+A collection contains the following fields:
+
+- `id` - SHA3-256 hash of the collection contents.
+- `transaction_ids` - Ordered list of transaction IDs in the collection.
+
+## retrieve collections using the `get_collection_by_i_d` function:
+
+```python
+async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        collection = await client.get_collection_by_i_d(
+            id = bytes.fromhex(collection_id)
+        )
+        print("Collection :\n")
+        print(collection.__dict__)
+```

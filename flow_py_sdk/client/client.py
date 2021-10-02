@@ -14,8 +14,6 @@ from flow_py_sdk.cadence import Value, cadence_object_hook, encode_arguments
 from flow_py_sdk.client import entities
 from flow_py_sdk.proto.flow.access import (
     AccessAPIStub,
-    TransactionResultResponse,
-    SendTransactionResponse,
     PingResponse,
 )
 from flow_py_sdk.script import Script
@@ -51,20 +49,76 @@ class AccessAPI(AccessAPIStub):
     async def get_latest_block_header(
         self, *, is_sealed: bool = False
     ) -> entities.BlockHeader:
+        """
+        Get gets the full payload of the latest sealed or unsealed block header.
+
+        Parameters
+        ----------
+        is_sealed : bool
+            detemine the requested block header should be seeled or not.
+        
+        Returns
+        -------
+        entities.BlockHeader
+            Return requested block header.
+
+        """
         response = await super().get_latest_block_header(is_sealed=is_sealed)
         return entities.BlockHeader.from_proto(response.block)
 
     async def get_block_header_by_i_d(self, *, id: bytes = b"") -> entities.BlockHeader:
+        """
+        Get a block header Using its ID.
+
+        Parameters
+        ----------
+        id : bytes
+            ID of requested block header.
+        
+        Returns
+        -------
+        entities.Block
+            Return requested block header.
+
+        """
         response = await super().get_block_header_by_i_d(id=id)
         return entities.BlockHeader.from_proto(response.block)
 
     async def get_block_header_by_height(
         self, *, height: int = 0
     ) -> entities.BlockHeader:
+        """
+        Get a block header Using its height.
+
+        Parameters
+        ----------
+        id : bytes
+            ID of requested block header.
+        
+        Returns
+        -------
+        entities.BlockHeader
+            Return requested block header.
+
+        """
         response = await super().get_block_header_by_height(height=height)
         return entities.BlockHeader.from_proto(response.block)
 
     async def get_latest_block(self, *, is_sealed: bool = False) -> entities.Block:
+        """
+        Get gets the full payload of the latest sealed or unsealed block.
+
+        Parameters
+        ----------
+        is_sealed : bool
+            detemine the requesteed block should be seeled or not.
+        
+        Returns
+        -------
+        entities.Block
+            Return requested block.
+
+        """
         response = await super(AccessAPI, self).get_latest_block(is_sealed=is_sealed)
         return response.block
 
@@ -87,14 +141,56 @@ class AccessAPI(AccessAPIStub):
         return entities.Block.from_proto(response.block)
 
     async def get_block_by_height(self, *, height: int = 0) -> entities.Block:
+        """
+        Get a block Using its height.
+
+        Parameters
+        ----------
+        height : int
+            Height of requested block.
+        
+        Returns
+        -------
+        entities.Block
+            Return requested block.
+
+        """
         response = await super().get_block_by_height(height=height)
         return entities.Block.from_proto(response.block)
 
     async def get_collection_by_i_d(self, *, id: bytes = b"") -> entities.Collection:
+        """
+        Get a collection Using its ID.
+
+        Parameters
+        ----------
+        ID : bytes
+            ID of requested collection.
+        
+        Returns
+        -------
+        entities.Collection
+            Return requested collection.
+
+        """
         response = await super().get_collection_by_i_d(id=id)
         return entities.Collection.from_proto(response.collection)
 
     async def get_transaction(self, *, id: bytes = b"") -> entities.Transaction:
+        """
+        Get a transaction Using its ID.
+
+        Parameters
+        ----------
+        ID : bytes
+            ID of requested transaction.
+        
+        Returns
+        -------
+        entities.Transaction
+            Return requested transaction.
+
+        """
         response = await super().get_transaction(id=id)
         return entities.Transaction.from_proto(response.transaction)
 
@@ -163,6 +259,23 @@ class AccessAPI(AccessAPIStub):
     async def execute_script_at_latest_block(
         self, *, script: bytes = b"", arguments: List[bytes] = []
     ) -> bytes:
+        """
+        executes a read-only Cadence script against the latest sealed block.
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+
+        Parameters
+        ----------
+        script : bytes
+            Cadence script which is wantedd to perform.
+        argumet : List[bytes]
+            list of argument which is need for performing script.
+        
+        Returns
+        -------
+        bytes
+            return value is encoded using the JSON-Cadence data interchange format.
+            
+        """
         response = await super().execute_script_at_latest_block(
             script=script, arguments=arguments
         )
@@ -171,6 +284,25 @@ class AccessAPI(AccessAPIStub):
     async def execute_script_at_block_i_d(
         self, *, block_id: bytes = b"", script: bytes = b"", arguments: List[bytes] = []
     ) -> bytes:
+        """
+        executes a read-only Cadence script against the desired block with specific ID.
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+
+        Parameters
+        ----------
+        block_id: bytes
+            ID of desired block.
+        script : bytes
+            Cadence script which is wantedd to perform.
+        argumet : List[bytes]
+            list of argument which is need for performing script.
+        
+        Returns
+        -------
+        bytes
+            return value is encoded using the JSON-Cadence data interchange format.
+            
+        """
         response = await super().execute_script_at_block_i_d(
             block_id=block_id, script=script, arguments=arguments
         )
@@ -179,6 +311,25 @@ class AccessAPI(AccessAPIStub):
     async def execute_script_at_block_height(
         self, *, block_height: int = 0, script: bytes = b"", arguments: List[bytes] = []
     ) -> bytes:
+        """
+        executes a read-only Cadence script against the desired block with specific height.
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+
+        Parameters
+        ----------
+        block_height: int
+            height of desired block.
+        script : bytes
+            Cadence script which is wantedd to perform.
+        argumet : List[bytes]
+            list of argument which is need for performing script.
+        
+        Returns
+        -------
+        bytes
+            return value is encoded using the JSON-Cadence data interchange format.
+            
+        """
         response = await super().execute_script_at_block_height(
             block_height=block_height, script=script, arguments=arguments
         )
@@ -187,6 +338,25 @@ class AccessAPI(AccessAPIStub):
     async def get_events_for_height_range(
         self, *, type: str = "", start_height: int = 0, end_height: int = 0
     ) -> list[entities.EventsResponseResult]:
+        """
+        query on blocks in specific height.
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+
+        Parameters
+        ----------
+        type : str
+            type of requested type.
+        start_height: int
+            start of desired range.
+        end_height : int
+            end of desired range.
+        
+        Returns
+        -------
+        list[entities.EventsResponseResult]
+            return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
+            
+        """
         response = await super().get_events_for_height_range(
             type=type, start_height=start_height, end_height=end_height
         )
@@ -195,12 +365,40 @@ class AccessAPI(AccessAPIStub):
     async def get_events_for_block_i_ds(
         self, *, type: str = "", block_ids: List[bytes] = []
     ) -> list[entities.EventsResponseResult]:
+        """
+        query on blocks with specific IDs.
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+
+        Parameters
+        ----------
+        type : str
+            type of requested type.
+        block_ids: List[bytes]
+            list of desired blocks.
+        
+        Returns
+        -------
+        list[entities.EventsResponseResult]
+            return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
+            
+        """
         response = await super().get_events_for_block_i_ds(
             type=type, block_ids=block_ids
         )
         return [entities.EventsResponseResult.from_proto(er) for er in response.results]
 
     async def get_network_parameters(self) -> entities.GetNetworkParametersResponse:
+        """
+        retrieves the network parameters.
+
+        Parameters
+        ----------
+                
+        Returns
+        -------
+        entities.GetNetworkParametersResponse
+            
+        """
         response = await super().get_network_parameters()
         return entities.GetNetworkParametersResponse.from_proto(response)
 
@@ -210,6 +408,25 @@ class AccessAPI(AccessAPIStub):
         at_block_id: Optional[bytes] = None,
         at_block_height: Optional[int] = None,
     ) -> Optional[Value]:
+        """
+        executes a read-only Cadence script against the desired block with specific height or ID.
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+
+        Parameters
+        ----------
+        script : bytes
+            Cadence script which is wantedd to perform.
+        block_id: int
+            ID of desired block.
+        block_height: int
+            height of desired block.
+        
+        Returns
+        -------
+        Optional[Value]
+            return value is encoded using the JSON-Cadence data interchange format.
+            
+        """
         s = script.code.encode("utf-8")
         a = encode_arguments(script.arguments)
 
@@ -237,23 +454,79 @@ class AccessAPI(AccessAPIStub):
         return cadence_value
 
     async def ping(self) -> PingResponse:
+        """
+        will return a successful response if the Access API is ready and available.
+
+        Parameters
+        ----------
+        
+        Returns
+        -------
+            
+        """
         return await super().ping()
 
     async def send_transaction(
         self, *, transaction: Optional[entities.Transaction] = None
     ) -> entities.SendTransactionResponse:
+        """
+        submits a transaction to the network.
+        
+        Parameters
+        ----------
+        transaction: Optional[entities.Transaction]
+            a transaction opject contains parameters like script, arguments, proposal_key, reference_block_id ...
+        
+        Returns
+        -------
+        entities.SendTransactionResponse
+            returns id of block
+            
+        """
         response = await super().send_transaction(transaction=transaction)
         return entities.SendTransactionResponse.from_proto(response)
 
     async def get_transaction_result(
         self, *, id: bytes = b""
     ) -> entities.TransactionResultResponse:
+        """
+        get a transaction response.
+        
+        Parameters
+        ----------
+        id: byte
+            id of requested transaction.
+        
+        Returns
+        -------
+        entities.SendTransactionResponse
+            returns id of block
+            
+        """
         response = await super().get_transaction_result(id=id)
         return entities.TransactionResultResponse.from_proto(response)
 
     async def execute_transaction(
         self, tx: Tx, *, wait_for_seal=True, timeout: Annotated[float, "seconds"] = 30.0
     ) -> entities.TransactionResultResponse:
+        """
+        submits a transaction to the network and wait to return its response.
+        
+        Parameters
+        ----------
+        tx: entities.Transaction
+            a transaction opject contains parameters like script, arguments, proposal_key, reference_block_id ...
+        wait_for_seal: bool
+            return response when the block is sealed.
+        timeout: float
+            time the function should wait for response
+        
+        Returns
+        -------
+        entities.SendTransactionResponse
+            returns id of block
+            
+        """
         log.debug(f"Sending transaction")
         result = await self.send_transaction(transaction=tx.to_grpc())
         log.info(f"Sent transaction {result.id.hex()}")

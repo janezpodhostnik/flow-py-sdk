@@ -1,7 +1,18 @@
 ---
 title: Generating Keys
+description: How to generating Keys using the Flow Python SDK
 contentType: HOWTO
 ---
+
+A accountKey contains the following fields:
+
+- `id` - Index of the key within the account, used as a unique identifier.
+- `public_key` - Public key encoded as bytes.
+- `sign_algo` - signature algorithm.
+- `hash_algo` - hash algorithm.
+- `weight` - Each account key has a weight that determines the signing power it holds.
+- `sequence_number` - Flow uses sequence numbers to ensure that each transaction runs at most once.
+- `revoked` - Flag indicating whether or not the key has been revoked.
 
 Flow uses [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm)
 to control access to user accounts. Each key pair can be used in combination with
@@ -48,7 +59,7 @@ public_key = private_key.get_verifying_key()
 ```
 
 ### Other methods
-There are two other methods for creating account key
+There are two other methods for creating or retrieving account key
 
 #### from_proto
 if you want to retrieve account key of an excisting account from Flow, you can use this method.

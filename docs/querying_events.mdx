@@ -1,0 +1,65 @@
+---
+title: Querying Events
+description: How to query events using the Flow python SDK
+contentType: HOWTO
+---
+
+An event is emitted as the result of a transaction execution. Events are either user-defined events originating from a Cadence smart contract, or built-in Flow system events.
+An event contains the following fields:
+
+- `type` - Fully-qualified unique type identifier for the event.
+- `transaction_id` - ID of the transaction the event was emitted from.
+- `transaction_index` - Zero-based index of the transaction within the block.
+- `event_index` - Zero-based index of the event within the transaction.
+- `payload` - Event fields encoded as JSON-Cadence values.
+
+You can query events with the `get_events_for_height_range` function or at a specific block using `get_events_for_block_i_ds` :
+## query events with the `get_events_for_height_range` function:
+
+```python
+async def run(self, ctx: Config):
+    # First Step : Create a client to connect to the flow blockchain
+    # flow_client function creates a client using the host and port
+    async with flow_client(
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            events = await client.get_events_for_height_range(
+                type = "", start_height = 0, end_height = 0
+            )
+            print("Events :\n")
+            print(events)
+```
+note:
+If `start_height` is greater than the current sealed chain height, then this method will return an error.
+If `end_height` is greater than the current sealed chain height, then this method will return events up to and including the latest sealed block.
+
+
+### `get_events_for_height_range` parameters
+
+An event query includes the following fields:
+
+**Type**
+
+The event type to filter by. Event types are namespaced by the account and contract in which they are declared.
+
+For example, a `Transfer` event that was defined in the `Token` contract deployed at account `0x55555555555555555555` will have a type of `A.0x55555555555555555555.Token.Transfer`.
+
+Read the [language documentation](https://docs.onflow.org/cadence/language/events/) for more information on how to define and emit events in Cadence.
+
+**StartHeight, EndHeight**
+
+The blocks to filter by. Events will be returned from blocks in the range `StartHeight` to `EndHeight`, inclusive.
+
+## query events with the `get_events_for_block_i_ds` function:
+
+```python
+async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        latest_block = await client.get_latest_block()
+        events = await client.get_events_for_block_i_ds(
+            type = "", block_ids = [latest_block.id]
+        )
+        print("Events :\n")
+        print(events)
+```
