@@ -105,7 +105,7 @@ class AccountKey(object):
 
         Returns
         -------
-        َAccountKey
+        AccountKey
             Return Account Key contain public and hash algorithm and signature algorithm. 
             it also create a InMenorSigner, it can be use signing messages and transactions.
 

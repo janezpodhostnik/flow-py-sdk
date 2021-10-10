@@ -9,29 +9,9 @@ from flow_py_sdk import flow_client
 from examples.common.utils import random_account
 from flow_py_sdk import cadence
 
-# -------------------------------------------------------------------------
-# Rretrieve a transaction by ID Class
-# -------------------------------------------------------------------------
-class GetTransactionByIdExample(Example):
-    def __init__(self) -> None:
-        super().__init__(tag="T.1.", name="GetTransactionByIdExample", sort_order=501)
-
-    async def run(self, ctx: Config):
-        # First Step : Create a client to connect to the flow blockchain
-        # flow_client function creates a client using the host and port
-        async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-                transactionId = None
-                transaction = await client.get_transaction(
-                    id = transactionId
-                )
-                print("Transaction :\n")
-                print(transaction.__dict__)
-                print("\nget transaction by id : successfully done...")
 
 # -------------------------------------------------------------------------
-# Sign a transaction Class
+# Sign a transaction
 # -------------------------------------------------------------------------
 class SignTransactionExample(Example):
     def __init__(self) -> None:
@@ -71,7 +51,7 @@ class SignTransactionExample(Example):
                 print("\nsign transaction : successfully done...")
 
 # -------------------------------------------------------------------------
-# Submit a signed transaction Class
+# Submit a signed transaction
 # -------------------------------------------------------------------------
 class SubmitSignedTransactionExample(Example):
     def __init__(self) -> None:
@@ -111,7 +91,7 @@ class SubmitSignedTransactionExample(Example):
                 print("\nsubmit a signed transaction : successfully done...")
 
 # -------------------------------------------------------------------------
-# Submit a signed transaction with arguments Class
+# Submit a signed transaction with arguments
 # -------------------------------------------------------------------------
 class SubmitSignedTransactionWithArgumentsExample(Example):
     def __init__(self) -> None:
@@ -201,3 +181,49 @@ class SubmitMultiSignedTransactionExample(Example):
 
                 print("Submit a multi Signed Transaction :\n")
                 print("\nsubmit a multi signed transaction : successfully done...")
+
+# -------------------------------------------------------------------------
+# Rretrieve a transaction by ID Class
+# -------------------------------------------------------------------------
+class GetTransactionByIdExample(Example):
+    def __init__(self) -> None:
+        super().__init__(tag="T.1.", name="GetTransactionByIdExample", sort_order=501)
+
+    async def run(self, ctx: Config):
+        # First Step : Create a client to connect to the flow blockchain
+        # flow_client function creates a client using the host and port
+        async with flow_client(
+                host=ctx.access_node_host, port=ctx.access_node_port
+            ) as client:
+
+                account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
+                latest_block = await client.get_latest_block()
+                proposer = await client.get_account_at_latest_block(address = ctx.service_account_address)
+
+                tx = Tx(
+                    code="""transaction(){prepare(){log("OK")}}""",
+                    reference_block_id = latest_block.id,
+                    payer = account_address,
+                    proposal_key = ProposalKey(
+                        key_address = account_address,
+                        key_id = 0,
+                        key_sequence_number = proposer.keys[
+                            0
+                        ].sequence_number,
+                    ),
+                ).with_envelope_signature(
+                    account_address,
+                    0,
+                    new_signer,
+                )
+
+                response = await client.send_transaction(tx)
+
+                transactionId = response.id
+
+                transaction = await client.get_transaction(
+                    id = transactionId
+                )
+                print("Transaction :\n")
+                print(transaction.__dict__)
+                print("\nget transaction by id : successfully done...")

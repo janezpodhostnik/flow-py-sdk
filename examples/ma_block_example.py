@@ -4,7 +4,7 @@ from examples.common import Example, Config
 from flow_py_sdk import flow_client
 
 # -------------------------------------------------------------------------
-# Rretrieve a block by ID Class
+# Rretrieve a block by ID
 # -------------------------------------------------------------------------
 class GetBlockByIdExample(Example):
     def __init__(self) -> None:
@@ -25,7 +25,7 @@ class GetBlockByIdExample(Example):
                 print("\nget block by id : successfully done...")
 
 # -------------------------------------------------------------------------
-# Retrieve a block by height Class
+# Retrieve a block by height
 # -------------------------------------------------------------------------
 class GetBlockByHeightExample(Example):
     def __init__(self) -> None:
@@ -45,7 +45,7 @@ class GetBlockByHeightExample(Example):
                 print("\nget block by height : successfully done...")
 
 # -------------------------------------------------------------------------
-# Retrieve the latest block Class
+# Retrieve the latest block
 # -------------------------------------------------------------------------
 class GetLatestBlockExample(Example):
     def __init__(self) -> None:
@@ -63,15 +63,7 @@ class GetLatestBlockExample(Example):
                 print(block.__dict__)
                 print("\nget latest block : successfully done...")
 
-# -------------------------------------------------------------------------
-# Main
-# -------------------------------------------------------------------------
-# GetLatestBlockExample.run()
-# loop = asyncio.new_event_loop()
-# asyncio.set_event_loop(loop)
-# loop.run_until_complete(get_block_by_height_example())
-# loop.run_until_complete(get_block_by_id_example())
-# loop.run_until_complete(get_latest_block_example())
+
 
 
   
