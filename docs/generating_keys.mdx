@@ -62,7 +62,7 @@ public_key = private_key.get_verifying_key()
 There are two other methods for creating or retrieving account key
 
 #### from_proto
-if you want to retrieve account key of an excisting account from Flow, you can use this method.
+If you want to retrieve account key of an excisting account from Flow, you can use this method.
 
 ```python
 loop = asyncio.new_event_loop()
@@ -70,11 +70,11 @@ asyncio.set_event_loop(loop)
 account = loop.run_until_complete(get_account_from_proto())
 acc_key = AccountKey.from_proto(account.keys[0])
 ```
-notice an account can as multiple keys so you should choose one you want.
+Notice an account can has multiple keys so you should choose one you want.
 
 #### from_seed 
-using this method You can easily create a pair key. this method use ECDSA library as describe above for creating private and public key.
-It return an AccountKey and InMemorySigner Object that can be use for further actions.
+Using this method You can easily create a pair key. this method use ECDSA library as describe above for creating private and public keys.
+It returns an AccountKey and InMemorySigner Object that can be use for further actions.
 
 ```python
 # note: this is only an example, please use a secure random generator for the key seed

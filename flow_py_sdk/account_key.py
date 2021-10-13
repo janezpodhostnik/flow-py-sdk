@@ -90,7 +90,7 @@ class AccountKey(object):
         return ak
 
     @classmethod
-    def from_seed(cls, sign_algo: SignAlgo, hash_algo: HashAlgo, seed: str = None ) -> tuple[AccountKey, in_memory_signer.InMemorySigner]:
+    def from_seed(cls, sign_algo: SignAlgo, hash_algo: HashAlgo, *, seed: str = None ) -> tuple[AccountKey, in_memory_signer.InMemorySigner]:
         """
         from_seed provide a way for user to create a public and private key for an account using, seed string.
 
@@ -113,18 +113,20 @@ class AccountKey(object):
         if sign_algo == None:
             sign_algo = SignAlgo.ECDSA_P256
         if hash_algo == None:
-            hash_algo = HashAlgo.SHA2_256
+            hash_algo = HashAlgo.SHA3_256
         
         # Generate private key using provided Seed.
         if seed == None:
-            private_key = SigningKey.generate()
+            sk = SigningKey.generate()
+            private_key = sk.to_string()
         else:
             secexp = randrange_from_seed__trytryagain(seed, sign_algo.get_signing_curve().order)
-            private_key = SigningKey.from_secret_exponent(secexp, curve = sign_algo.get_signing_curve())
+            sk = SigningKey.from_secret_exponent(secexp, curve = sign_algo.get_signing_curve())
+            private_key = sk.to_string()
 
         # Extract public Key (verifying Key) of generated private key.
-        public_key = private_key.get_verifying_key()
-
+        vk = sk.get_verifying_key()
+        public_key = vk.to_string()
         #Create Account Key.
         ak = AccountKey(
             public_key = public_key,
@@ -136,6 +138,6 @@ class AccountKey(object):
 
         signer = in_memory_signer.InMemorySigner(hash_algo =  hash_algo,
         sign_algo = sign_algo,
-        private_key_hex = private_key.to_string().hex())
+        private_key_hex = private_key.hex())
 
         return ak, signer

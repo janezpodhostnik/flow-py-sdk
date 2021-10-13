@@ -8,6 +8,7 @@ from flow_py_sdk import ProposalKey
 from flow_py_sdk import flow_client
 from examples.common.utils import random_account
 from flow_py_sdk import cadence
+from flow_py_sdk.client import client
 
 
 # -------------------------------------------------------------------------
@@ -26,29 +27,26 @@ class SignTransactionExample(Example):
             ) as client:
                 account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
                 latest_block = await client.get_latest_block()
-                proposer = await client.get_account_at_latest_block(address = ctx.service_account_address)
+                proposer = await client.get_account_at_latest_block(address = account_address.bytes)
 
-                tx = Tx(
+                tx = (Tx(
                     code="""transaction(){prepare(){log("OK")}}""",
                     reference_block_id = latest_block.id,
                     payer = account_address,
-                    proposal_key = ProposalKey(
-                        key_address = account_address,
-                        key_id = 0,
-                        key_sequence_number = proposer.keys[
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[
                             0
                         ].sequence_number,
                     ),
-                ).with_envelope_signature(
-                    account_address,
-                    0,
-                    new_signer,
+                    ).with_envelope_signature(
+                        account_address,
+                        0,
+                        new_signer,
+                    )
                 )
 
-                print("Sign Transaction :\n")
-                print("Signed Transaction : \n")
-                print(tx.__dict__)
-                print("\nsign transaction : successfully done...")
 
 # -------------------------------------------------------------------------
 # Submit a signed transaction
@@ -66,29 +64,27 @@ class SubmitSignedTransactionExample(Example):
             ) as client:
                 account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
                 latest_block = await client.get_latest_block()
-                proposer = await client.get_account_at_latest_block(address = ctx.service_account_address)
+                proposer = await client.get_account_at_latest_block(address = account_address.bytes)
 
-                tx = Tx(
+                tx = (Tx(
                     code="""transaction(){prepare(){log("OK")}}""",
                     reference_block_id = latest_block.id,
                     payer = account_address,
-                    proposal_key = ProposalKey(
-                        key_address = account_address,
-                        key_id = 0,
-                        key_sequence_number = proposer.keys[
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[
                             0
                         ].sequence_number,
                     ),
-                ).with_envelope_signature(
-                    account_address,
-                    0,
-                    new_signer,
+                    ).with_envelope_signature(
+                        account_address,
+                        0,
+                        new_signer,
+                    )
                 )
 
-                await client.execute_transaction(tx)
-
-                print("Submit a Signed Transaction :\n")
-                print("\nsubmit a signed transaction : successfully done...")
+                result = await client.execute_transaction(tx)
 
 # -------------------------------------------------------------------------
 # Submit a signed transaction with arguments
@@ -106,21 +102,20 @@ class SubmitSignedTransactionWithArgumentsExample(Example):
             ) as client:
                 account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
                 latest_block = await client.get_latest_block()
-                proposer = await client.get_account_at_latest_block(address = ctx.service_account_address)
-
-                tx = (
-                    Tx(
-                    code="""transaction(arg : {String}){prepare(){log(arg)}}""",
+                proposer = await client.get_account_at_latest_block(address = account_address.bytes)
+                arg1 = cadence.String("Hoora!!! It worked :))")
+                tx = (Tx(
+                    code="""transaction(arg1 : String){prepare(){log(arg1)}}""",
                     reference_block_id = latest_block.id,
                     payer = account_address,
-                    proposal_key = ProposalKey(
-                        key_address = account_address,
-                        key_id = 0,
-                        key_sequence_number = proposer.keys[
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[
                             0
                         ].sequence_number,
                     ),
-                    ).add_arguments("argument1")
+                    ).add_arguments(arg1)
                     .with_envelope_signature(
                         account_address,
                         0,
@@ -128,10 +123,7 @@ class SubmitSignedTransactionWithArgumentsExample(Example):
                     )
                 )
 
-                await client.execute_transaction(tx)
-
-                print("Submit a Signed Transaction with arguments :\n")
-                print("\nsubmit a signed transaction with arguments : successfully done...")
+                result = await client.execute_transaction(tx)
 
 # -------------------------------------------------------------------------
 # Submit a signed transaction with multi party
@@ -150,21 +142,27 @@ class SubmitMultiSignedTransactionExample(Example):
                 account_address1, account_key1, new_signer1 = await random_account( client = client, ctx = ctx)
                 account_address2, account_key2, new_signer2 = await random_account( client = client, ctx = ctx)
                 latest_block = await client.get_latest_block()
-                proposer = await client.get_account_at_latest_block(address = ctx.service_account_address)
+                proposer = await client.get_account_at_latest_block(address = account_address1.bytes)
 
                 tx = (
                     Tx(
-                    code="""transaction(){prepare(){log("OK")}}""",
+                    code="""transaction { 
+                        prepare(signer1: AuthAccount, signer2: AuthAccount) { 
+                            log(signer1.address) 
+                            log(signer2.address)
+                        }
+                    }""",
                     reference_block_id = latest_block.id,
                     payer = account_address1,
-                    proposal_key = ProposalKey(
-                        key_address = account_address1,
-                        key_id = 0,
-                        key_sequence_number = proposer.keys[
+                    proposal_key=ProposalKey(
+                        key_address=account_address1,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[
                             0
                         ].sequence_number,
                     ),
-                    ).add_authorizers([account_address1, account_address2])
+                    ).add_authorizers(account_address1)
+                    .add_authorizers(account_address2)
                     .with_payload_signature(
                         account_address2,
                         0,
@@ -177,10 +175,7 @@ class SubmitMultiSignedTransactionExample(Example):
                     )
                 )
 
-                await client.execute_transaction(tx)
-
-                print("Submit a multi Signed Transaction :\n")
-                print("\nsubmit a multi signed transaction : successfully done...")
+                result = await client.execute_transaction(tx)
 
 # -------------------------------------------------------------------------
 # Rretrieve a transaction by ID Class
@@ -198,32 +193,30 @@ class GetTransactionByIdExample(Example):
 
                 account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
                 latest_block = await client.get_latest_block()
-                proposer = await client.get_account_at_latest_block(address = ctx.service_account_address)
+                proposer = await client.get_account_at_latest_block(address = account_address.bytes)
 
-                tx = Tx(
+                tx = (Tx(
                     code="""transaction(){prepare(){log("OK")}}""",
                     reference_block_id = latest_block.id,
                     payer = account_address,
-                    proposal_key = ProposalKey(
-                        key_address = account_address,
-                        key_id = 0,
-                        key_sequence_number = proposer.keys[
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[
                             0
                         ].sequence_number,
                     ),
-                ).with_envelope_signature(
-                    account_address,
-                    0,
-                    new_signer,
+                    ).with_envelope_signature(
+                        account_address,
+                        0,
+                        new_signer,
+                    )
                 )
 
-                response = await client.send_transaction(tx)
+                response = await client.send_transaction(transaction = tx.to_grpc())
 
                 transactionId = response.id
 
                 transaction = await client.get_transaction(
                     id = transactionId
                 )
-                print("Transaction :\n")
-                print(transaction.__dict__)
-                print("\nget transaction by id : successfully done...")

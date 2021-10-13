@@ -28,19 +28,40 @@ class ExecuteScriptExample(Example):
                 """
             )
 
+        async with flow_client(
+                host=ctx.access_node_host, port=ctx.access_node_port
+            ) as client:
+                result = await client.execute_script(
+                    script = script
+                    # , block_id
+                    # , block_height
+                )
+                print("Script result :\n")
+                print(result.__dict__)
+                print("\nrun script : successfully done...")
+
+
+# -------------------------------------------------------------------------
+# Submit a script with arguments and parse the response Function
+# -------------------------------------------------------------------------
+class ExecuteScriptExample(Example):
+    def __init__(self) -> None:
+        super().__init__(tag="S.2.", name="ExecuteScriptWithArgumentExample", sort_order=402)
+    async def run(self, ctx: Config):
+        # First Step : Create a client to connect to the flow blockchain
+        # flow_client function creates a client using the host and port
+
         # --------------------------------
         # script with arguments Example
         # --------------------------------
-        # script = Script(
-        #         code="""
-        #             pub fun main(a: Int, b: Int): Int {
-        #                 return a + b
-        #             }
-        #         """,
-        #         arguments=[cadence.Int(1), cadence.Int(1)]
-        #     )
-
-        script = Script()
+        script = Script(
+                code="""
+                    pub fun main(a: Int, b: Int): Int {
+                        return a + b
+                    }
+                """,
+                arguments=[cadence.Int(1), cadence.Int(1)]
+            )
 
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port

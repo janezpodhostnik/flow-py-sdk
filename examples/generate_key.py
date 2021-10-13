@@ -1,0 +1,79 @@
+import asyncio
+import json
+from flow_py_sdk import account_key
+
+from flow_py_sdk.account_key import AccountKey
+import flow_py_sdk.client.client
+
+from flow_py_sdk.signer.hash_algo import HashAlgo
+from flow_py_sdk.signer.hash_algo import HashAlgo
+from flow_py_sdk.signer.sign_algo import SignAlgo
+import ecdsa
+import hashlib
+from flow_py_sdk import flow_client
+from flow_py_sdk.cadence import Address
+
+from examples.common import Example, Config
+
+from ecdsa import SigningKey
+
+# -------------------------------------------------------------------------
+# Create AccountKey Instant.
+# 
+# There are 3 ways to create account key using Flow python SDK.
+# -------------------------------------------------------------------------
+
+# # -------------------------------------------------------------------------
+# # First: an account key can be created using a public key.
+# # -------------------------------------------------------------------------
+
+class CreateAccountKeyByPublicExample(Example):
+    def __init__(self) -> None:
+        super().__init__(tag="A.1.", name="CreateAccountKeyByPublicExample", sort_order=801)
+    async def run(self, ctx: Config):
+
+        sign_algo = ecdsa.NIST256p
+        hash_algo = HashAlgo.SHA2_256
+
+        sk = SigningKey.generate()
+        private_key = sk.to_string()
+        vk = sk.get_verifying_key()
+        public_key = vk.to_string()
+
+        acc_key = AccountKey(public_key=public_key, sign_algo=sign_algo,hash_algo=hash_algo)
+
+        print(acc_key.__dict__)
+
+# -------------------------------------------------------------------------
+# Second: get an account key by retrieving an account
+# -------------------------------------------------------------------------
+
+class GetAccountKeyByProtoExample(Example):
+    def __init__(self) -> None:
+        super().__init__(tag="A.2.", name="GetAccountKeyByProtoExample", sort_order=802)
+    async def run(self, ctx: Config):
+
+        # First Step : Create a client to connect to the flow blockchain
+        # flow_client function creates a client using the host and port
+        async with flow_client(
+                host=ctx.access_node_host, port=ctx.access_node_port
+            ) as client:
+                account = await client.get_account(address = ctx.service_account_address.bytes)
+
+# # -------------------------------------------------------------------------
+# # Third: Using seed pharse to create account key.
+# # this method also provide a signer to sign transaction or messages.
+# # -------------------------------------------------------------------------
+
+class CreateAccountKeyBySeedExample(Example):
+    def __init__(self) -> None:
+        super().__init__(tag="A.3.", name="CreateAccountKeyBySeedExample", sort_order=803)
+    async def run(self, ctx: Config):
+
+        acc_key, pk = AccountKey.from_seed(
+            sign_algo = None, 
+            hash_algo=None, 
+            seed="JNFWM-NDDSE-GENPV-BUBYK-XAVEJ-MVECB-UHIHT-FKKHR-FFDQX-HNSIQ-QVATO-ZEHEQ"
+            )
+
+

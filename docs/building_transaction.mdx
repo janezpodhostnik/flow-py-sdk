@@ -11,9 +11,19 @@ the transaction to mutate the state owned by specific accounts.
 
 You can read more about transactions in the [transaction lifecycle documentation](/concepts/transaction-lifecycle).
 
+A transaction contains the following fields:
+
+- `script` - Raw source code for a Cadence script, encoded as UTF-8 bytes
+- `arguments` - Arguments passed to the Cadence script, encoded as JSON-Cadence bytes
+- `reference_block_id` - Block ID used to determine transaction expiry
+- `proposal_key` - Account key used to propose the transaction
+- `payer` - Address of the payer account
+- `authorizers` - Addresses of the transaction authorizers
+- `signatures` - Signatures from all signer accounts
+
 # Create the Transaction
 
-a transaction needs some parameters, first have a look on them then implement them in example.
+A transaction needs some parameters, first have a look on them then implement them in example.
 
 You can start by creating an empty transaction with the python SDK.
 We'll populate the remaining fields one by one.
@@ -72,7 +82,7 @@ A transaction must specify exactly one payer. The payer is only responsible
 for paying the network and gas fees; the transaction is not authorized to access
 resources or code stored in the payer account.
 
-from what you learn so far now you can create a transaction as below:
+From what you learn so far now you can create a transaction as below:
 
 ```python
 async def run(self, ctx: Config):
@@ -99,7 +109,7 @@ async def run(self, ctx: Config):
                 ),
             )
 ```
-there is more you can do with transaction. let's check them:
+There is more you can do with transaction. let's check them:
 
 ## Arguments
 
@@ -458,11 +468,11 @@ async def run(self, ctx: Config):
 
 # Send transaction and get results
 
-there is two way to do this:
+There is two way to do this:
 - you can use `send_transaction` and `get_transaction_result`.
 - you can use `execute_transaction`
 
-the second one is recommanded. you can see a example in below:
+The second one is recommanded. you can see a example in below:
 
 ```python
 results = await client.execute_transaction(tx)

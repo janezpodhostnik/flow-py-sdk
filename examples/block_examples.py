@@ -20,9 +20,7 @@ class GetBlockByIdExample(Example):
                 block = await client.get_block_by_i_d(
                     id = latest_block.id
                 )
-                print("Block :\n")
-                print(block.__dict__)
-                print("\nget block by id : successfully done...")
+
 
 # -------------------------------------------------------------------------
 # Retrieve a block by height
@@ -40,9 +38,7 @@ class GetBlockByHeightExample(Example):
                 block = await client.get_block_by_height(
                     height = latest_block.height
                 )
-                print("Block :\n")
-                print(block.__dict__)
-                print("\nget block by height : successfully done...")
+
 
 # -------------------------------------------------------------------------
 # Retrieve the latest block
@@ -59,9 +55,7 @@ class GetLatestBlockExample(Example):
                 block = await client.get_latest_block(
                     is_sealed = False
                 )
-                print("Block :\n")
-                print(block.__dict__)
-                print("\nget latest block : successfully done...")
+
 
 
 

@@ -56,7 +56,7 @@ def create_account_template(
 
     return tx
 
-class get_template():
+class get_contract_template():
     updateAccountContractTemplate = '''transaction(name: String, code: String) {
         prepare(signer: AuthAccount) {
             signer.contracts.update__experimental(name: name, code: code.decodeHex())
