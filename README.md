@@ -26,3 +26,13 @@ or if using poetry:
 
 `poetry add flow-py-sdk`
 
+## Run examples
+
+To run example first you need to install dependencies. to install dependencies run:
+
+`poetry install`
+
+and then you can run examples using:
+
+`poetry run examples`
+

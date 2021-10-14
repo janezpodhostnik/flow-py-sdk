@@ -1,9 +1,7 @@
-
 from flow_py_sdk.tx import Tx
 from flow_py_sdk import ProposalKey, flow_client, cadence
 from examples.common.utils import random_account
 from examples.common import Example, Config
-
 
 
 # -------------------------------------------------------------------------
@@ -18,28 +16,29 @@ class SignTransactionExample(Example):
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_address, _, new_signer = await random_account( client = client, ctx = ctx)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address.bytes)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
 
-            transaction = (Tx(
+            transaction = Tx(
                 code="""transaction(){prepare(){log("OK")}}""",
-                reference_block_id = latest_block.id,
-                payer = account_address,
+                reference_block_id=latest_block.id,
+                payer=account_address,
                 proposal_key=ProposalKey(
                     key_address=account_address,
                     key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
+                    key_sequence_number=proposer.keys[0].sequence_number,
                 ),
-                ).with_envelope_signature(
-                    account_address,
-                    0,
-                    new_signer,
-                )
+            ).with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
             )
 
 
@@ -48,69 +47,81 @@ class SignTransactionExample(Example):
 # -------------------------------------------------------------------------
 class SubmitSignedTransactionExample(Example):
     def __init__(self) -> None:
-        super().__init__(tag="T.3.", name="SubmitSignedTransactionExample", sort_order=503)
+        super().__init__(
+            tag="T.3.", name="SubmitSignedTransactionExample", sort_order=503
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_address, _, new_signer = await random_account( client = client, ctx = ctx)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address.bytes)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
 
-            transaction = (Tx(
+            transaction = Tx(
                 code="""transaction(){prepare(){log("OK")}}""",
-                reference_block_id = latest_block.id,
-                payer = account_address,
+                reference_block_id=latest_block.id,
+                payer=account_address,
                 proposal_key=ProposalKey(
                     key_address=account_address,
                     key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
+                    key_sequence_number=proposer.keys[0].sequence_number,
                 ),
-                ).with_envelope_signature(
-                    account_address,
-                    0,
-                    new_signer,
-                )
+            ).with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
             )
 
             await client.execute_transaction(transaction)
+
 
 # -------------------------------------------------------------------------
 # Submit a signed transaction with arguments
 # -------------------------------------------------------------------------
 class SubmitSignedTransactionWithArgumentsExample(Example):
     def __init__(self) -> None:
-        super().__init__(tag="T.4.", name="SubmitSignedTransactionWithArgumentsExample", sort_order=504)
+        super().__init__(
+            tag="T.4.",
+            name="SubmitSignedTransactionWithArgumentsExample",
+            sort_order=504,
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_address, _, new_signer = await random_account( client = client, ctx = ctx)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address.bytes)
-            arg1 = cadence.String("Hoora!!! It worked :))")
-            transaction = (Tx(
-                code="""transaction(arg1 : String){prepare(){log(arg1)}}""",
-                reference_block_id = latest_block.id,
-                payer = account_address,
-                proposal_key=ProposalKey(
-                    key_address=account_address,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
-                ),
-                ).add_arguments(arg1)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
+            arg1 = cadence.String("Hooray!!! It worked :))")
+            transaction = (
+                Tx(
+                    code="""transaction(arg1 : String){prepare(){log(arg1)}}""",
+                    reference_block_id=latest_block.id,
+                    payer=account_address,
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[0].sequence_number,
+                    ),
+                )
+                .add_arguments(arg1)
                 .with_envelope_signature(
                     account_address,
                     0,
@@ -120,42 +131,51 @@ class SubmitSignedTransactionWithArgumentsExample(Example):
 
             await client.execute_transaction(transaction)
 
+
 # -------------------------------------------------------------------------
 # Submit a signed transaction with multi party
 # -------------------------------------------------------------------------
 class SubmitMultiSignedTransactionExample(Example):
     def __init__(self) -> None:
-        super().__init__(tag="T.5.", name="SubmitMultiSignedTransactionExample", sort_order=505)
+        super().__init__(
+            tag="T.5.", name="SubmitMultiSignedTransactionExample", sort_order=505
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_address1, _, new_signer1 = await random_account( client = client, ctx = ctx)
-            account_address2, _, new_signer2 = await random_account( client = client, ctx = ctx)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address1, _, new_signer1 = await random_account(
+                client=client, ctx=ctx
+            )
+            account_address2, _, new_signer2 = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address1.bytes)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address1.bytes
+            )
 
             transaction = (
-                Tx(code="""transaction {
+                Tx(
+                    code="""transaction {
                     prepare(signer1: AuthAccount, signer2: AuthAccount) { 
                         log(signer1.address) 
                         log(signer2.address)
                     }
                 }""",
-                reference_block_id = latest_block.id,
-                payer = account_address1,
-                proposal_key=ProposalKey(
-                    key_address=account_address1,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
-                ),
-                ).add_authorizers(account_address1)
+                    reference_block_id=latest_block.id,
+                    payer=account_address1,
+                    proposal_key=ProposalKey(
+                        key_address=account_address1,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[0].sequence_number,
+                    ),
+                )
+                .add_authorizers(account_address1)
                 .add_authorizers(account_address2)
                 .with_payload_signature(
                     account_address2,
@@ -171,8 +191,9 @@ class SubmitMultiSignedTransactionExample(Example):
 
             await client.execute_transaction(transaction)
 
+
 # -------------------------------------------------------------------------
-# Rretrieve a transaction by ID Class
+# Retrieve a transaction by ID Class
 # -------------------------------------------------------------------------
 class GetTransactionByIdExample(Example):
     def __init__(self) -> None:
@@ -182,35 +203,34 @@ class GetTransactionByIdExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
 
-            account_address, _, new_signer = await random_account( client = client, ctx = ctx)
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address.bytes)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
 
-            transaction = (Tx(
+            transaction = Tx(
                 code="""transaction(){prepare(){log("OK")}}""",
-                reference_block_id = latest_block.id,
-                payer = account_address,
+                reference_block_id=latest_block.id,
+                payer=account_address,
                 proposal_key=ProposalKey(
                     key_address=account_address,
                     key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
+                    key_sequence_number=proposer.keys[0].sequence_number,
                 ),
-                ).with_envelope_signature(
-                    account_address,
-                    0,
-                    new_signer,
-                )
+            ).with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
             )
 
-            response = await client.send_transaction(transaction = transaction.to_grpc())
+            response = await client.send_transaction(transaction=transaction.to_grpc())
 
             transaction_id = response.id
 
-            await client.get_transaction(
-                id = transaction_id
-            )
+            await client.get_transaction(id=transaction_id)

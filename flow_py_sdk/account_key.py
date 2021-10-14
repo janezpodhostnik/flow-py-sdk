@@ -10,16 +10,15 @@ from flow_py_sdk.proto.flow import entities
 from flow_py_sdk.signer import SignAlgo, HashAlgo, in_memory_signer
 
 
-
 class AccountKey(object):
     """
-    Flow uses ECDSA to control access to user accounts. Each key pair can be used 
+    Flow uses ECDSA to control access to user accounts. Each key pair can be used
     in combination with the SHA2-256 or SHA3-256 hashing algorithms.
     Here's how to generate an ECDSA private key for the P-256 (secp256r1) curve:
 
     Parameters
     ----------
-    public_key : 
+    public_key :
         which is use for verifying a sign.
     sign_algo : int
         Signature algorithm associate with account.
@@ -29,6 +28,7 @@ class AccountKey(object):
         Each account key has a weight that determines the signing power it holds.
 
     """
+
     weight_threshold: int = 1000
 
     def __init__(
@@ -74,7 +74,7 @@ class AccountKey(object):
         Returns
         -------
         َAccountKey
-            Return Account Key contain public and hash algorithm and signature algorithm. 
+            Return Account Key contain public and hash algorithm and signature algorithm.
 
         """
         ak = AccountKey(
@@ -90,7 +90,9 @@ class AccountKey(object):
         return ak
 
     @classmethod
-    def from_seed(cls, sign_algo: SignAlgo, hash_algo: HashAlgo, *, seed: str = None ) -> tuple[AccountKey, in_memory_signer.InMemorySigner]:
+    def from_seed(
+        cls, sign_algo: SignAlgo, hash_algo: HashAlgo, *, seed: str = None
+    ) -> tuple[AccountKey, in_memory_signer.InMemorySigner]:
         """
         from_seed provide a way for user to create a public and private key for an account using, seed string.
 
@@ -106,38 +108,38 @@ class AccountKey(object):
         Returns
         -------
         AccountKey
-            Return Account Key contain public and hash algorithm and signature algorithm. 
-            it also create a InMenorSigner, it can be use signing messages and transactions.
+            Return Account Key contain public and hash algorithm and signature algorithm.
+            it also create a InMemorySigner, it can be use signing messages and transactions.
 
         """
         if sign_algo == None:
             sign_algo = SignAlgo.ECDSA_P256
         if hash_algo == None:
             hash_algo = HashAlgo.SHA3_256
-        
+
         # Generate private key using provided Seed.
         if seed == None:
             sk = SigningKey.generate()
             private_key = sk.to_string()
         else:
-            secexp = randrange_from_seed__trytryagain(seed, sign_algo.get_signing_curve().order)
-            sk = SigningKey.from_secret_exponent(secexp, curve = sign_algo.get_signing_curve())
+            secexp = randrange_from_seed__trytryagain(
+                seed, sign_algo.get_signing_curve().order
+            )
+            sk = SigningKey.from_secret_exponent(
+                secexp, curve=sign_algo.get_signing_curve()
+            )
             private_key = sk.to_string()
 
         # Extract public Key (verifying Key) of generated private key.
         vk = sk.get_verifying_key()
         public_key = vk.to_string()
-        #Create Account Key.
-        ak = AccountKey(
-            public_key = public_key,
-            hash_algo = hash_algo,
-            sign_algo = sign_algo
-        )
+        # Create Account Key.
+        ak = AccountKey(public_key=public_key, hash_algo=hash_algo, sign_algo=sign_algo)
 
         # Save generated private key in in_memory_signer for further messages or transaction Signing.
 
-        signer = in_memory_signer.InMemorySigner(hash_algo =  hash_algo,
-        sign_algo = sign_algo,
-        private_key_hex = private_key.hex())
+        signer = in_memory_signer.InMemorySigner(
+            hash_algo=hash_algo, sign_algo=sign_algo, private_key_hex=private_key.hex()
+        )
 
         return ak, signer

@@ -23,7 +23,7 @@ async with flow_client(
     ) as client:
         block = await client.get_latest_block(
             is_sealed = False
-            # or is_sealed = True can be used for reteriving sealed block
+            # or is_sealed = True can be used for retrieving sealed block
         )
         print("Block :\n")
         print(block.__dict__)

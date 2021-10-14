@@ -55,8 +55,8 @@ class AccessAPI(AccessAPIStub):
         Parameters
         ----------
         is_sealed : bool
-            detemine the requested block header should be seeled or not.
-        
+            determine the requested block header should be seeled or not.
+
         Returns
         -------
         entities.BlockHeader
@@ -74,7 +74,7 @@ class AccessAPI(AccessAPIStub):
         ----------
         id : bytes
             ID of requested block header.
-        
+
         Returns
         -------
         entities.Block
@@ -94,7 +94,7 @@ class AccessAPI(AccessAPIStub):
         ----------
         id : bytes
             ID of requested block header.
-        
+
         Returns
         -------
         entities.BlockHeader
@@ -111,8 +111,8 @@ class AccessAPI(AccessAPIStub):
         Parameters
         ----------
         is_sealed : bool
-            detemine the requesteed block should be seeled or not.
-        
+            determine the requested block should be seeled or not.
+
         Returns
         -------
         entities.Block
@@ -130,7 +130,7 @@ class AccessAPI(AccessAPIStub):
         ----------
         id : bytes
             ID of requested block.
-        
+
         Returns
         -------
         entities.Block
@@ -148,7 +148,7 @@ class AccessAPI(AccessAPIStub):
         ----------
         height : int
             Height of requested block.
-        
+
         Returns
         -------
         entities.Block
@@ -166,7 +166,7 @@ class AccessAPI(AccessAPIStub):
         ----------
         ID : bytes
             ID of requested collection.
-        
+
         Returns
         -------
         entities.Collection
@@ -184,7 +184,7 @@ class AccessAPI(AccessAPIStub):
         ----------
         ID : bytes
             ID of requested transaction.
-        
+
         Returns
         -------
         entities.Transaction
@@ -202,12 +202,12 @@ class AccessAPI(AccessAPIStub):
         ----------
         address : bytes
             address of requested account.
-        
+
         Returns
         -------
         entities.Account
             Return requested account.
-            
+
         """
         response = await super().get_account(address=address)
         return entities.Account.from_proto(response.account)
@@ -222,12 +222,12 @@ class AccessAPI(AccessAPIStub):
         ----------
         address : bytes
             address of requested account.
-        
+
         Returns
         -------
         entities.Account
             Return requested account.
-            
+
         """
         response = await super().get_account_at_latest_block(address=address)
         return entities.Account.from_proto(response.account)
@@ -244,12 +244,12 @@ class AccessAPI(AccessAPIStub):
             address of requested account.
         block_height : int
             Desired block height.
-        
+
         Returns
         -------
         entities.Account
             Return requested account.
-            
+
         """
         response = await super().get_account_at_block_height(
             address=address, block_height=block_height
@@ -261,20 +261,20 @@ class AccessAPI(AccessAPIStub):
     ) -> bytes:
         """
         executes a read-only Cadence script against the latest sealed block.
-        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
         script : bytes
-            Cadence script which is wantedd to perform.
-        argumet : List[bytes]
+            Cadence script which is wanted to perform.
+        argument : List[bytes]
             list of argument which is need for performing script.
-        
+
         Returns
         -------
         bytes
             return value is encoded using the JSON-Cadence data interchange format.
-            
+
         """
         response = await super().execute_script_at_latest_block(
             script=script, arguments=arguments
@@ -286,22 +286,22 @@ class AccessAPI(AccessAPIStub):
     ) -> bytes:
         """
         executes a read-only Cadence script against the desired block with specific ID.
-        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
         block_id: bytes
             ID of desired block.
         script : bytes
-            Cadence script which is wantedd to perform.
-        argumet : List[bytes]
+            Cadence script which is wanted to perform.
+        argument : List[bytes]
             list of argument which is need for performing script.
-        
+
         Returns
         -------
         bytes
             return value is encoded using the JSON-Cadence data interchange format.
-            
+
         """
         response = await super().execute_script_at_block_i_d(
             block_id=block_id, script=script, arguments=arguments
@@ -313,22 +313,22 @@ class AccessAPI(AccessAPIStub):
     ) -> bytes:
         """
         executes a read-only Cadence script against the desired block with specific height.
-        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
         block_height: int
             height of desired block.
         script : bytes
-            Cadence script which is wantedd to perform.
-        argumet : List[bytes]
+            Cadence script which is wanted to perform.
+        argument : List[bytes]
             list of argument which is need for performing script.
-        
+
         Returns
         -------
         bytes
             return value is encoded using the JSON-Cadence data interchange format.
-            
+
         """
         response = await super().execute_script_at_block_height(
             block_height=block_height, script=script, arguments=arguments
@@ -340,7 +340,7 @@ class AccessAPI(AccessAPIStub):
     ) -> list[entities.EventsResponseResult]:
         """
         query on blocks in specific height.
-        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
@@ -350,12 +350,12 @@ class AccessAPI(AccessAPIStub):
             start of desired range.
         end_height : int
             end of desired range.
-        
+
         Returns
         -------
         list[entities.EventsResponseResult]
             return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
-            
+
         """
         response = await super().get_events_for_height_range(
             type=type, start_height=start_height, end_height=end_height
@@ -367,7 +367,7 @@ class AccessAPI(AccessAPIStub):
     ) -> list[entities.EventsResponseResult]:
         """
         query on blocks with specific IDs.
-        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
@@ -375,12 +375,12 @@ class AccessAPI(AccessAPIStub):
             type of requested type.
         block_ids: List[bytes]
             list of desired blocks.
-        
+
         Returns
         -------
         list[entities.EventsResponseResult]
             return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
-            
+
         """
         response = await super().get_events_for_block_i_ds(
             type=type, block_ids=block_ids
@@ -393,11 +393,11 @@ class AccessAPI(AccessAPIStub):
 
         Parameters
         ----------
-                
+
         Returns
         -------
         entities.GetNetworkParametersResponse
-            
+
         """
         response = await super().get_network_parameters()
         return entities.GetNetworkParametersResponse.from_proto(response)
@@ -410,22 +410,22 @@ class AccessAPI(AccessAPIStub):
     ) -> Optional[Value]:
         """
         executes a read-only Cadence script against the desired block with specific height or ID.
-        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.    
+        The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
         script : bytes
-            Cadence script which is wantedd to perform.
+            Cadence script which is wanted to perform.
         block_id: int
             ID of desired block.
         block_height: int
             height of desired block.
-        
+
         Returns
         -------
         Optional[Value]
             return value is encoded using the JSON-Cadence data interchange format.
-            
+
         """
         s = script.code.encode("utf-8")
         a = encode_arguments(script.arguments)
@@ -459,10 +459,10 @@ class AccessAPI(AccessAPIStub):
 
         Parameters
         ----------
-        
+
         Returns
         -------
-            
+
         """
         return await super().ping()
 
@@ -471,17 +471,17 @@ class AccessAPI(AccessAPIStub):
     ) -> entities.SendTransactionResponse:
         """
         submits a transaction to the network.
-        
+
         Parameters
         ----------
         transaction: Optional[entities.Transaction]
-            a transaction opject contains parameters like script, arguments, proposal_key, reference_block_id ...
-        
+            a transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...
+
         Returns
         -------
         entities.SendTransactionResponse
             returns id of block
-            
+
         """
         response = await super().send_transaction(transaction=transaction)
         return entities.SendTransactionResponse.from_proto(response)
@@ -491,17 +491,17 @@ class AccessAPI(AccessAPIStub):
     ) -> entities.TransactionResultResponse:
         """
         get a transaction response.
-        
+
         Parameters
         ----------
         id: byte
             id of requested transaction.
-        
+
         Returns
         -------
         entities.SendTransactionResponse
             returns id of block
-            
+
         """
         response = await super().get_transaction_result(id=id)
         return entities.TransactionResultResponse.from_proto(response)
@@ -511,21 +511,21 @@ class AccessAPI(AccessAPIStub):
     ) -> entities.TransactionResultResponse:
         """
         submits a transaction to the network and wait to return its response.
-        
+
         Parameters
         ----------
         tx: entities.Transaction
-            a transaction opject contains parameters like script, arguments, proposal_key, reference_block_id ...
+            a transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...
         wait_for_seal: bool
             return response when the block is sealed.
         timeout: float
             time the function should wait for response
-        
+
         Returns
         -------
         entities.SendTransactionResponse
             returns id of block
-            
+
         """
         log.debug(f"Sending transaction")
         result = await self.send_transaction(transaction=tx.to_grpc())

@@ -14,17 +14,23 @@ from examples.common.utils import random_account
 # -------------------------------------------------------------------------
 class SignTransactionExample(Example):
     def __init__(self) -> None:
-        super().__init__(tag="AC.1.", name="Create account transaction - using the template", sort_order=901)
+        super().__init__(
+            tag="AC.1.",
+            name="Create account transaction - using the template",
+            sort_order=901,
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_key, _ = AccountKey.from_seed(seed = "dfghj dfj kjhgf hgfd lkjhgf kjhgfd sdf45678l",
-                sign_algo = SignAlgo.ECDSA_P256,
-                hash_algo = HashAlgo.SHA3_256)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_key, _ = AccountKey.from_seed(
+                seed="dfghj dfj kjhgf hgfd lkjhgf kjhgfd sdf45678l",
+                sign_algo=SignAlgo.ECDSA_P256,
+                hash_algo=HashAlgo.SHA3_256,
+            )
             latest_block = await client.get_latest_block()
             proposer = await client.get_account_at_latest_block(
                 address=ctx.service_account_address.bytes
@@ -50,47 +56,58 @@ class SignTransactionExample(Example):
 
             await client.execute_transaction(transaction)
 
+
 # -------------------------------------------------------------------------
 # Deploy a contract at an account
 # -------------------------------------------------------------------------
 
-class DeplyContract(Example):
+
+class DeployContract(Example):
     def __init__(self) -> None:
-        super().__init__(tag="AC.2.", name="Deploy Contract at the account - using the template", sort_order=902)
+        super().__init__(
+            tag="AC.2.",
+            name="Deploy Contract at the account - using the template",
+            sort_order=902,
+        )
+
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         # A test Contract define for this example, you can modify it by your self
         contract = {
-            "Name" : "TestOne",
-            "source" : '''pub contract TestOne {
+            "Name": "TestOne",
+            "source": """pub contract TestOne {
                                 pub fun add(a: Int, b: Int): Int {
                                     return a + b
                                 }
-                                }'''
-            }
-        contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+                                }""",
+        }
+        contract_source_hex = bytes(contract["source"], "UTF-8").hex()
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_address, _, new_signer = await random_account( client = client, ctx = ctx)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address.bytes)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
             cadence_name = cadence.String(contract["Name"])
             cadence_code = cadence.String(contract_source_hex)
-            transaction = (Tx(
-                code = get_contract_template.addAccountContractTemplate,
-                reference_block_id = latest_block.id,
-                payer = account_address,
-                proposal_key=ProposalKey(
-                    key_address=account_address,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
-                ),
-                ).add_arguments(cadence_name)
+            transaction = (
+                Tx(
+                    code=get_contract_template.addAccountContractTemplate,
+                    reference_block_id=latest_block.id,
+                    payer=account_address,
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[0].sequence_number,
+                    ),
+                )
+                .add_arguments(cadence_name)
                 .add_arguments(cadence_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
@@ -102,47 +119,56 @@ class DeplyContract(Example):
 
             await client.execute_transaction(transaction)
 
+
 # -------------------------------------------------------------------------
 # Update a contract at an account
 # -------------------------------------------------------------------------
 class UpdateContract(Example):
     def __init__(self) -> None:
-        super().__init__(tag="AC.3.", name="Update a Contract of the account - using the template", sort_order=903)
+        super().__init__(
+            tag="AC.3.",
+            name="Update a Contract of the account - using the template",
+            sort_order=903,
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         # A test Contract define for this example, you can modify it by your self
         contract = {
-            "Name" : "TestOne",
-            "source" : '''pub contract TestOne {
+            "Name": "TestOne",
+            "source": """pub contract TestOne {
                                 pub fun add(a: Int, b: Int): Int {
                                     return a + b
                                 }
-                                }'''
-            }
-        contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+                                }""",
+        }
+        contract_source_hex = bytes(contract["source"], "UTF-8").hex()
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_address, _, new_signer = await random_account( client = client, ctx = ctx)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address.bytes)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
             cadence_name = cadence.String(contract["Name"])
             cadence_code = cadence.String(contract_source_hex)
-            transaction = (Tx(
-                code = get_contract_template.addAccountContractTemplate,
-                reference_block_id = latest_block.id,
-                payer = account_address,
-                proposal_key=ProposalKey(
-                    key_address=account_address,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
-                ),
-                ).add_arguments(cadence_name)
+            transaction = (
+                Tx(
+                    code=get_contract_template.addAccountContractTemplate,
+                    reference_block_id=latest_block.id,
+                    payer=account_address,
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[0].sequence_number,
+                    ),
+                )
+                .add_arguments(cadence_name)
                 .add_arguments(cadence_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
@@ -157,32 +183,31 @@ class UpdateContract(Example):
             proposer.keys[0].sequence_number = proposer.keys[0].sequence_number + 1
 
             latest_block = await client.get_latest_block()
-            #Updated Contract
+            # Updated Contract
             contract = {
-            "Name" : "TestOne",
-            "source" : '''pub contract TestOne {
+                "Name": "TestOne",
+                "source": """pub contract TestOne {
                                 pub fun add(a: Int, b: Int): Int {
                                     return a * b
                                 }
-                                }'''
+                                }""",
             }
-            contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+            contract_source_hex = bytes(contract["source"], "UTF-8").hex()
             cadence_name = cadence.String(contract["Name"])
             cadence_code = cadence.String(contract_source_hex)
-            #Update account contract with a transaction
+            # Update account contract with a transaction
             transaction = (
                 Tx(
-                code = get_contract_template.updateAccountContractTemplate,
-                reference_block_id = latest_block.id,
-                payer = account_address,
-                proposal_key=ProposalKey(
-                    key_address=account_address,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
-                ),
-                ).add_arguments(cadence_name)
+                    code=get_contract_template.updateAccountContractTemplate,
+                    reference_block_id=latest_block.id,
+                    payer=account_address,
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[0].sequence_number,
+                    ),
+                )
+                .add_arguments(cadence_name)
                 .add_arguments(cadence_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
@@ -194,47 +219,56 @@ class UpdateContract(Example):
 
             await client.execute_transaction(transaction)
 
+
 # -------------------------------------------------------------------------
 # Remove a contract from an account
 # -------------------------------------------------------------------------
 class RemoveContract(Example):
     def __init__(self) -> None:
-        super().__init__(tag="AC.4.", name="Remove a Contract from the account - using the template", sort_order=904)
+        super().__init__(
+            tag="AC.4.",
+            name="Remove a Contract from the account - using the template",
+            sort_order=904,
+        )
 
     async def run(self, ctx: Config):
-                # First Step : Create a client to connect to the flow blockchain
+        # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         # A test Contract define for this example, you can modify it by your self
         contract = {
-            "Name" : "TestOne",
-            "source" : '''pub contract TestOne {
+            "Name": "TestOne",
+            "source": """pub contract TestOne {
                                 pub fun add(a: Int, b: Int): Int {
                                     return a + b
                                 }
-                                }'''
-            }
-        contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+                                }""",
+        }
+        contract_source_hex = bytes(contract["source"], "UTF-8").hex()
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-            account_address, _, new_signer = await random_account( client = client, ctx = ctx)
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
             latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(address = account_address.bytes)
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
             cadence_name = cadence.String(contract["Name"])
             cadence_code = cadence.String(contract_source_hex)
-            transaction = (Tx(
-                code = get_contract_template.addAccountContractTemplate,
-                reference_block_id = latest_block.id,
-                payer = account_address,
-                proposal_key=ProposalKey(
-                    key_address=account_address,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
-                ),
-                ).add_arguments(cadence_name)
+            transaction = (
+                Tx(
+                    code=get_contract_template.addAccountContractTemplate,
+                    reference_block_id=latest_block.id,
+                    payer=account_address,
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[0].sequence_number,
+                    ),
+                )
+                .add_arguments(cadence_name)
                 .add_arguments(cadence_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
@@ -254,17 +288,16 @@ class RemoveContract(Example):
 
             transaction = (
                 Tx(
-                code = get_contract_template.removeAccountContractTemplate,
-                reference_block_id = latest_block.id,
-                payer = account_address,
-                proposal_key=ProposalKey(
-                    key_address=account_address,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[
-                        0
-                    ].sequence_number,
-                ),
-                ).add_arguments(cadence_name)
+                    code=get_contract_template.removeAccountContractTemplate,
+                    reference_block_id=latest_block.id,
+                    payer=account_address,
+                    proposal_key=ProposalKey(
+                        key_address=account_address,
+                        key_id=0,
+                        key_sequence_number=proposer.keys[0].sequence_number,
+                    ),
+                )
+                .add_arguments(cadence_name)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
                     account_address,
