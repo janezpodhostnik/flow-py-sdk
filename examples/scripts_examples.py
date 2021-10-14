@@ -1,9 +1,7 @@
-import asyncio
-from examples.common import Example, Config
-from flow_py_sdk import cadence
-from flow_py_sdk import script
+
 from flow_py_sdk.script import Script
-from flow_py_sdk import flow_client
+from flow_py_sdk import flow_client, cadence
+from examples.common import Example, Config
 
 # -------------------------------------------------------------------------
 # Submit a script and parse the response Function
@@ -31,20 +29,17 @@ class ExecuteScriptExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                result = await client.execute_script(
-                    script = script
-                    # , block_id
-                    # , block_height
-                )
-                print("Script result :\n")
-                print(result.__dict__)
-                print("\nrun script : successfully done...")
+            await client.execute_script(
+                script = script
+                # , block_id
+                # , block_height
+            )
 
 
 # -------------------------------------------------------------------------
 # Submit a script with arguments and parse the response Function
 # -------------------------------------------------------------------------
-class ExecuteScriptExample(Example):
+class ExecuteScriptWithArgumentExample(Example):
     def __init__(self) -> None:
         super().__init__(tag="S.2.", name="ExecuteScriptWithArgumentExample", sort_order=402)
     async def run(self, ctx: Config):
@@ -66,16 +61,8 @@ class ExecuteScriptExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                result = await client.execute_script(
-                    script = script
-                    # , block_id
-                    # , block_height
-                )
-                print("Script result :\n")
-                print(result.__dict__)
-                print("\nrun script : successfully done...")
-
-
-
-  
-
+            await client.execute_script(
+                script = script
+                # , block_id
+                # , block_height
+            )

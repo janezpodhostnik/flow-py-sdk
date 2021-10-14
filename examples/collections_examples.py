@@ -1,6 +1,6 @@
-import asyncio
-from examples.common import Example, Config
+
 from flow_py_sdk import flow_client
+from examples.common import Example, Config
 
 # -------------------------------------------------------------------------
 # Retrieve a collection by ID
@@ -15,16 +15,11 @@ class GetCollectioByIdExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                block = await client.get_latest_block(
-                        is_sealed = False
-                    )
-                collection_id = block.collection_guarantees[0].collection_id
-                
-                collection = await client.get_collection_by_i_d(
-                    id = collection_id
+            block = await client.get_latest_block(
+                    is_sealed = False
                 )
+            collection_id = block.collection_guarantees[0].collection_id
 
-
-
-  
-
+            await client.get_collection_by_i_d(
+                id = collection_id
+            )

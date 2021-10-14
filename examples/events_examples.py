@@ -1,9 +1,7 @@
-import asyncio
-from examples.common import Example, Config
-from flow_py_sdk.tx import Tx
-from flow_py_sdk import ProposalKey
-from examples.common.utils import random_account
+
 from flow_py_sdk import flow_client
+from examples.common import Example, Config
+from examples.common.utils import random_account
 
 # -------------------------------------------------------------------------
 # Retrieve events by name in the block height range Class
@@ -19,11 +17,11 @@ class GetEventByNameForHeightRangeExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
-                latest_block = await client.get_latest_block()
-                events = await client.get_events_for_height_range(
-                    type = "flow.AccountCreated", start_height = latest_block.height -1, end_height = latest_block.height
-                )
+            _, _, _ = await random_account( client = client, ctx = ctx)
+            latest_block = await client.get_latest_block()
+            await client.get_events_for_height_range(
+                type = "flow.AccountCreated", start_height = latest_block.height -1, end_height = latest_block.height
+            )
 
 # -------------------------------------------------------------------------
 # Retrieve events by name in the block ids Function
@@ -39,8 +37,8 @@ class GetEventByNameForBlockIdsExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
-                latest_block = await client.get_latest_block()
-                events = await client.get_events_for_block_i_ds(
-                    type = "flow.AccountCreated", block_ids = [latest_block.id]
-                )
+            _, _, _ = await random_account( client = client, ctx = ctx)
+            latest_block = await client.get_latest_block()
+            await client.get_events_for_block_i_ds(
+                type = "flow.AccountCreated", block_ids = [latest_block.id]
+            )

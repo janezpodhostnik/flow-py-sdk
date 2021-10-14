@@ -1,7 +1,6 @@
-import asyncio
-import logging
-from examples.common import Example, Config
+
 from flow_py_sdk import flow_client
+from examples.common import Example, Config
 
 # -------------------------------------------------------------------------
 # Rretrieve a block by ID
@@ -16,10 +15,10 @@ class GetBlockByIdExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                latest_block = await client.get_latest_block()
-                block = await client.get_block_by_i_d(
-                    id = latest_block.id
-                )
+            latest_block = await client.get_latest_block()
+            await client.get_block_by_i_d(
+                id = latest_block.id
+            )
 
 
 # -------------------------------------------------------------------------
@@ -34,10 +33,10 @@ class GetBlockByHeightExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                latest_block = await client.get_latest_block()
-                block = await client.get_block_by_height(
-                    height = latest_block.height
-                )
+            latest_block = await client.get_latest_block()
+            await client.get_block_by_height(
+                height = latest_block.height
+            )
 
 
 # -------------------------------------------------------------------------
@@ -52,13 +51,7 @@ class GetLatestBlockExample(Example):
         async with flow_client(
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
-                block = await client.get_latest_block(
-                    is_sealed = False
-                )
-
-
-
-
-
-  
-
+            await client.get_latest_block(
+                is_sealed = False
+            )
+            
