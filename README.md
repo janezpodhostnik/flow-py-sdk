@@ -28,9 +28,19 @@ or if using poetry:
 
 ## Run examples
 
-To run example first you need to install dependencies. to install dependencies run:
+To run example first you need to install flow emulator and run it locally.
+
+[https://github.com/onflow/flow-cli#flow-cli](go step-by-step based on your OS)
+
+then update account and key value of`flow.json` file in repository based on `flow.json` file created by flow emulator. usually you can find it in `C:\Users\<user>`.
+
+then install dependencies. to install dependencies of flow SDk run:
 
 `poetry install`
+
+after that run flow emulator using:
+
+`flow emulator`
 
 and then you can run examples using:
 
