@@ -16,7 +16,7 @@ class GetCollectioByIdExample(Example):
                 host=ctx.access_node_host, port=ctx.access_node_port
             ) as client:
             block = await client.get_latest_block(
-                    is_sealed = False
+                    is_sealed = True
                 )
             collection_id = block.collection_guarantees[0].collection_id
 
