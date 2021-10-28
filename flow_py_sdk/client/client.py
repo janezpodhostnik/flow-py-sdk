@@ -499,7 +499,7 @@ class AccessAPI(AccessAPIStub):
 
         Returns
         -------
-        entities.SendTransactionResponse
+        entities.TransactionResultResponse
             Returns id of block
 
         """
@@ -523,7 +523,7 @@ class AccessAPI(AccessAPIStub):
 
         Returns
         -------
-        entities.SendTransactionResponse
+        entities.TransactionResultResponse
             Returns id of block
 
         """
