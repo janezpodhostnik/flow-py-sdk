@@ -112,23 +112,17 @@ async with flow_client(
 ```
 Result output:
 ```bash
-[17:47:28] INFO: === RUNNING: [B.1.] GetBlockByIdExample ===
 Block ID: 8d08c88873d079d8f2d929853a647a8703597898532f3b7f79b0e3b0320d0bf7
 Block height: 146
 Block timestamp: [2021-10-28 14:12:41.172587+00:00]
-[17:47:28] INFO: ==== PASSED ====
 
-[17:47:28] INFO: === RUNNING: [B.2.] GetBlockByHeightExample ===
 Block ID: 8d08c88873d079d8f2d929853a647a8703597898532f3b7f79b0e3b0320d0bf7
 Block height: 146
 Block timestamp: [2021-10-28 14:12:41.172587+00:00]
-[17:47:28] INFO: ==== PASSED ====
 
-[17:47:28] INFO: === RUNNING: [B.3.] GetLatestBlockExample ===
 Block ID: 8d08c88873d079d8f2d929853a647a8703597898532f3b7f79b0e3b0320d0bf7
 Block height: 146
 Block timestamp: [2021-10-28 14:12:41.172587+00:00]
-[17:47:28] INFO: ==== PASSED ====
 ```
 
 ### Get Account
@@ -152,59 +146,61 @@ Example depicts ways to get an account at the latest block and at a specific blo
 Get an account using its address.
 ```python
 async def run(self, ctx: Config):
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            account = await client.get_account(address=ctx.service_account_address.bytes)
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Balance: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        account = await client.get_account(
+            address=ctx.service_account_address.bytes
+        )
+        print("Account Address: {}".format(account.address.hex()))
+        print("Account Balance: {}".format(account.balance))
+        print("Account Contracts: {}".format(len(account.contracts)))
+        print("Account Keys: {}".format(len(account.keys)))
 ```
 Get an account by address at the given block height.
 ```python
 async def run(self, ctx: Config):
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            latest_block = await client.get_latest_block()
-            account = await client.get_account_at_block_height(
-                address=ctx.service_account_address.bytes, block_height=latest_block.height
-            )
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Balance: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        latest_block = await client.get_latest_block()
+        _, _, _ = await random_account(client=client, ctx=ctx)
+        account = await client.get_account_at_block_height(
+            address=ctx.service_account_address.bytes,
+            block_height=latest_block.height,
+        )
+        print("Account Address: {}".format(account.address.hex()))
+        print("Account Balance: {}".format(account.balance))
+        print("Account Contracts: {}".format(len(account.contracts)))
+        print("Account Keys: {}".format(len(account.keys)))
 ```
 Get an account by address at the latest sealed block.
 ```python
 async def run(self, ctx: Config):
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            account = await client.get_account_at_latest_block(address=ctx.service_account_address.bytes)
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Balance: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        _, _, _ = await random_account(client=client, ctx=ctx)
+        account = await client.get_account_at_latest_block(
+            address=ctx.service_account_address.bytes
+        )
+        print("Account Address: {}".format(account.address.hex()))
+        print("Account Balance: {}".format(account.balance))
+        print("Account Contracts: {}".format(len(account.contracts)))
+        print("Account Keys: {}".format(len(account.keys)))
 ```
 
 Result output:
 ```bash
-[19:09:19] INFO: === RUNNING: [GA.1.] GetAccountExample ===
 Account Address: f8d6e0586b0a20c7
 Account Balance: 999999999999700000
 Account Balance: 2
 Account Keys: 1
-[19:09:19] INFO: ==== PASSED ====
 
-[19:09:19] INFO: === RUNNING: [GA.2.] GetAccountAtLatestBlockExample ===
 Account Address: f8d6e0586b0a20c7
 Account Balance: 999999999999600000
 Account Balance: 2
 Account Keys: 1
-[19:09:19] INFO: ==== PASSED ====
-
 ```
 
 
@@ -233,38 +229,46 @@ Retrieve transactions from the network by providing a transaction ID. After a tr
 
 ```python
 async def run(self, ctx: Config):
-  async with flow_client(
-      host=ctx.access_node_host, port=ctx.access_node_port
-  ) as client:
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
 
-      account_address, _, new_signer = await random_account(
-          client=client, ctx=ctx
-      )
-      latest_block = await client.get_latest_block()
-      proposer = await client.get_account_at_latest_block(
-          address=account_address.bytes
-      )
+        account_address, _, new_signer = await random_account(
+            client=client, ctx=ctx
+        )
+        latest_block = await client.get_latest_block()
+        proposer = await client.get_account_at_latest_block(
+            address=account_address.bytes
+        )
 
-      transaction = Tx(
-          code="""transaction(){prepare(){log("OK")}}""",
-          reference_block_id=latest_block.id,
-          payer=account_address,
-          proposal_key=ProposalKey(
-              key_address=account_address,
-              key_id=0,
-              key_sequence_number=proposer.keys[0].sequence_number,
-          ),
-      ).with_envelope_signature(
-          account_address,
-          0,
-          new_signer,
-      )
+        transaction = Tx(
+            code="""transaction(){prepare(){log("OK")}}""",
+            reference_block_id=latest_block.id,
+            payer=account_address,
+            proposal_key=ProposalKey(
+                key_address=account_address,
+                key_id=0,
+                key_sequence_number=proposer.keys[0].sequence_number,
+            ),
+        ).with_envelope_signature(
+            account_address,
+            0,
+            new_signer,
+        )
 
-      response = await client.send_transaction(transaction=transaction.to_grpc())
+        response = await client.send_transaction(transaction=transaction.to_grpc())
 
-      transaction_id = response.id
+        transaction_id = response.id
 
-      await client.get_transaction(id=transaction_id)
+        transaction = await client.get_transaction(id=transaction_id)
+        print("transaction ID: {}".format(transaction_id.hex()))
+        print("transaction payer: {}".format(transaction.payer.hex()))
+        print(
+            "transaction proposer: {}".format(
+                transaction.proposal_key.address.hex()
+            )
+        )
+        print("transaction script: {}".format(transaction.script.decode("utf-8")))
 
 ```
 Example output:
@@ -316,80 +320,81 @@ This example shows how to retrieve events by name in the block ids Function
 In this example, an account is created and then we try to get "AccountCreated" event.
 ```python
 async def run(self, ctx: Config):
-  async with flow_client(
-      host=ctx.access_node_host, port=ctx.access_node_port
-  ) as client:
-      _, _, _ = await random_account(client=client, ctx=ctx)
-      latest_block = await client.get_latest_block()
-      await client.get_events_for_block_i_ds(
-          type="flow.AccountCreated", block_ids=[latest_block.id]
-      )
-      print("event type: {}".format(events[0].events[0].type))
-      print("event value: {}".format(events[0].events[0].value))
-      print("event value: {}".format(events[0].events[0].transaction_id.hex()))
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        _, _, _ = await random_account(client=client, ctx=ctx)
+        latest_block = await client.get_latest_block()
+        await client.get_events_for_block_i_ds(
+            type="flow.AccountCreated", block_ids=[latest_block.id]
+        )
+        print("event type: {}".format(events[0].events[0].type))
+        print("event value: {}".format(events[0].events[0].value))
+        print("event value: {}".format(events[0].events[0].transaction_id.hex()))
 ```
 ```python
-    async def run(self, ctx: Config):
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            address, _, _ = await random_account(
-                client=client,
-                ctx=ctx,
-                contracts={
-                    "EventDemo": """
-                        pub contract EventDemo {
-                            pub event Add(x: Int, y: Int, sum: Int)
+async def run(self, ctx: Config):
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        address, _, _ = await random_account(
+            client=client,
+            ctx=ctx,
+            contracts={
+                "EventDemo": """
+                    pub contract EventDemo {
+                        pub event Add(x: Int, y: Int, sum: Int)
 
-                            pub fun add(_ x: Int, _ y: Int) {
-                                let sum = x + y
-                                emit Add(x: x, y: y, sum: sum)
-                            }
-                        }""",
-                },
-            )
+                        pub fun add(_ x: Int, _ y: Int) {
+                            let sum = x + y
+                            emit Add(x: x, y: y, sum: sum)
+                        }
+                    }""",
+            },
+        )
 
-            block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(
-                address=ctx.service_account_address.bytes
-            )
+        block = await client.get_latest_block()
+        proposer = await client.get_account_at_latest_block(
+            address=ctx.service_account_address.bytes
+        )
 
-            tx = Tx(
-                code=f"""
-                import EventDemo from {address.hex_with_prefix()}
-                
-                transaction() {{
-                    prepare() {{
-                        EventDemo.add(1, 6)
-                    }}
+        tx = Tx(
+            code=f"""
+            import EventDemo from {address.hex_with_prefix()}
+            
+            transaction() {{
+                prepare() {{
+                    EventDemo.add(1, 6)
                 }}
-                """,
-                reference_block_id=block.id,
-                payer=ctx.service_account_address,
-                proposal_key=ProposalKey(
-                    key_address=ctx.service_account_address,
-                    key_id=ctx.service_account_key_id,
-                    key_sequence_number=proposer.keys[
-                        ctx.service_account_key_id
-                    ].sequence_number,
-                ),
-            ).with_envelope_signature(
-                ctx.service_account_address,
-                ctx.service_account_key_id,
-                ctx.service_account_signer,
-            )
+            }}
+            """,
+            reference_block_id=block.id,
+            payer=ctx.service_account_address,
+            proposal_key=ProposalKey(
+                key_address=ctx.service_account_address,
+                key_id=ctx.service_account_key_id,
+                key_sequence_number=proposer.keys[
+                    ctx.service_account_key_id
+                ].sequence_number,
+            ),
+        ).with_envelope_signature(
+            ctx.service_account_address,
+            ctx.service_account_key_id,
+            ctx.service_account_signer,
+        )
 
-            result = await client.execute_transaction(tx)
+        result = await client.execute_transaction(tx)
 
-            add_event = [
-                e.value for e in result.events if isinstance(e.value, cadence.Event)
-            ][0]
+        add_event = [
+            e.value for e in result.events if isinstance(e.value, cadence.Event)
+        ][0]
 
-            assert add_event.fields[2].as_type(cadence.Int).value == 7
+        assert add_event.fields[2].as_type(cadence.Int).value == 7
 
-            print("event type: {}".format(result.events[0].type))
-            print("event value: {}".format(result.events[0].value))
-            print("event value: {}".format(result.events[0].transaction_id.hex()))
+        print("event type: {}".format(result.events[0].type))
+        print("event value: {}".format(result.events[0].value))
+        print("event value: {}".format(result.events[0].transaction_id.hex()))
+
 ```
 Example output:
 ```bash
@@ -397,7 +402,6 @@ event type: flow.AccountCreated
 event value: flow.AccountCreated(address: 0xe9dd1081676bbc90)
 event value: 7762301429e09d9a981f99df24244b45ae3e9e5f084dde5f5167f1e73ce8e306
 
-[18:50:05] INFO: === RUNNING: [E.3.] Emit event from contract ===
 event type: A.0dbaa95c7691bc4f.EventDemo.Add
 event value: A.0dbaa95c7691bc4f.EventDemo.Add(x: 1, y: 6, sum: 7)
 event value: dfc8c1ea51279ddc74c16ed7644361dbe4828181d56497a4ebb18a6bbf0fd574
@@ -415,15 +419,17 @@ async def run(self, ctx: Config):
     async with flow_client(
         host=ctx.access_node_host, port=ctx.access_node_port
     ) as client:
-        _, _, _ = await random_account(
-            client=client, ctx=ctx
-        )
+        _, _, _ = await random_account(client=client, ctx=ctx)
         block = await client.get_latest_block(is_sealed=True)
         collection_id = block.collection_guarantees[0].collection_id
 
         collection = await client.get_collection_by_i_d(id=collection_id)
         print("ID: {}".format(collection.id.hex()))
-        print("Transactions: [{}]".format(', '.join(x.hex() for x in collection.transaction_ids)))
+        print(
+            "Transactions: [{}]".format(
+                ", ".join(x.hex() for x in collection.transaction_ids)
+            )
+        )
 ```
 Example output:
 ```bash
@@ -496,41 +502,42 @@ or it can be a more complex function which has some input:
 ```python
 async def run(self, ctx: Config):
     script = Script(
-            code="""
-                    pub struct User {
-                        pub var balance: UFix64
-                        pub var address: Address
-                        pub var name: String
+        code="""
+                pub struct User {
+                    pub var balance: UFix64
+                    pub var address: Address
+                    pub var name: String
 
-                        init(name: String, address: Address, balance: UFix64) {
-                            self.name = name
-                            self.address = address
-                            self.balance = balance
-                        }
+                    init(name: String, address: Address, balance: UFix64) {
+                        self.name = name
+                        self.address = address
+                        self.balance = balance
                     }
+                }
 
-                    pub fun main(name: String): User {
-                        return User(
-                            name: name,
-                            address: 0x1,
-                            balance: 10.0
-                        )
-                    }
-                """,
-            arguments=[cadence.String("flow")],
+                pub fun main(name: String): User {
+                    return User(
+                        name: name,
+                        address: 0x1,
+                        balance: 10.0
+                    )
+                }
+            """,
+        arguments=[cadence.String("flow")],
+    )
+
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        complex_script = await client.execute_script(
+            script=script
+            # , block_id
+            # , block_height
         )
+        print("Name: {}".format(complex_script.fields[2].value))
+        print("Address: {}".format(complex_script.fields[1].bytes.hex()))
+        print("Balance: {}".format(complex_script.fields[0].value))
 
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            complex_script = await client.execute_script(
-                script=script
-                # , block_id
-                # , block_height
-            )
-            print("Name: {}".format(complex_script.fields[2].value))
-            print("Address: {}".format(complex_script.fields[1].bytes.hex()))
-            print("Balance: {}".format(complex_script.fields[0].value))
 ```
 ```bash
 Name: flow
@@ -644,65 +651,60 @@ Quick example of building a transaction:
 ```python
 async def run(self, ctx: Config):
     async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
-            ) as client:
-                account_address, _, new_signer = await random_account(
-                    client=client, ctx=ctx
-                )
-                latest_block = await client.get_latest_block()
-                proposer = await client.get_account_at_latest_block(
-                    address=account_address.bytes
-                )
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        account_address, _, new_signer = await random_account(
+            client=client, ctx=ctx
+        )
+        latest_block = await client.get_latest_block()
+        proposer = await client.get_account_at_latest_block(
+            address=account_address.bytes
+        )
 
-                transaction = Tx(
-                    code="""transaction(){prepare(){log("OK")}}""",
-                    reference_block_id=latest_block.id,
-                    payer=account_address,
-                    proposal_key=ProposalKey(
-                        key_address=account_address,
-                        key_id=0,
-                        key_sequence_number=proposer.keys[0].sequence_number,
-                    ),
-                )
+        transaction = Tx(
+            code="""transaction(){prepare(){log("OK")}}""",
+            reference_block_id=latest_block.id,
+            payer=account_address,
+            proposal_key=ProposalKey(
+                key_address=account_address,
+                key_id=0,
+                key_sequence_number=proposer.keys[0].sequence_number,
+            ),
+        )
 ```
 
 Signatures can be generated more securely using keys stored in a hardware device such as an [HSM](https://en.wikipedia.org/wiki/Hardware_security_module). The `crypto.Signer` interface is intended to be flexible enough to support a variety of signer implementations and is not limited to in-memory implementations.
 
 Simple signature example:
 ```python
-class SignTransactionExample(Example):
-    def __init__(self) -> None:
-        super().__init__(tag="T.2.", name="SignTransactionExample", sort_order=502)
+async def run(self, ctx: Config):
+    # First Step : Create a client to connect to the flow blockchain
+    # flow_client function creates a client using the host and port
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        account_address, _, new_signer = await random_account(
+            client=client, ctx=ctx
+        )
+        latest_block = await client.get_latest_block()
+        proposer = await client.get_account_at_latest_block(
+            address=account_address.bytes
+        )
 
-    async def run(self, ctx: Config):
-        # First Step : Create a client to connect to the flow blockchain
-        # flow_client function creates a client using the host and port
-
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            account_address, _, new_signer = await random_account(
-                client=client, ctx=ctx
-            )
-            latest_block = await client.get_latest_block()
-            proposer = await client.get_account_at_latest_block(
-                address=account_address.bytes
-            )
-
-            transaction = Tx(
-                code="""transaction(){prepare(){log("OK")}}""",
-                reference_block_id=latest_block.id,
-                payer=account_address,
-                proposal_key=ProposalKey(
-                    key_address=account_address,
-                    key_id=0,
-                    key_sequence_number=proposer.keys[0].sequence_number,
-                ),
-            ).with_envelope_signature(
-                account_address,
-                0,
-                new_signer,
-            )
+        transaction = Tx(
+            code="""transaction(){prepare(){log("OK")}}""",
+            reference_block_id=latest_block.id,
+            payer=account_address,
+            proposal_key=ProposalKey(
+                key_address=account_address,
+                key_id=0,
+                key_sequence_number=proposer.keys[0].sequence_number,
+            ),
+        ).with_envelope_signature(
+            account_address,
+            0,
+            new_signer,
+        )
 ```
 
 Flow supports great flexibility when it comes to transaction signing, we can define multiple authorizers (multi-sig transactions) and have different payer account than proposer. We will explore advanced signing scenarios bellow.
@@ -727,31 +729,31 @@ async def run(self, ctx: Config):
         sign_algo = sign_algo,
         private_key_hex = private_key.to_string().hex())
     async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            latest_block = await client.get_latest_block()
-            
-            tx = Tx(
-                code="""
-                        transaction {
-                            prepare(signer: AuthAccount) { log(signer.address) }
-                        }
-                    """,
-                reference_block_id = latest_block.id,
-                payer = account.address,
-                proposal_key = ProposalKey(
-                    key_address = account.address,
-                    key_id = 0,
-                    key_sequence_number = account.keys[
-                        0
-                    ].sequence_number,
-                ),
-            ).add_authorizers([account.address])
-            .with_envelope_signature(
-                account.address,
-                0,
-                signer,
-            )
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        latest_block = await client.get_latest_block()
+        
+        tx = Tx(
+            code="""
+                    transaction {
+                        prepare(signer: AuthAccount) { log(signer.address) }
+                    }
+                """,
+            reference_block_id = latest_block.id,
+            payer = account.address,
+            proposal_key = ProposalKey(
+                key_address = account.address,
+                key_id = 0,
+                key_sequence_number = account.keys[
+                    0
+                ].sequence_number,
+            ),
+        ).add_authorizers([account.address])
+        .with_envelope_signature(
+            account.address,
+            0,
+            signer,
+        )
 ```
 
 
@@ -779,35 +781,35 @@ async def run(self, ctx: Config):
         sign_algo = sign_algo,
         private_key_hex = private_key2.to_string().hex())
     async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            latest_block = await client.get_latest_block()
-            
-            tx = Tx(
-                code="""
-                        transaction {
-                            prepare(signer: AuthAccount) { log(signer.address) }
-                        }
-                    """,
-                reference_block_id = latest_block.id,
-                payer = account.address,
-                proposal_key = ProposalKey(
-                    key_address = account.address,
-                    key_id = 0,
-                    key_sequence_number = account.keys[
-                        0
-                    ].sequence_number,
-                ),
-            ).add_authorizers([account.address])
-            .with_envelope_signature(
-                account.address,
-                0,
-                signer1,
-            ).with_envelope_signature(
-                account.address,
-                1,
-                signer2,
-            )
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        latest_block = await client.get_latest_block()
+        
+        tx = Tx(
+            code="""
+                    transaction {
+                        prepare(signer: AuthAccount) { log(signer.address) }
+                    }
+                """,
+            reference_block_id = latest_block.id,
+            payer = account.address,
+            proposal_key = ProposalKey(
+                key_address = account.address,
+                key_id = 0,
+                key_sequence_number = account.keys[
+                    0
+                ].sequence_number,
+            ),
+        ).add_authorizers([account.address])
+        .with_envelope_signature(
+            account.address,
+            0,
+            signer1,
+        ).with_envelope_signature(
+            account.address,
+            1,
+            signer2,
+        )
 ```
 
 ### [Multiple parties](https://docs.onflow.org/concepts/transaction-signing/#multiple-parties)
@@ -839,35 +841,35 @@ async def run(self, ctx: Config):
         sign_algo = sign_algo,
         private_key_hex = private_key3.to_string().hex())
     async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            latest_block = await client.get_latest_block()
-            
-            tx = Tx(
-                code="""
-                        transaction {
-                            prepare(signer: AuthAccount) { log(signer.address) }
-                        }
-                    """,
-                reference_block_id = latest_block.id,
-                payer = account3.address,
-                proposal_key = ProposalKey(
-                    key_address = account1.address,
-                    key_id = 0,
-                    key_sequence_number = account.keys[
-                        0
-                    ].sequence_number,
-                ),
-            ).add_authorizers([account1.address])
-            .with_payload_signature(
-                account1.address,
-                0,
-                signer1,
-            ).with_envelope_signature(
-                account3.address,
-                0,
-                signer3,
-            )
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        latest_block = await client.get_latest_block()
+        
+        tx = Tx(
+            code="""
+                    transaction {
+                        prepare(signer: AuthAccount) { log(signer.address) }
+                    }
+                """,
+            reference_block_id = latest_block.id,
+            payer = account3.address,
+            proposal_key = ProposalKey(
+                key_address = account1.address,
+                key_id = 0,
+                key_sequence_number = account.keys[
+                    0
+                ].sequence_number,
+            ),
+        ).add_authorizers([account1.address])
+        .with_payload_signature(
+            account1.address,
+            0,
+            signer1,
+        ).with_envelope_signature(
+            account3.address,
+            0,
+            signer3,
+        )
 ```
 
 ### [Multiple parties, two authorizers](https://docs.onflow.org/concepts/transaction-signing/#multiple-parties)
@@ -900,35 +902,35 @@ async def run(self, ctx: Config):
         sign_algo = sign_algo,
         private_key_hex = private_key3.to_string().hex())
     async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            latest_block = await client.get_latest_block()
-            
-            tx = Tx(
-                code="""
-                        transaction {
-                            prepare(signer: AuthAccount) { log(signer.address) }
-                        }
-                    """,
-                reference_block_id = latest_block.id,
-                payer = account3.address,
-                proposal_key = ProposalKey(
-                    key_address = account1.address,
-                    key_id = 0,
-                    key_sequence_number = account.keys[
-                        0
-                    ].sequence_number,
-                ),
-            ).add_authorizers([account1.address, account3.address])
-            .with_payload_signature(
-                account1.address,
-                0,
-                signer1,
-            ).with_envelope_signature(
-                account3.address,
-                0,
-                signer3,
-            )
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        latest_block = await client.get_latest_block()
+        
+        tx = Tx(
+            code="""
+                    transaction {
+                        prepare(signer: AuthAccount) { log(signer.address) }
+                    }
+                """,
+            reference_block_id = latest_block.id,
+            payer = account3.address,
+            proposal_key = ProposalKey(
+                key_address = account1.address,
+                key_id = 0,
+                key_sequence_number = account.keys[
+                    0
+                ].sequence_number,
+            ),
+        ).add_authorizers([account1.address, account3.address])
+        .with_payload_signature(
+            account1.address,
+            0,
+            signer1,
+        ).with_envelope_signature(
+            account3.address,
+            0,
+            signer3,
+        )
 ```
 
 ### [Multiple parties, multiple signatures](https://docs.onflow.org/concepts/transaction-signing/#multiple-parties)
@@ -969,43 +971,43 @@ async def run(self, ctx: Config):
         sign_algo = sign_algo,
         private_key_hex = private_key4.to_string().hex())
     async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            latest_block = await client.get_latest_block()
-            
-            tx = Tx(
-                code="""
-                        transaction {
-                            prepare(signer: AuthAccount) { log(signer.address) }
-                        }
-                    """,
-                reference_block_id = latest_block.id,
-                payer = account2.address,
-                proposal_key = ProposalKey(
-                    key_address = account1.address,
-                    key_id = 0,
-                    key_sequence_number = account.keys[
-                        0
-                    ].sequence_number,
-                ),
-            ).add_authorizers([account1.address])
-            .with_payload_signature(
-                account1.address,
-                0,
-                signer1,
-            ).with_payload_signature(
-                account1.address,
-                1,
-                signer2,
-            ).with_envelope_signature(
-                account3.address,
-                0,
-                signer3,
-            ).with_envelope_signature(
-                account3.address,
-                1,
-                signer4,
-            )
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        latest_block = await client.get_latest_block()
+        
+        tx = Tx(
+            code="""
+                    transaction {
+                        prepare(signer: AuthAccount) { log(signer.address) }
+                    }
+                """,
+            reference_block_id = latest_block.id,
+            payer = account2.address,
+            proposal_key = ProposalKey(
+                key_address = account1.address,
+                key_id = 0,
+                key_sequence_number = account.keys[
+                    0
+                ].sequence_number,
+            ),
+        ).add_authorizers([account1.address])
+        .with_payload_signature(
+            account1.address,
+            0,
+            signer1,
+        ).with_payload_signature(
+            account1.address,
+            1,
+            signer2,
+        ).with_envelope_signature(
+            account3.address,
+            0,
+            signer3,
+        ).with_envelope_signature(
+            account3.address,
+            1,
+            signer4,
+        )
 ```
 
 
@@ -1022,7 +1024,6 @@ async def run(self, ctx: Config):
     async with flow_client(
         host=ctx.access_node_host, port=ctx.access_node_port
     ) as client:
-
         account_address, _, new_signer = await random_account(
             client=client, ctx=ctx
         )
@@ -1047,10 +1048,6 @@ async def run(self, ctx: Config):
         )
 
         response = await client.send_transaction(transaction=transaction.to_grpc())
-
-        transaction_id = response.id
-
-        await client.get_transaction(id=transaction_id)
 ```
 
 ### Create Accounts
@@ -1078,10 +1075,10 @@ An account key contains the following data:
 Account creation happens inside a transaction, which means that somebody must pay to submit that transaction to the network. We'll call this person the account creator. Make sure you have read [sending a transaction section](#send-transactions) first. 
 
 ```python
-async with flow_client(
+async def run(self, ctx: Config):
+    async with flow_client(
         host=ctx.access_node_host, port=ctx.access_node_port
     ) as client:
-        
         latest_block = await client.get_latest_block()
         proposer = await client.get_account_at_latest_block(address = ctx.service_account_address.bytes)
 
@@ -1105,7 +1102,6 @@ async with flow_client(
         )
         result = await client.execute_transaction(tx)
 
-
         print("new address event:\n")
         print(result.__dict__)
         print("\nCreating account : successfully done...")
@@ -1119,6 +1115,189 @@ await client.get_events_for_block_i_ds(
     type="flow.AccountCreated", block_ids=[latest_block.id]
 )
 
+### Contracts
+Flow smart contracts are Codance scripts that run on Flow blockchain and can returns values.
+a contract can be add, update or remove from an account.
+
+A contracts contains the following fields:
+
+- `Name` - Name of contract.
+- `source` - Script of contract.
+
+## Adding a contract to an account
+
+```python
+async def run(self, ctx: Config):
+    # First Step : Create a client to connect to the flow blockchain
+    # flow_client function creates a client using the host and port
+    # A test Contract define for this example, you can modify it by your self
+    contract = {
+        "Name" : "TestOne",
+        "source" : '''pub contract TestOne {
+                            pub fun add(a: Int, b: Int): Int {
+                                return a + b
+                            }
+                            }'''
+        }
+    contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+    account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
+    latest_block = await client.get_latest_block()
+    cadenceName = cadence.String(contract["Name"])
+    cadenceCode = cadence.String(contract_source_hex)
+    tx = (
+        Tx(
+        code = addAccountContractTemplate,
+        reference_block_id = latest_block.id,
+        payer = account_address,
+        ).add_arguments(cadenceName)
+        .add_arguments(cadenceCode)
+        .add_authorizers([account_address])
+        .with_envelope_signature(
+            account_address,
+            0,
+            new_signer,
+        )
+    )
+
+    result = await client.execute_transaction(tx)
+
+```
+## Updating a contract of an account
+```python
+async def run(self, ctx: Config):
+    # First Step : Create a client to connect to the flow blockchain
+    # flow_client function creates a client using the host and port
+    # A test Contract define for this example, you can modify it by your self
+    contract = {
+        "Name" : "TestOne",
+        "source" : '''pub contract TestOne {
+                            pub fun add(a: Int, b: Int): Int {
+                                return a + b
+                            }
+                            }'''
+        }
+    contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
+        latest_block = await client.get_latest_block()
+        cadenceName = cadence.String(contract["Name"])
+        cadenceCode = cadence.String(contract_source_hex)
+        tx = (
+            Tx(
+            code = addAccountContractTemplate,
+            reference_block_id = latest_block.id,
+            payer = account_address,
+            ).add_arguments(cadenceName)
+            .add_arguments(cadenceCode)
+            .add_authorizers([account_address])
+            .with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
+            )
+        )
+
+        result = await client.execute_transaction(tx)
+
+        latest_block = await client.get_latest_block()
+        #Updated Contract
+        contract = {
+        "Name" : "TestOne",
+        "source" : '''pub contract TestOne {
+                            pub fun add(a: Int, b: Int): Int {
+                                return a * b
+                            }
+                            }'''
+        }
+        contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+        #Update account contract with a transaction
+        tx = (
+            Tx(
+            code = updateAccountContractTemplate,
+            reference_block_id = latest_block.id,
+            payer = account_address,
+            ).add_arguments(contract["Name"])
+            .add_arguments(contract_source_hex)
+            .add_authorizers([account_address])
+            .with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
+            )
+        )
+
+        result = await client.execute_transaction(tx)
+
+```
+
+## Removing a contract from an account
+```python
+async def run(self, ctx: Config):
+    # First Step : Create a client to connect to the flow blockchain
+    # flow_client function creates a client using the host and port
+    # A test Contract define for this example, you can modify it by your self
+    contract = {
+        "Name" : "TestOne",
+        "source" : '''pub contract TestOne {
+                            pub fun add(a: Int, b: Int): Int {
+                                return a + b
+                            }
+                            }'''
+        }
+    contract_source_hex = bytes(contract["source"],"UTF-8").hex()
+
+    async with flow_client(
+        host=ctx.access_node_host, port=ctx.access_node_port
+    ) as client:
+        account_address, account_key, new_signer = await random_account( client = client, ctx = ctx)
+        latest_block = await client.get_latest_block()
+        cadenceName = cadence.String(contract["Name"])
+        cadenceCode = cadence.String(contract_source_hex)
+        tx = (
+            Tx(
+            code = addAccountContractTemplate,
+            reference_block_id = latest_block.id,
+            payer = account_address,
+            ).add_arguments(cadenceName)
+            .add_arguments(cadenceCode)
+            .add_authorizers([account_address])
+            .with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
+            )
+        )
+
+        result = await client.execute_transaction(tx)
+
+        # Delete the added contract from the account
+
+        latest_block = await client.get_latest_block()
+
+        tx = (
+            Tx(
+            code = removeAccountContractTemplate,
+            reference_block_id = latest_block.id,
+            payer = account_address,
+            ).add_arguments(cadenceName)
+            .add_authorizers([account_address])
+            .with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
+            )
+        )
+
+        result = await client.execute_transaction(tx)
+
+```
 ### Generate Keys
 [<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO reference here
 

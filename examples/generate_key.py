@@ -56,7 +56,9 @@ class GetAccountKeyByProtoExample(Example):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
-            account = await client.get_account(address=ctx.service_account_address.bytes)
+            account = await client.get_account(
+                address=ctx.service_account_address.bytes
+            )
 
 
 # # -------------------------------------------------------------------------
@@ -75,6 +77,6 @@ class CreateAccountKeyBySeedExample(Example):
         # This function return AccountKey and Signer
         _, _ = AccountKey.from_seed(
             sign_algo=SignAlgo.ECDSA_P256,
-            hash_algo=SignAlgo.ECDSA_P256,
+            hash_algo=HashAlgo.SHA3_256,
             seed="JNFWM-NDDSE-GENPV-BUBYK-XAVEJ-MVECB-UHIHT-FKKHR-FFDQX-HNSIQ-QVATO-ZEHEQ",
         )

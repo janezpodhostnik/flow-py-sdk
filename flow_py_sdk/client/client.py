@@ -55,7 +55,7 @@ class AccessAPI(AccessAPIStub):
         Parameters
         ----------
         is_sealed : bool
-            Determine the requested block header should be seeled or not.
+            Determine the requested block header should be sealed or not.
 
         Returns
         -------
@@ -77,7 +77,7 @@ class AccessAPI(AccessAPIStub):
 
         Returns
         -------
-        entities.Block
+        entities.BlockHeader
             Return requested block header.
 
         """
@@ -111,7 +111,7 @@ class AccessAPI(AccessAPIStub):
         Parameters
         ----------
         is_sealed : bool
-            Determine the requested block should be seeled or not.
+            Determine the requested block should be sealed or not.
 
         Returns
         -------

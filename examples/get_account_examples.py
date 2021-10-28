@@ -15,18 +15,23 @@ class GetAccountExample(Example):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
-            account = await client.get_account(address=ctx.service_account_address.bytes)
+            account = await client.get_account(
+                address=ctx.service_account_address.bytes
+            )
             print("Account Address: {}".format(account.address.hex()))
             print("Account Balance: {}".format(account.balance))
-            print("Account Balance: {}".format(len(account.contracts)))
+            print("Account Contracts: {}".format(len(account.contracts)))
             print("Account Keys: {}".format(len(account.keys)))
+
 
 # -------------------------------------------------------------------------
 # Get an account by address at the latest sealed block.
 # -------------------------------------------------------------------------
 class GetAccountAtLatestBlockExample(Example):
     def __init__(self) -> None:
-        super().__init__(tag="GA.2.", name="GetAccountAtLatestBlockExample", sort_order=902)
+        super().__init__(
+            tag="GA.2.", name="GetAccountAtLatestBlockExample", sort_order=902
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
@@ -34,21 +39,24 @@ class GetAccountAtLatestBlockExample(Example):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
-            _, _, _ = await random_account(
-                    client=client, ctx=ctx
-                )
-            account = await client.get_account_at_latest_block(address=ctx.service_account_address.bytes)
+            _, _, _ = await random_account(client=client, ctx=ctx)
+            account = await client.get_account_at_latest_block(
+                address=ctx.service_account_address.bytes
+            )
             print("Account Address: {}".format(account.address.hex()))
             print("Account Balance: {}".format(account.balance))
-            print("Account Balance: {}".format(len(account.contracts)))
+            print("Account Contracts: {}".format(len(account.contracts)))
             print("Account Keys: {}".format(len(account.keys)))
+
 
 # -------------------------------------------------------------------------
 # Get an account by address at the given block height.
 # -------------------------------------------------------------------------
 class GetAccountAtBlockHeightExample(Example):
     def __init__(self) -> None:
-        super().__init__(tag="GA.3.", name="GetAccountAtBlockHeightExample", sort_order=903)
+        super().__init__(
+            tag="GA.3.", name="GetAccountAtBlockHeightExample", sort_order=903
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
@@ -57,15 +65,12 @@ class GetAccountAtBlockHeightExample(Example):
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             latest_block = await client.get_latest_block()
-            _, _, _ = await random_account(
-                client=client, ctx=ctx
-            )
+            _, _, _ = await random_account(client=client, ctx=ctx)
             account = await client.get_account_at_block_height(
-                address=ctx.service_account_address.bytes, block_height=latest_block.height
+                address=ctx.service_account_address.bytes,
+                block_height=latest_block.height,
             )
             print("Account Address: {}".format(account.address.hex()))
             print("Account Balance: {}".format(account.balance))
-            print("Account Balance: {}".format(len(account.contracts)))
+            print("Account Contracts: {}".format(len(account.contracts)))
             print("Account Keys: {}".format(len(account.keys)))
-
-

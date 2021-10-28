@@ -69,13 +69,17 @@ class ExecuteScriptWithArgumentExample(Example):
                 # , block_id
                 # , block_height
             )
+
+
 # -------------------------------------------------------------------------
 # Submit a complex script with arguments and parse the response Function
 # -------------------------------------------------------------------------
 class ExecuteComplexScriptWithArgumentExample(Example):
     def __init__(self) -> None:
         super().__init__(
-            tag="S.3.", name="ExecuteComplexScriptWithArgumentExample", sort_order=403)
+            tag="S.3.", name="ExecuteComplexScriptWithArgumentExample", sort_order=403
+        )
+
     async def run(self, ctx: Config):
         script = Script(
             code="""
@@ -100,7 +104,7 @@ class ExecuteComplexScriptWithArgumentExample(Example):
                     }
                 """,
             arguments=[cadence.String("flow")],
-            )
+        )
 
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port

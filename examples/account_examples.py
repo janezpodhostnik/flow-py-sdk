@@ -307,4 +307,3 @@ class RemoveContract(Example):
             )
 
             await client.execute_transaction(transaction)
-

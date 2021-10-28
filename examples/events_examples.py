@@ -1,4 +1,4 @@
-from flow_py_sdk import flow_client, ProposalKey, Tx, cadence 
+from flow_py_sdk import flow_client, ProposalKey, Tx, cadence
 from examples.common import Example, Config
 from examples.common.utils import random_account
 
@@ -26,9 +26,6 @@ class GetEventByNameForHeightRangeExample(Example):
                 start_height=latest_block.height - 1,
                 end_height=latest_block.height,
             )
-            
-
-
 
 
 # -------------------------------------------------------------------------
@@ -63,10 +60,13 @@ class GetEventByNameForBlockIdsExample(Example):
 # and how created event will be shown up on chain.
 # -------------------------------------------------------------------------
 
+
 class EmitEventFromContractExample(Example):
     def __init__(self) -> None:
         super().__init__(
-            tag="E.3.", name="Emit event from contract", sort_order=303,
+            tag="E.3.",
+            name="Emit event from contract",
+            sort_order=303,
         )
 
     async def run(self, ctx: Config):
@@ -130,4 +130,3 @@ class EmitEventFromContractExample(Example):
             print("event type: {}".format(result.events[0].type))
             print("event value: {}".format(result.events[0].value))
             print("event value: {}".format(result.events[0].transaction_id.hex()))
-            
