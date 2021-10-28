@@ -1,5 +1,6 @@
 from flow_py_sdk.account_key import AccountKey
 from flow_py_sdk.signer.hash_algo import HashAlgo
+from flow_py_sdk.signer import SignAlgo, HashAlgo
 import ecdsa
 from flow_py_sdk import flow_client
 from ecdsa import SigningKey
@@ -55,7 +56,7 @@ class GetAccountKeyByProtoExample(Example):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
-            await client.get_account(address=ctx.service_account_address.bytes)
+            account = await client.get_account(address=ctx.service_account_address.bytes)
 
 
 # # -------------------------------------------------------------------------
@@ -73,7 +74,7 @@ class CreateAccountKeyBySeedExample(Example):
     async def run(self, ctx: Config):
         # This function return AccountKey and Signer
         _, _ = AccountKey.from_seed(
-            sign_algo=None,
-            hash_algo=None,
+            sign_algo=SignAlgo.ECDSA_P256,
+            hash_algo=SignAlgo.ECDSA_P256,
             seed="JNFWM-NDDSE-GENPV-BUBYK-XAVEJ-MVECB-UHIHT-FKKHR-FFDQX-HNSIQ-QVATO-ZEHEQ",
         )

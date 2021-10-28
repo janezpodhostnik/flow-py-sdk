@@ -91,7 +91,7 @@ class AccountKey(object):
 
     @classmethod
     def from_seed(
-        cls, sign_algo: SignAlgo, hash_algo: HashAlgo, *, seed: str = None
+        cls, sign_algo: SignAlgo = SignAlgo.ECDSA_P256, hash_algo: HashAlgo = HashAlgo.SHA3_256, *, seed: str = None
     ) -> tuple[AccountKey, in_memory_signer.InMemorySigner]:
         """
         from_seed provide a way for user to create a public and private key for an account using, seed string.
@@ -112,10 +112,6 @@ class AccountKey(object):
             it also create a InMemorySigner, it can be use signing messages and transactions.
 
         """
-        if sign_algo == None:
-            sign_algo = SignAlgo.ECDSA_P256
-        if hash_algo == None:
-            hash_algo = HashAlgo.SHA3_256
 
         # Generate private key using provided Seed.
         if seed == None:

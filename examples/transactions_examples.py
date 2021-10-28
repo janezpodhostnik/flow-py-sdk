@@ -233,4 +233,8 @@ class GetTransactionByIdExample(Example):
 
             transaction_id = response.id
 
-            await client.get_transaction(id=transaction_id)
+            transaction = await client.get_transaction(id=transaction_id)
+            print("transaction ID: {}".format(transaction_id.hex()))
+            print("transaction payer: {}".format(transaction.payer.hex()))
+            print("transaction proposer: {}".format(transaction.proposal_key.address.hex()))
+            print("transaction script: {}".format(transaction.script.decode("utf-8")))

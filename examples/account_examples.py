@@ -3,7 +3,7 @@ from flow_py_sdk.tx import Tx
 from flow_py_sdk import flow_client
 from flow_py_sdk.account_key import AccountKey
 from flow_py_sdk import ProposalKey, create_account_template
-from flow_py_sdk.templates import get_contract_template
+from flow_py_sdk.templates import ContractTemplates
 import flow_py_sdk.cadence as cadence
 from flow_py_sdk.signer import SignAlgo, HashAlgo
 from examples.common import Example, Config
@@ -94,11 +94,11 @@ class DeployContract(Example):
             proposer = await client.get_account_at_latest_block(
                 address=account_address.bytes
             )
-            cadence_name = cadence.String(contract["Name"])
-            cadence_code = cadence.String(contract_source_hex)
+            contract_name = cadence.String(contract["Name"])
+            contract_code = cadence.String(contract_source_hex)
             transaction = (
                 Tx(
-                    code=get_contract_template.addAccountContractTemplate,
+                    code=ContractTemplates.addAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -107,8 +107,8 @@ class DeployContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                .add_arguments(cadence_name)
-                .add_arguments(cadence_code)
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
                     account_address,
@@ -155,11 +155,11 @@ class UpdateContract(Example):
             proposer = await client.get_account_at_latest_block(
                 address=account_address.bytes
             )
-            cadence_name = cadence.String(contract["Name"])
-            cadence_code = cadence.String(contract_source_hex)
+            contract_name = cadence.String(contract["Name"])
+            contract_code = cadence.String(contract_source_hex)
             transaction = (
                 Tx(
-                    code=get_contract_template.addAccountContractTemplate,
+                    code=ContractTemplates.addAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -168,8 +168,8 @@ class UpdateContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                .add_arguments(cadence_name)
-                .add_arguments(cadence_code)
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
                     account_address,
@@ -193,12 +193,12 @@ class UpdateContract(Example):
                                 }""",
             }
             contract_source_hex = bytes(contract["source"], "UTF-8").hex()
-            cadence_name = cadence.String(contract["Name"])
-            cadence_code = cadence.String(contract_source_hex)
+            contract_name = cadence.String(contract["Name"])
+            contract_code = cadence.String(contract_source_hex)
             # Update account contract with a transaction
             transaction = (
                 Tx(
-                    code=get_contract_template.updateAccountContractTemplate,
+                    code=ContractTemplates.updateAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -207,8 +207,8 @@ class UpdateContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                .add_arguments(cadence_name)
-                .add_arguments(cadence_code)
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
                     account_address,
@@ -255,11 +255,11 @@ class RemoveContract(Example):
             proposer = await client.get_account_at_latest_block(
                 address=account_address.bytes
             )
-            cadence_name = cadence.String(contract["Name"])
-            cadence_code = cadence.String(contract_source_hex)
+            contract_name = cadence.String(contract["Name"])
+            contract_code = cadence.String(contract_source_hex)
             transaction = (
                 Tx(
-                    code=get_contract_template.addAccountContractTemplate,
+                    code=ContractTemplates.addAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -268,8 +268,8 @@ class RemoveContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                .add_arguments(cadence_name)
-                .add_arguments(cadence_code)
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
                     account_address,
@@ -288,7 +288,7 @@ class RemoveContract(Example):
 
             transaction = (
                 Tx(
-                    code=get_contract_template.removeAccountContractTemplate,
+                    code=ContractTemplates.removeAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -297,7 +297,7 @@ class RemoveContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                .add_arguments(cadence_name)
+                .add_arguments(contract_name)
                 .add_authorizers(account_address)
                 .with_envelope_signature(
                     account_address,
@@ -307,3 +307,4 @@ class RemoveContract(Example):
             )
 
             await client.execute_transaction(transaction)
+

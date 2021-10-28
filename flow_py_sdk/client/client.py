@@ -50,12 +50,12 @@ class AccessAPI(AccessAPIStub):
         self, *, is_sealed: bool = False
     ) -> entities.BlockHeader:
         """
-        Get gets the full payload of the latest sealed or unsealed block header.
+        Get the full payload of the latest sealed or unsealed block header.
 
         Parameters
         ----------
         is_sealed : bool
-            determine the requested block header should be seeled or not.
+            Determine the requested block header should be seeled or not.
 
         Returns
         -------
@@ -68,7 +68,7 @@ class AccessAPI(AccessAPIStub):
 
     async def get_block_header_by_i_d(self, *, id: bytes = b"") -> entities.BlockHeader:
         """
-        Get a block header Using its ID.
+        Get a block header using its ID.
 
         Parameters
         ----------
@@ -88,7 +88,7 @@ class AccessAPI(AccessAPIStub):
         self, *, height: int = 0
     ) -> entities.BlockHeader:
         """
-        Get a block header Using its height.
+        Get a block header using its height.
 
         Parameters
         ----------
@@ -106,12 +106,12 @@ class AccessAPI(AccessAPIStub):
 
     async def get_latest_block(self, *, is_sealed: bool = False) -> entities.Block:
         """
-        Get gets the full payload of the latest sealed or unsealed block.
+        Get the full payload of the latest sealed or unsealed block.
 
         Parameters
         ----------
         is_sealed : bool
-            determine the requested block should be seeled or not.
+            Determine the requested block should be seeled or not.
 
         Returns
         -------
@@ -124,7 +124,7 @@ class AccessAPI(AccessAPIStub):
 
     async def get_block_by_i_d(self, *, id: bytes = b"") -> entities.Block:
         """
-        Get a block Using its ID.
+        Get a block using its ID.
 
         Parameters
         ----------
@@ -142,7 +142,7 @@ class AccessAPI(AccessAPIStub):
 
     async def get_block_by_height(self, *, height: int = 0) -> entities.Block:
         """
-        Get a block Using its height.
+        Get a block using its height.
 
         Parameters
         ----------
@@ -160,7 +160,7 @@ class AccessAPI(AccessAPIStub):
 
     async def get_collection_by_i_d(self, *, id: bytes = b"") -> entities.Collection:
         """
-        Get a collection Using its ID.
+        Get a collection using its ID.
 
         Parameters
         ----------
@@ -178,7 +178,7 @@ class AccessAPI(AccessAPIStub):
 
     async def get_transaction(self, *, id: bytes = b"") -> entities.Transaction:
         """
-        Get a transaction Using its ID.
+        Get a transaction using its ID.
 
         Parameters
         ----------
@@ -196,12 +196,12 @@ class AccessAPI(AccessAPIStub):
 
     async def get_account(self, *, address: bytes = b"") -> entities.Account:
         """
-        Gets an account Using its address.
+        Get an account using its address.
 
         Parameters
         ----------
         address : bytes
-            address of requested account.
+            Address of requested account.
 
         Returns
         -------
@@ -216,12 +216,12 @@ class AccessAPI(AccessAPIStub):
         self, *, address: bytes = b""
     ) -> entities.Account:
         """
-        gets an account by address at the latest sealed block.
+        Get an account by address at the latest sealed block.
 
         Parameters
         ----------
         address : bytes
-            address of requested account.
+            Address of requested account.
 
         Returns
         -------
@@ -236,12 +236,12 @@ class AccessAPI(AccessAPIStub):
         self, *, address: bytes = b"", block_height: int = 0
     ) -> entities.Account:
         """
-        gets an account by address at the given block height.
+        Get an account by address at the given block height.
 
         Parameters
         ----------
         address : bytes
-            address of requested account.
+            Address of requested account.
         block_height : int
             Desired block height.
 
@@ -260,7 +260,7 @@ class AccessAPI(AccessAPIStub):
         self, *, script: bytes = b"", arguments: List[bytes] = []
     ) -> bytes:
         """
-        executes a read-only Cadence script against the latest sealed block.
+        Execute a read-only Cadence script against the latest sealed block.
         The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
@@ -268,12 +268,12 @@ class AccessAPI(AccessAPIStub):
         script : bytes
             Cadence script which is wanted to perform.
         argument : List[bytes]
-            list of argument which is need for performing script.
+            List of argument which is need for performing script.
 
         Returns
         -------
         bytes
-            return value is encoded using the JSON-Cadence data interchange format.
+            Return value is encoded using the JSON-Cadence data interchange format.
 
         """
         response = await super().execute_script_at_latest_block(
@@ -285,7 +285,7 @@ class AccessAPI(AccessAPIStub):
         self, *, block_id: bytes = b"", script: bytes = b"", arguments: List[bytes] = []
     ) -> bytes:
         """
-        executes a read-only Cadence script against the desired block with specific ID.
+        Execute a read-only Cadence script against the desired block with specific ID.
         The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
@@ -295,12 +295,12 @@ class AccessAPI(AccessAPIStub):
         script : bytes
             Cadence script which is wanted to perform.
         argument : List[bytes]
-            list of argument which is need for performing script.
+            List of argument which is need for performing script.
 
         Returns
         -------
         bytes
-            return value is encoded using the JSON-Cadence data interchange format.
+            Return value is encoded using the JSON-Cadence data interchange format.
 
         """
         response = await super().execute_script_at_block_i_d(
@@ -312,22 +312,22 @@ class AccessAPI(AccessAPIStub):
         self, *, block_height: int = 0, script: bytes = b"", arguments: List[bytes] = []
     ) -> bytes:
         """
-        executes a read-only Cadence script against the desired block with specific height.
+        Execute a read-only Cadence script against the desired block with specific height.
         The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
         block_height: int
-            height of desired block.
+            Height of desired block.
         script : bytes
             Cadence script which is wanted to perform.
         argument : List[bytes]
-            list of argument which is need for performing script.
+            List of argument which is need for performing script.
 
         Returns
         -------
         bytes
-            return value is encoded using the JSON-Cadence data interchange format.
+            Return value is encoded using the JSON-Cadence data interchange format.
 
         """
         response = await super().execute_script_at_block_height(
@@ -339,22 +339,22 @@ class AccessAPI(AccessAPIStub):
         self, *, type: str = "", start_height: int = 0, end_height: int = 0
     ) -> list[entities.EventsResponseResult]:
         """
-        query on blocks in specific height.
+        Query on blocks in specific height.
         The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
         type : str
-            type of requested type.
+            Type of requested type.
         start_height: int
-            start of desired range.
+            Start of desired range.
         end_height : int
-            end of desired range.
+            End of desired range.
 
         Returns
         -------
-        list[entities.EventsResponseResult]
-            return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
+        List[entities.EventsResponseResult]
+            Return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
 
         """
         response = await super().get_events_for_height_range(
@@ -366,20 +366,20 @@ class AccessAPI(AccessAPIStub):
         self, *, type: str = "", block_ids: List[bytes] = []
     ) -> list[entities.EventsResponseResult]:
         """
-        query on blocks with specific IDs.
+        Query on blocks with specific IDs.
         The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
         ----------
         type : str
-            type of requested type.
+            Type of requested type.
         block_ids: List[bytes]
-            list of desired blocks.
+            List of desired blocks.
 
         Returns
         -------
         list[entities.EventsResponseResult]
-            return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
+            Return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.
 
         """
         response = await super().get_events_for_block_i_ds(
@@ -389,7 +389,7 @@ class AccessAPI(AccessAPIStub):
 
     async def get_network_parameters(self) -> entities.GetNetworkParametersResponse:
         """
-        retrieves the network parameters.
+        Retrieve the network parameters.
 
         Parameters
         ----------
@@ -409,7 +409,7 @@ class AccessAPI(AccessAPIStub):
         at_block_height: Optional[int] = None,
     ) -> Optional[Value]:
         """
-        executes a read-only Cadence script against the desired block with specific height or ID.
+        Execute a read-only Cadence script against the desired block with specific height or ID.
         The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.
 
         Parameters
@@ -419,12 +419,12 @@ class AccessAPI(AccessAPIStub):
         block_id: int
             ID of desired block.
         block_height: int
-            height of desired block.
+            Height of desired block.
 
         Returns
         -------
         Optional[Value]
-            return value is encoded using the JSON-Cadence data interchange format.
+            Return value is encoded using the JSON-Cadence data interchange format.
 
         """
         s = script.code.encode("utf-8")
@@ -470,17 +470,17 @@ class AccessAPI(AccessAPIStub):
         self, *, transaction: Optional[entities.Transaction] = None
     ) -> entities.SendTransactionResponse:
         """
-        submits a transaction to the network.
+        Submit a transaction to the network.
 
         Parameters
         ----------
         transaction: Optional[entities.Transaction]
-            a transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...
+            A transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...
 
         Returns
         -------
         entities.SendTransactionResponse
-            returns id of block
+            Returns id of block
 
         """
         response = await super().send_transaction(transaction=transaction)
@@ -490,17 +490,17 @@ class AccessAPI(AccessAPIStub):
         self, *, id: bytes = b""
     ) -> entities.TransactionResultResponse:
         """
-        get a transaction response.
+        Get a transaction response.
 
         Parameters
         ----------
         id: byte
-            id of requested transaction.
+            Id of requested transaction.
 
         Returns
         -------
         entities.SendTransactionResponse
-            returns id of block
+            Returns id of block
 
         """
         response = await super().get_transaction_result(id=id)
@@ -510,21 +510,21 @@ class AccessAPI(AccessAPIStub):
         self, tx: Tx, *, wait_for_seal=True, timeout: Annotated[float, "seconds"] = 30.0
     ) -> entities.TransactionResultResponse:
         """
-        submits a transaction to the network and wait to return its response.
+        Submit a transaction to the network and wait to return its response.
 
         Parameters
         ----------
         tx: entities.Transaction
-            a transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...
+            A transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...
         wait_for_seal: bool
-            return response when the block is sealed.
+            Return response when the block is sealed.
         timeout: float
-            time the function should wait for response
+            Time the function should wait for response
 
         Returns
         -------
         entities.SendTransactionResponse
-            returns id of block
+            Returns id of block
 
         """
         log.debug(f"Sending transaction")

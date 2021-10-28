@@ -15,7 +15,10 @@ class GetBlockByIdExample(Example):
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             latest_block = await client.get_latest_block()
-            await client.get_block_by_i_d(id=latest_block.id)
+            block = await client.get_block_by_i_d(id=latest_block.id)
+            print("Block ID: {}".format(block.id.hex()))
+            print("Block height: {}".format(block.height))
+            print("Block timestamp: [{}]".format(block.timestamp))
 
 
 # -------------------------------------------------------------------------
@@ -32,7 +35,10 @@ class GetBlockByHeightExample(Example):
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             latest_block = await client.get_latest_block()
-            await client.get_block_by_height(height=latest_block.height)
+            block = await client.get_block_by_height(height=latest_block.height)
+            print("Block ID: {}".format(block.id.hex()))
+            print("Block height: {}".format(block.height))
+            print("Block timestamp: [{}]".format(block.timestamp))
 
 
 # -------------------------------------------------------------------------
@@ -48,4 +54,7 @@ class GetLatestBlockExample(Example):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
-            await client.get_latest_block(is_sealed=False)
+            block = await client.get_latest_block(is_sealed=False)
+            print("Block ID: {}".format(block.id.hex()))
+            print("Block height: {}".format(block.height))
+            print("Block timestamp: [{}]".format(block.timestamp))
