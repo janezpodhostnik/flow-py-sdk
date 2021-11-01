@@ -11,8 +11,8 @@
   },
   "accounts": {
     "emulator-account": {
-      "address": "f8d6e0586b0a20c7",
-			"keys": "e3a17a480a72dc3a1e98d68fb026c89144843e352636756c79ddd5a1423f44dd",
+			"address": "f8d6e0586b0a20c7",
+			"keys": "39a162b7ea58314c2cda19f32020b3992e9017a0acc5b3ac53ce3a3f8511a877",
       "sigAlgorithm": "ECDSA_P256",
       "hashAlgorithm": "SHA3_256"
     }

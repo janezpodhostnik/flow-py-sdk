@@ -70,6 +70,14 @@ class ProposalKey(object):
         self.key_sequence_number: int = key_sequence_number
 
 
+class SignatureTemp(object):
+    def __init__(self, *, address: Address, key_id: int, signer: Signer) -> None:
+        super().__init__()
+        self.address: Address = address
+        self.key_id: int = key_id
+        self.signer: Signer = signer
+
+
 class Tx(object):
     def __init__(
         self,
@@ -89,6 +97,8 @@ class Tx(object):
         self.proposal_key: ProposalKey = proposal_key
         self.payload_signatures: list[TxSignature] = []
         self.envelope_signatures: list[TxSignature] = []
+        self.temp_payload_signatures: list[SignatureTemp] = []
+        self.temp_envelope_signatures: list[SignatureTemp] = []
 
     def with_gas_limit(self, gas_limit: int) -> "Tx":
         self.gas_limit = gas_limit
@@ -163,10 +173,9 @@ class Tx(object):
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
-        signature = signer.sign(self.payload_message(), TransactionDomainTag)
-        signer_index = self._signer_list().index(address)
-        ts = TxSignature(address, key_id, signer_index, signature)
-        self.payload_signatures.append(ts)
+        self.temp_payload_signatures.append(
+            SignatureTemp(address=address, key_id=key_id, signer=signer)
+        )
         return self
 
     def with_envelope_signature(
@@ -176,10 +185,33 @@ class Tx(object):
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
-        signature = signer.sign(self.envelope_message(), TransactionDomainTag)
-        signer_index = self._signer_list().index(address)
-        ts = TxSignature(address, key_id, signer_index, signature)
-        self.envelope_signatures.append(ts)
+        self.temp_envelope_signatures.append(
+            SignatureTemp(address=address, key_id=key_id, signer=signer)
+        )
+        return self
+
+    def submit_with_payload_signature(self) -> "Tx":
+        if self._missing_fields_for_signing():
+            raise Exception(
+                f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
+            )
+        for s in self.temp_payload_signatures:
+            signature = s.signer.sign(self.payload_message(), TransactionDomainTag)
+            signer_index = self._signer_list().index(s.address)
+            ts = TxSignature(s.address, s.key_id, signer_index, signature)
+            self.payload_signatures.append(ts)
+        return self
+
+    def submit_with_envelope_signature(self) -> "Tx":
+        if self._missing_fields_for_signing():
+            raise Exception(
+                f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
+            )
+        for s in self.temp_envelope_signatures:
+            signature = s.signer.sign(self.envelope_message(), TransactionDomainTag)
+            signer_index = self._signer_list().index(s.address)
+            ts = TxSignature(s.address, s.key_id, signer_index, signature)
+            self.envelope_signatures.append(ts)
         return self
 
     def add_authorizers(self, *args: Address) -> "Tx":

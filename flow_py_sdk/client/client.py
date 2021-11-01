@@ -120,7 +120,7 @@ class AccessAPI(AccessAPIStub):
 
         """
         response = await super(AccessAPI, self).get_latest_block(is_sealed=is_sealed)
-        return response.block
+        return entities.Block.from_proto(response.block)
 
     async def get_block_by_i_d(self, *, id: bytes = b"") -> entities.Block:
         """
@@ -528,6 +528,8 @@ class AccessAPI(AccessAPIStub):
 
         """
         log.debug(f"Sending transaction")
+        tx.submit_with_payload_signature()
+        tx.submit_with_envelope_signature()
         result = await self.send_transaction(transaction=tx.to_grpc())
         log.info(f"Sent transaction {result.id.hex()}")
         tx_result = await self.get_transaction_result(id=result.id)

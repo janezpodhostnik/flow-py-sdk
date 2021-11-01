@@ -229,6 +229,7 @@ class GetTransactionByIdExample(Example):
                 new_signer,
             )
 
+            transaction.submit_with_envelope_signature()
             response = await client.send_transaction(transaction=transaction.to_grpc())
 
             transaction_id = response.id
