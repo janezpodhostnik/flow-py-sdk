@@ -256,7 +256,7 @@ async def run(self, ctx: Config):
             new_signer,
         )
 
-        response = await client.send_transaction(transaction=transaction.to_grpc())
+        response = await client.send_transaction(transaction=transaction.to_signed_grpc())
 
         transaction_id = response.id
 
@@ -1047,7 +1047,7 @@ async def run(self, ctx: Config):
             new_signer,
         )
 
-        response = await client.send_transaction(transaction=transaction.to_grpc())
+        response = await client.send_transaction(transaction=transaction.to_signed_grpc())
 ```
 
 ### Create Accounts

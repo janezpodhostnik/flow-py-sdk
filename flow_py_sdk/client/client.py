@@ -528,9 +528,7 @@ class AccessAPI(AccessAPIStub):
 
         """
         log.debug(f"Sending transaction")
-        tx.submit_with_payload_signature()
-        tx.submit_with_envelope_signature()
-        result = await self.send_transaction(transaction=tx.to_grpc())
+        result = await self.send_transaction(transaction=tx.to_signed_grpc())
         log.info(f"Sent transaction {result.id.hex()}")
         tx_result = await self.get_transaction_result(id=result.id)
         if tx_result.error_message:

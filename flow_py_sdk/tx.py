@@ -69,9 +69,10 @@ class ProposalKey(object):
         self.key_id: int = key_id
         self.key_sequence_number: int = key_sequence_number
 
-
-class SignatureTemp(object):
-    def __init__(self, *, address: Address, key_id: int, signer: Signer) -> None:
+class _TxSigner(object):
+    def __init__(
+        self, *, address: Address, key_id: int, signer: Signer
+    ) -> None:
         super().__init__()
         self.address: Address = address
         self.key_id: int = key_id
@@ -97,8 +98,8 @@ class Tx(object):
         self.proposal_key: ProposalKey = proposal_key
         self.payload_signatures: list[TxSignature] = []
         self.envelope_signatures: list[TxSignature] = []
-        self.temp_payload_signatures: list[SignatureTemp] = []
-        self.temp_envelope_signatures: list[SignatureTemp] = []
+        self.payload_signers: list[_TxSigner] = [] 
+        self.envelope_signers: list[_TxSigner] = [] 
 
     def with_gas_limit(self, gas_limit: int) -> "Tx":
         self.gas_limit = gas_limit
@@ -173,11 +174,9 @@ class Tx(object):
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
-        self.temp_payload_signatures.append(
-            SignatureTemp(address=address, key_id=key_id, signer=signer)
-        )
+        self.payload_signers.append(_TxSigner(address = address, key_id = key_id, signer = signer))
         return self
-
+    
     def with_envelope_signature(
         self, address: Address, key_id: int, signer: Signer
     ) -> "Tx":
@@ -185,29 +184,23 @@ class Tx(object):
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
-        self.temp_envelope_signatures.append(
-            SignatureTemp(address=address, key_id=key_id, signer=signer)
-        )
+        self.envelope_signers.append(_TxSigner(address = address, key_id = key_id, signer = signer))
         return self
 
-    def submit_with_payload_signature(self) -> "Tx":
+    def _submit_signature(
+        self
+    ) -> "Tx":
         if self._missing_fields_for_signing():
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
-        for s in self.temp_payload_signatures:
+        for s in self.payload_signers:
             signature = s.signer.sign(self.payload_message(), TransactionDomainTag)
             signer_index = self._signer_list().index(s.address)
             ts = TxSignature(s.address, s.key_id, signer_index, signature)
             self.payload_signatures.append(ts)
-        return self
 
-    def submit_with_envelope_signature(self) -> "Tx":
-        if self._missing_fields_for_signing():
-            raise Exception(
-                f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
-            )
-        for s in self.temp_envelope_signatures:
+        for s in self.envelope_signers:
             signature = s.signer.sign(self.envelope_message(), TransactionDomainTag)
             signer_index = self._signer_list().index(s.address)
             ts = TxSignature(s.address, s.key_id, signer_index, signature)
@@ -234,7 +227,8 @@ class Tx(object):
         }
         return [k for (k, v) in mandatory_fields.items() if v is None]
 
-    def to_grpc(self) -> entities.Transaction:
+    def to_signed_grpc(self) -> entities.Transaction:
+        self._submit_signature()
         tx = entities.Transaction()
         tx.script = self.code.encode("utf-8")
         tx.arguments = encode_arguments(self.arguments)
