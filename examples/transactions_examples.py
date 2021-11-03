@@ -229,7 +229,9 @@ class GetTransactionByIdExample(Example):
                 new_signer,
             )
 
-            response = await client.send_transaction(transaction=transaction.to_signed_grpc())
+            response = await client.send_transaction(
+                transaction=transaction.to_signed_grpc()
+            )
 
             transaction_id = response.id
 

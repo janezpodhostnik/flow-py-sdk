@@ -69,10 +69,9 @@ class ProposalKey(object):
         self.key_id: int = key_id
         self.key_sequence_number: int = key_sequence_number
 
+
 class _TxSigner(object):
-    def __init__(
-        self, *, address: Address, key_id: int, signer: Signer
-    ) -> None:
+    def __init__(self, *, address: Address, key_id: int, signer: Signer) -> None:
         super().__init__()
         self.address: Address = address
         self.key_id: int = key_id
@@ -98,8 +97,8 @@ class Tx(object):
         self.proposal_key: ProposalKey = proposal_key
         self.payload_signatures: list[TxSignature] = []
         self.envelope_signatures: list[TxSignature] = []
-        self.payload_signers: list[_TxSigner] = [] 
-        self.envelope_signers: list[_TxSigner] = [] 
+        self.payload_signers: list[_TxSigner] = []
+        self.envelope_signers: list[_TxSigner] = []
 
     def with_gas_limit(self, gas_limit: int) -> "Tx":
         self.gas_limit = gas_limit
@@ -174,9 +173,11 @@ class Tx(object):
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
-        self.payload_signers.append(_TxSigner(address = address, key_id = key_id, signer = signer))
+        self.payload_signers.append(
+            _TxSigner(address=address, key_id=key_id, signer=signer)
+        )
         return self
-    
+
     def with_envelope_signature(
         self, address: Address, key_id: int, signer: Signer
     ) -> "Tx":
@@ -184,12 +185,12 @@ class Tx(object):
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
-        self.envelope_signers.append(_TxSigner(address = address, key_id = key_id, signer = signer))
+        self.envelope_signers.append(
+            _TxSigner(address=address, key_id=key_id, signer=signer)
+        )
         return self
 
-    def _submit_signature(
-        self
-    ) -> "Tx":
+    def _submit_signature(self) -> "Tx":
         if self._missing_fields_for_signing():
             raise Exception(
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
