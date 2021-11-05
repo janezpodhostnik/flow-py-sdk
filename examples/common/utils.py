@@ -29,10 +29,10 @@ async def random_account(
     ctx: Config,
     contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None,
 ) -> (cadence.Address, AccountKey, Signer):
-    pub, priv = random_key_pair(SignAlgo.ECDSA_secp256k1)
+    pub, priv = random_key_pair(SignAlgo.ECDSA_P256)
 
     account_key = AccountKey(
-        public_key=pub, sign_algo=SignAlgo.ECDSA_secp256k1, hash_algo=HashAlgo.SHA3_256
+        public_key=pub, sign_algo=SignAlgo.ECDSA_P256, hash_algo=HashAlgo.SHA3_256
     )
 
     block = await client.get_latest_block()
@@ -71,7 +71,7 @@ async def random_account(
         new_addresses[0],
         account_key,
         InMemorySigner(
-            sign_algo=SignAlgo.ECDSA_secp256k1,
+            sign_algo=SignAlgo.ECDSA_P256,
             hash_algo=HashAlgo.SHA3_256,
             private_key_hex=priv.hex(),
         ),

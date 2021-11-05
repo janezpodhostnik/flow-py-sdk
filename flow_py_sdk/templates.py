@@ -55,3 +55,23 @@ def create_account_template(
     )
 
     return tx
+
+
+class ContractTemplates:
+    updateAccountContractTemplate = """transaction(name: String, code: String) {
+        prepare(signer: AuthAccount) {
+            signer.contracts.update__experimental(name: name, code: code.decodeHex())
+        }
+    }"""
+
+    addAccountContractTemplate = """transaction(name: String, code: String) {
+        prepare(signer: AuthAccount) {
+            signer.contracts.add(name: name, code: code.decodeHex())
+        }
+    }"""
+
+    removeAccountContractTemplate = """transaction(name: String) {
+        prepare(signer: AuthAccount) {
+            signer.contracts.remove(name: name)
+        }
+    }"""
