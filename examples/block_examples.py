@@ -13,7 +13,7 @@ class GetBlockByIdExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             latest_block = await client.get_latest_block()
             block = await client.get_block_by_i_d(id=latest_block.id)
@@ -33,7 +33,7 @@ class GetBlockByHeightExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             latest_block = await client.get_latest_block()
             block = await client.get_block_by_height(height=latest_block.height)
@@ -53,7 +53,7 @@ class GetLatestBlockExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             block = await client.get_latest_block(is_sealed=False)
             self.log.info(f"Block ID: {block.id.hex()}")

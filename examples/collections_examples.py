@@ -15,7 +15,7 @@ class GetCollectionByIdExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             _, _, _ = await random_account(client=client, ctx=ctx)
             block = await client.get_latest_block(is_sealed=True)

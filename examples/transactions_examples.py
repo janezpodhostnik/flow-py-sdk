@@ -15,7 +15,7 @@ class SignTransactionExample(Example):
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx
@@ -55,7 +55,7 @@ class SubmitSignedTransactionExample(Example):
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx
@@ -99,7 +99,7 @@ class SubmitSignedTransactionWithArgumentsExample(Example):
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx
@@ -120,8 +120,8 @@ class SubmitSignedTransactionWithArgumentsExample(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                    .add_arguments(arg1)
-                    .with_envelope_signature(
+                .add_arguments(arg1)
+                .with_envelope_signature(
                     account_address,
                     0,
                     new_signer,
@@ -145,7 +145,7 @@ class SubmitMultiSignedTransactionExample(Example):
         # flow_client function creates a client using the host and port
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address1, _, new_signer1 = await random_account(
                 client=client, ctx=ctx
@@ -174,14 +174,14 @@ class SubmitMultiSignedTransactionExample(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                    .add_authorizers(account_address1)
-                    .add_authorizers(account_address2)
-                    .with_payload_signature(
+                .add_authorizers(account_address1)
+                .add_authorizers(account_address2)
+                .with_payload_signature(
                     account_address2,
                     0,
                     new_signer2,
                 )
-                    .with_envelope_signature(
+                .with_envelope_signature(
                     account_address1,
                     0,
                     new_signer1,
@@ -202,7 +202,7 @@ class GetTransactionByIdExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx

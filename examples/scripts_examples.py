@@ -27,7 +27,7 @@ class ExecuteScriptExample(Example):
         )
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             await client.execute_script(
                 script=script
@@ -62,7 +62,7 @@ class ExecuteScriptWithArgumentExample(Example):
         )
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             await client.execute_script(
                 script=script
@@ -107,7 +107,7 @@ class ExecuteComplexScriptWithArgumentExample(Example):
         )
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             complex_script = await client.execute_script(
                 script=script

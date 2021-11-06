@@ -14,7 +14,7 @@ class GetAccountExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account = await client.get_account(
                 address=ctx.service_account_address.bytes
@@ -38,7 +38,7 @@ class GetAccountAtLatestBlockExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             _, _, _ = await random_account(client=client, ctx=ctx)
             account = await client.get_account_at_latest_block(
@@ -48,6 +48,7 @@ class GetAccountAtLatestBlockExample(Example):
             self.log.info(f"Account Balance: {account.balance}")
             self.log.info(f"Account Contracts: {len(account.contracts)}")
             self.log.info(f"Account Keys: {len(account.keys)}")
+
 
 # -------------------------------------------------------------------------
 # Get an account by address at the given block height.

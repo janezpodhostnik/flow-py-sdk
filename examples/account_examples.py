@@ -28,7 +28,7 @@ class SignTransactionExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_key, _ = AccountKey.from_seed(
                 seed="dfghj dfj kjhgf hgfd lkjhgf kjhgfd sdf45678l",
@@ -52,8 +52,8 @@ class SignTransactionExample(Example):
                         ].sequence_number,
                     ),
                 )
-                    .add_authorizers(ctx.service_account_address)
-                    .with_envelope_signature(
+                .add_authorizers(ctx.service_account_address)
+                .with_envelope_signature(
                     ctx.service_account_address, 0, ctx.service_account_signer
                 )
             )
@@ -89,7 +89,7 @@ class DeployContract(Example):
         contract_source_hex = bytes(contract["source"], "UTF-8").hex()
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx
@@ -111,10 +111,10 @@ class DeployContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                    .add_arguments(contract_name)
-                    .add_arguments(contract_code)
-                    .add_authorizers(account_address)
-                    .with_envelope_signature(
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
+                .add_authorizers(account_address)
+                .with_envelope_signature(
                     account_address,
                     0,
                     new_signer,
@@ -150,7 +150,7 @@ class UpdateContract(Example):
         contract_source_hex = bytes(contract["source"], "UTF-8").hex()
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx
@@ -172,10 +172,10 @@ class UpdateContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                    .add_arguments(contract_name)
-                    .add_arguments(contract_code)
-                    .add_authorizers(account_address)
-                    .with_envelope_signature(
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
+                .add_authorizers(account_address)
+                .with_envelope_signature(
                     account_address,
                     0,
                     new_signer,
@@ -211,10 +211,10 @@ class UpdateContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                    .add_arguments(contract_name)
-                    .add_arguments(contract_code)
-                    .add_authorizers(account_address)
-                    .with_envelope_signature(
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
+                .add_authorizers(account_address)
+                .with_envelope_signature(
                     account_address,
                     0,
                     new_signer,
@@ -250,7 +250,7 @@ class RemoveContract(Example):
         contract_source_hex = bytes(contract["source"], "UTF-8").hex()
 
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx
@@ -272,10 +272,10 @@ class RemoveContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                    .add_arguments(contract_name)
-                    .add_arguments(contract_code)
-                    .add_authorizers(account_address)
-                    .with_envelope_signature(
+                .add_arguments(contract_name)
+                .add_arguments(contract_code)
+                .add_authorizers(account_address)
+                .with_envelope_signature(
                     account_address,
                     0,
                     new_signer,
@@ -301,9 +301,9 @@ class RemoveContract(Example):
                         key_sequence_number=proposer.keys[0].sequence_number,
                     ),
                 )
-                    .add_arguments(contract_name)
-                    .add_authorizers(account_address)
-                    .with_envelope_signature(
+                .add_arguments(contract_name)
+                .add_authorizers(account_address)
+                .with_envelope_signature(
                     account_address,
                     0,
                     new_signer,

@@ -30,7 +30,7 @@ class Script(object):
             self.add_arguments(*arguments)
 
     def add_arguments(self, *args: Value) -> Script:
-        """ Add arguments to the script.
+        """Add arguments to the script.
 
         Parameters
         ----------

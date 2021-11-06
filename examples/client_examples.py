@@ -12,7 +12,7 @@ class CreateClientExample(Example):
 
     async def run(self, ctx: Config):
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             script = await client.get_account_at_latest_block(
                 address=ctx.service_account_address.bytes

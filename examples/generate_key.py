@@ -48,7 +48,7 @@ class GetAccountKeyByProtoExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-                host=ctx.access_node_host, port=ctx.access_node_port
+            host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account = await client.get_account(
                 address=ctx.service_account_address.bytes
