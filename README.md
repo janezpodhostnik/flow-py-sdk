@@ -10,7 +10,7 @@ The Flow Python SDK provides a set of packages for Python developers to build ap
 [![codecov](https://codecov.io/gh/janezpodhostnik/flow-py-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/codecov/example-go)
 
 
-See the [guide](./docs/python_SDK_guide.md)!
+See the [guide](https://janezpodhostnik.github.io/flow-py-sdk)!
 
 
 Note: This SDK is also fully compatible with the Flow Emulator and can be used for local development.
@@ -29,20 +29,10 @@ or if using poetry:
 poetry add flow-py-sdk
 ```
 
-## Run examples
+## Contributors
 
-To run example first you need to install flow emulator and run it locally.
+<a href="https://github.com/janezpodhostnik/flow-py-sdk/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=janezpodhostnik/flow-py-sdk" />
+</a>
 
-[go step-by-step based on your OS](https://github.com/onflow/flow-cli#flow-cli)
-
-then install dependencies. to install dependencies of flow SDk run:
-
-`poetry install`
-
-after that run flow emulator  in example directory, using:
-
-`flow emulator`
-
-and then you can run examples using:
-
-`poetry run examples`
+Made with [contrib.rocks](https://contrib.rocks).
