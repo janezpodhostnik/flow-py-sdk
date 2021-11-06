@@ -9,14 +9,13 @@ log = logging.getLogger(__name__)
 
 
 class Config(object):
-    def __init__(self) -> None:
+    def __init__(self, config_location: Path) -> None:
         super().__init__()
 
         self.access_node_host: str = "localhost"
         self.access_node_port: int = 3569
 
         self.service_account_key_id: int = 0
-        config_location = Path(__file__).parent.joinpath("./flow.json")
         try:
             with open(config_location) as json_file:
                 data = json.load(json_file)

@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import pathlib
 import sys
 
 from examples.common import Config, example_registry
@@ -16,15 +17,17 @@ async def run_async(ctx: Config, examples: list[str]):
 
 
 def run():
-
     # last index of string "examples"
     example_index = sys.argv.index("examples")
-    examples = sys.argv[example_index + 1 :]
+    examples = sys.argv[example_index + 1:]
 
-    ctx = Config()
+    config_location = pathlib.Path(__file__).parent.resolve().joinpath("./flow.json")
+    ctx = Config(config_location)
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(run_async(ctx, examples))
+    success = loop.run_until_complete(run_async(ctx, examples))
+    if not success:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

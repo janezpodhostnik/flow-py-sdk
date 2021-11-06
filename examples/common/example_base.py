@@ -1,5 +1,6 @@
 import logging
 from abc import abstractmethod, ABCMeta
+from typing import Annotated
 
 from examples.common.config import Config
 
@@ -27,7 +28,7 @@ class _ExampleRegistry(object):
             return
         self._examples[ex.tag] = ex
 
-    async def run_all(self, cfg: Config):
+    async def run_all(self, cfg: Config) -> Annotated[bool, 'Success']:
         """Run all of the registered examples
 
         Parameters
@@ -36,14 +37,16 @@ class _ExampleRegistry(object):
             Environment configuration for the examples
         """
         examples = sorted(self._examples.values(), key=lambda e: e.sort_order)
+        success = True
         for ex in examples:
-            await self._run(cfg, ex)
+            success = success and await self._run(cfg, ex)
+        return success
 
-    async def run(self, cfg: Config, tag: str):
+    async def run(self, cfg: Config, tag: str) -> Annotated[bool, 'Success']:
         ex = self._examples[tag]
-        await self._run(cfg, ex)
+        return await self._run(cfg, ex)
 
-    async def _run(self, cfg: Config, ex: "Example"):
+    async def _run(self, cfg: Config, ex: "Example") -> Annotated[bool, 'Success']:
         log.info(f"=== RUNNING: [{ex.tag}] {ex.name} ===")
         # noinspection PyBroadException
         try:
@@ -54,8 +57,9 @@ class _ExampleRegistry(object):
                 exc_info=True,
                 stack_info=True,
             )
-            return
+            return False
         log.info("==== PASSED ====\n")
+        return True
 
 
 example_registry: _ExampleRegistry = _ExampleRegistry()
