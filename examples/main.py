@@ -22,7 +22,7 @@ def run():
 
     # last index of string "examples"
     example_index = sys.argv.index("examples")
-    examples = sys.argv[example_index + 1:]
+    examples = sys.argv[example_index + 1 :]
 
     ctx = Config()
     loop = asyncio.new_event_loop()
