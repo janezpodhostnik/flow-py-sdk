@@ -22,6 +22,10 @@ class _ExampleRegistry(object):
         ex : Example
             The example to register
 
+        Returns
+        -------
+        bool
+            True if the example passed, False otherwise
         """
         if ex.tag in self._examples:
             log.error(f"Trying to register an example with a duplicate tag: {ex.tag}")
@@ -35,6 +39,11 @@ class _ExampleRegistry(object):
         ----------
         cfg : Config
             Environment configuration for the examples
+
+        Returns
+        -------
+        bool
+            True if all examples passed, False otherwise
         """
         examples = sorted(self._examples.values(), key=lambda e: e.sort_order)
         success = True
@@ -46,7 +55,8 @@ class _ExampleRegistry(object):
         ex = self._examples[tag]
         return await self._run(cfg, ex)
 
-    async def _run(self, cfg: Config, ex: "Example") -> Annotated[bool, "Success"]:
+    @staticmethod
+    async def _run(cfg: Config, ex: "Example") -> Annotated[bool, "Success"]:
         log.info(f"=== RUNNING: [{ex.tag}] {ex.name} ===")
         # noinspection PyBroadException
         try:
@@ -111,6 +121,7 @@ class Example(metaclass=_ExampleMetaClass):
         self.sort_order = sort_order
         self.tag = tag
         self.name = name
+        self.log = logging.getLogger(name)
 
     @abstractmethod
     async def run(self, ctx: Config):

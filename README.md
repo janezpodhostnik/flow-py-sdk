@@ -1,9 +1,3 @@
----
-title: Flow Python SDK
-description: Packages for Python developers to build applications that interact with the Flow network
-contentType: INTRO
----
-
 The Flow Python SDK provides a set of packages for Python developers to build applications that interact with the Flow network.
 
 [![PyPI](https://img.shields.io/pypi/v/flow-py-sdk.svg)](https://pypi.org/project/flow-py-sdk/)

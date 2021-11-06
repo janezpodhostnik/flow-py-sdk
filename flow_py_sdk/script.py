@@ -30,6 +30,17 @@ class Script(object):
             self.add_arguments(*arguments)
 
     def add_arguments(self, *args: Value) -> Script:
+        """Add arguments to the script.
+
+        Parameters
+        ----------
+        args
+            The arguments to add to the script.
+
+        Returns
+        -------
+            Returns the script object itself. This is used for chaining.
+        """
         for arg in args:
             if not isinstance(arg, Value):
                 raise NotCadenceValueError.from_value(arg)

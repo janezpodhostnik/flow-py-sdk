@@ -1,5 +1,4 @@
-from flow_py_sdk.tx import Tx
-from flow_py_sdk import ProposalKey, flow_client, cadence
+from flow_py_sdk import ProposalKey, flow_client, cadence, Tx
 from examples.common.utils import random_account
 from examples.common import Example, Config
 
@@ -205,7 +204,6 @@ class GetTransactionByIdExample(Example):
         async with flow_client(
             host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
-
             account_address, _, new_signer = await random_account(
                 client=client, ctx=ctx
             )
@@ -236,11 +234,9 @@ class GetTransactionByIdExample(Example):
             transaction_id = response.id
 
             transaction = await client.get_transaction(id=transaction_id)
-            print("transaction ID: {}".format(transaction_id.hex()))
-            print("transaction payer: {}".format(transaction.payer.hex()))
-            print(
-                "transaction proposer: {}".format(
-                    transaction.proposal_key.address.hex()
-                )
+            self.log.info(f"transaction ID: {transaction_id.hex()}")
+            self.log.info(f"transaction payer: {transaction.payer.hex()}")
+            self.log.info(
+                f"transaction proposer: {transaction.proposal_key.address.hex()}"
             )
-            print("transaction script: {}".format(transaction.script.decode("utf-8")))
+            self.log.info(f"transaction script: {transaction.script.decode('utf-8')}")

@@ -2,6 +2,7 @@ from flow_py_sdk import flow_client
 from examples.common import Example, Config
 from examples.common.utils import random_account
 
+
 # -------------------------------------------------------------------------
 # Get an account using its address.
 # -------------------------------------------------------------------------
@@ -18,10 +19,10 @@ class GetAccountExample(Example):
             account = await client.get_account(
                 address=ctx.service_account_address.bytes
             )
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Contracts: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
+            self.log.info(f"Account Address: {account.address.hex()}")
+            self.log.info(f"Account Balance: {account.balance}")
+            self.log.info(f"Account Contracts: {len(account.contracts)}")
+            self.log.info(f"Account Keys: {len(account.keys)}")
 
 
 # -------------------------------------------------------------------------
@@ -43,10 +44,10 @@ class GetAccountAtLatestBlockExample(Example):
             account = await client.get_account_at_latest_block(
                 address=ctx.service_account_address.bytes
             )
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Contracts: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
+            self.log.info(f"Account Address: {account.address.hex()}")
+            self.log.info(f"Account Balance: {account.balance}")
+            self.log.info(f"Account Contracts: {len(account.contracts)}")
+            self.log.info(f"Account Keys: {len(account.keys)}")
 
 
 # -------------------------------------------------------------------------

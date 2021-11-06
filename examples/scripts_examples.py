@@ -1,6 +1,6 @@
-from flow_py_sdk.script import Script
-from flow_py_sdk import flow_client, cadence
+from flow_py_sdk import flow_client, cadence, Script
 from examples.common import Example, Config
+
 
 # -------------------------------------------------------------------------
 # Submit a script and parse the response Function
@@ -114,6 +114,18 @@ class ExecuteComplexScriptWithArgumentExample(Example):
                 # , block_id
                 # , block_height
             )
-            print("Name: {}".format(complex_script.fields[2].value))
-            print("Address: {}".format(complex_script.fields[1].bytes.hex()))
-            print("Balance: {}".format(complex_script.fields[0].value))
+
+            if not complex_script:
+                raise Exception("Script execution failed")
+
+            script_result: cadence.Value = complex_script
+
+            self.log.info(
+                f"Name: {script_result.as_type(cadence.Struct).fields[2].as_type(cadence.String).value}"
+            )
+            self.log.info(
+                f"Address: {script_result.as_type(cadence.Struct).fields[1].as_type(cadence.Address).bytes.hex()}"
+            )
+            self.log.info(
+                f"Balance: {script_result.as_type(cadence.Struct).fields[0].as_type(cadence.UFix64).value}"
+            )
