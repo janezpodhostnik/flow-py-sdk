@@ -9,20 +9,24 @@ In case you want to debug the examples, or you just want to see them in action y
 
 ### 1. Prerequisites
 
-- a locally running [emulator](./emulator.md)
+- `flow-cli` for starting the emulator ([step-by-step based installation instructions based on your OS](https://github.com/onflow/flow-cli#flow-cli))
 - a checkout of `flow-py-sdk`
 - python 3.9 or higher
 - [poetry](https://python-poetry.org/)
 
-Run 
+The first step is to install the dependencies of `flow-py-sdk` with **poetry**. To do this run the following command on the root of the checkout.
 
 ```sh
 poetry install
 ``` 
 
-in the root of the checkout to install dependencies from `pyproject.toml`.
+After that start the flow emulator in **./example** directory (because that is where the `flow.json` the emulator configuration is), using:
 
-### 2. Run examples
+```sh
+flow emulator
+```
+
+### 2. Runing examples
 
 To run all the examples use:
 

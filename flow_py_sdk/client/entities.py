@@ -1,8 +1,8 @@
 import json
-from dataclasses import dataclass
 from datetime import datetime
 from typing import Dict, List
 
+from flow_py_sdk import cadence
 from flow_py_sdk.account_key import AccountKey
 from flow_py_sdk.cadence import cadence_object_hook
 from flow_py_sdk.proto.flow import entities, access
@@ -103,7 +103,6 @@ class BlockSeal(object):
         )
 
 
-@dataclass
 class Block(object):
     def __init__(
         self,

@@ -1,16 +1,3 @@
-<br />
-<div align="center">
-  <a href="">
-    <img src="./" alt="Logo" width="300" height="auto">
-  </a>
-  <p align="center"> <br />
-    <a href=""><strong>View on GitHub »</strong></a> <br /><br />
-    <a href="https://docs.onflow.org/sdk-guidelines/">SDK Specifications</a> ·
-    <a href="">Contribute</a> ·
-    <a href="">Report a Bug</a>
-  </p>
-</div><br />
-
 ## Overview 
 
 This reference documents all the methods available in the SDK, and explains in detail how these methods work.
@@ -18,8 +5,7 @@ SDKs are open source, and you can use them according to the licence.
 
 The library client specifications can be found here:
 
-// TODO specs here
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]()
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md)
 
 
 ## Getting Started
@@ -29,13 +15,23 @@ The library client specifications can be found here:
 pip install flow-py-sdk
 ```
 
+or 
+
+```sh
+poetry add flow-py-sdk
+```
+
 ### Importing the Library
 ```sh
 import flow-py-sdk
 ```
 
+## Running examples 
+
+See [Running examples](./examples.md)
+
 ## Connect
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#create-a-flow-client)
 
 The library uses gRPC to communicate with the access nodes and it must be configured with correct access node API URL. 
 
@@ -46,15 +42,19 @@ The Access Nodes APIs hosted by DapperLabs are accessible at:
 - Local Emulator `127.0.0.1:3569` 
 
 Example:
-```
-flow emulator
+
+```py
+async with flow_client(
+            host="127.0.0.1", port="3569"
+        ) as flow_client:
+  # do something with `flow_client`
 ```
 
 ## Querying the Flow Network
 After you have established a connection with an access node, you can query the Flow network to retrieve data about blocks, accounts, events and transactions. We will explore how to retrieve each of these entities in the sections below.
 
 ### Get Blocks
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#query-blocks)
 
 Query the network for block by id, height or get the latest block.
 
@@ -66,7 +66,7 @@ Query the network for block by id, height or get the latest block.
 
 This example depicts ways to get the latest block as well as any other block by height or ID:
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO link to example
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/block_examples.py)**
 
 You can use the `GetLatestBlock` method to fetch the latest sealed or unsealed block:
 
@@ -126,7 +126,7 @@ Block timestamp: [2021-10-28 14:12:41.172587+00:00]
 ```
 
 ### Get Account
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#accounts)
 
 Retrieve any account from Flow network's latest block or from a specified block height.
 
@@ -141,7 +141,7 @@ An account includes the following data:
 #### Examples
 Example depicts ways to get an account at the latest block and at a specific block height:
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO example link
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/account_examples.py)**
 
 Get an account using its address.
 ```python
@@ -205,7 +205,7 @@ Account Keys: 1
 
 
 ### Get Transactions
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#accounts)
 
 Retrieve transactions from the network by providing a transaction ID. After a transaction has been submitted, you can also get the transaction result to check the status.
 
@@ -225,7 +225,7 @@ Retrieve transactions from the network by providing a transaction ID. After a tr
 |   EXPIRED    |   ✅     |  The transaction reference block is outdated before being executed    |
 
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO example link
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/transactions_examples.py)**
 
 ```python
 async def run(self, ctx: Config):
@@ -281,7 +281,7 @@ transaction script: transaction(){prepare(){log("OK")}}
 
 
 ### Get Events
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#events)
 
 Retrieve events by a given type in a specified block height range or through a list of block IDs.
 
@@ -298,7 +298,7 @@ core events, and you should read more about them in [this document](https://docs
 #### Examples
 Example depicts ways to get events within block range or by block IDs:
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO example link
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/events_examples.py)**
 
 This example shows how to retrieve events by name in the block height range Class.
 In this example, an account is created and then we try to get "AccountCreated" event.
@@ -406,13 +406,18 @@ event type: A.0dbaa95c7691bc4f.EventDemo.Add
 event value: A.0dbaa95c7691bc4f.EventDemo.Add(x: 1, y: 6, sum: 7)
 event value: dfc8c1ea51279ddc74c16ed7644361dbe4828181d56497a4ebb18a6bbf0fd574
 ```
+
 ### Get Collections
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#collections)
 
 Retrieve a batch of transactions that have been included in the same block, known as ***collections***. 
 Collections are used to improve consensus throughput by increasing the number of transactions per block and they act as a link between a block and a transaction.
 
 📖 **Collection ID** is SHA3-256 hash of the collection payload.
+
+#### Examples
+
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/collections_examples.py)**
 
 ```python
 async def run(self, ctx: Config):
@@ -438,7 +443,7 @@ Transactions: [d3a6b0cb53dfc72c38f365bb177a327c2bae8d4a6076a2909fc11d8f95510396]
 ```
 
 ### Execute Scripts
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#scripts)
 
 Scripts allow you to write arbitrary non-mutating Cadence code on the Flow blockchain and return data. You can learn more about [Cadence and scripts here](https://docs.onflow.org/cadence/language/), but we are now only interested in executing the script code and getting back the data.
 
@@ -448,7 +453,7 @@ We can execute a script using the latest state of the Flow blockchain or we can 
 
 📖 **Block height** expresses the height of the block in the chain.
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO example link
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/scripts_examples.py)**
 ```
 // simple script
 pub fun main(a: Int): Int {
@@ -603,7 +608,7 @@ A transaction will be rejected if it is submitted past its expiry block. Flow ca
 A transaction expires after `600` blocks are committed on top of the reference block, which takes about 10 minutes at average Mainnet block rates.
 
 ### Build Transactions
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#transactions)
 
 Building a transaction involves setting the required properties explained above and producing a transaction object. 
 
@@ -624,7 +629,7 @@ transaction(greeting: String) {
 }
 ```
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO example link
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/transactions_examples.py)** 
 ```python
 transaction = Tx(
     code="""transaction(){prepare(){log("OK")}}""",
@@ -640,7 +645,7 @@ transaction = Tx(
 After you have successfully [built a transaction](#build-transactions) the next step in the process is to sign it.
 
 ### Sign Transactions
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO specs here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/signer.md)
 
 Flow introduces new concepts that allow for more flexibility when creating and signing transactions.
 Before trying the examples below, we recommend that you read through the [transaction signature documentation](https://docs.onflow.org/concepts/accounts-and-keys/).
@@ -719,7 +724,7 @@ Flow supports great flexibility when it comes to transaction signing, we can def
 | ------- | ------ | ------ |
 | `0x01`  | 1      | 1.0    |
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">](https://github.com/onflow/flow-go-sdk/tree/master/examples#single-party-single-signature)**
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/transactions_examples.py)**
 ```python
 async def run(self, ctx: Config):
     address = Address.from_hex("0x01")
@@ -768,7 +773,7 @@ async def run(self, ctx: Config):
 | `0x01`  | 1      | 0.5    |
 | `0x01`  | 2      | 0.5    |
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">](https://github.com/onflow/flow-go-sdk/tree/master/examples#single-party-multiple-signatures)**
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/transactions_examples.py)**
 ```python
 async def run(self, ctx: Config):
     address = Address.from_hex("0x01")
@@ -825,7 +830,7 @@ async def run(self, ctx: Config):
 | `0x01`  | 1      | 1.0    |
 | `0x02`  | 3      | 1.0    |
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">](https://github.com/onflow/flow-go-sdk/tree/master/examples#multiple-parties)**
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/trasnactions_examples.py)**
 ```python
 async def run(self, ctx: Config):
     # First Step : Create a client to connect to the flow blockchain
@@ -886,7 +891,7 @@ async def run(self, ctx: Config):
 | `0x01`  | 1      | 1.0    |
 | `0x02`  | 3      | 1.0    |
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">](https://github.com/onflow/flow-go-sdk/tree/master/examples#multiple-parties-two-authorizers)**
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/transactions_examples.py)**
 ```python
 async def run(self, ctx: Config):
     # First Step : Create a client to connect to the flow blockchain
@@ -949,7 +954,7 @@ async def run(self, ctx: Config):
 | `0x02`  | 3      | 0.5    |
 | `0x02`  | 4      | 0.5    |
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO example link
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/transactions_examples.py)**
 ```python
 async def run(self, ctx: Config):
     # First Step : Create a client to connect to the flow blockchain
@@ -1013,12 +1018,12 @@ async def run(self, ctx: Config):
 
 
 ### Send Transactions
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO reference here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/client.md#transactions)
 
 After a transaction has been [built](#build-transactions) and [signed](#sign-transactions), it can be sent to the Flow blockchain where it will be executed. If sending was successful you can then [retrieve the transaction result](#get-transactions).
 
 
-**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130">]()** // TODO example here
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/transactions_examples.py)**
 ```python
 async def run(self, ctx: Config):
     async with flow_client(
@@ -1051,7 +1056,7 @@ async def run(self, ctx: Config):
 ```
 
 ### Create Accounts
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO reference here
+**[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/try.svg" width="130"/>](https://github.com/janezpodhostnik/flow-py-sdk/blob/master/examples/account_examples.py)**
 
 On Flow, account creation happens inside a transaction. Because the network allows for a many-to-many relationship between public keys and accounts, it's not possible to derive a new account address from a public key offline. 
 
@@ -1299,7 +1304,7 @@ async def run(self, ctx: Config):
 
 ```
 ### Generate Keys
-[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130">]() // TODO reference here
+[<img src="https://raw.githubusercontent.com/onflow/sdks/main/templates/documentation/ref.svg" width="130"/>](./api_docs/keys.md#generate-new-keys)
 
 Flow uses [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) signatures to control access to user accounts. Each key pair can be used in combination with the `SHA2-256` or `SHA3-256` hashing algorithms.
 

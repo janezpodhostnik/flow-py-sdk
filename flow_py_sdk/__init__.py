@@ -1,6 +1,6 @@
 import logging
 
-from .client import flow_client, AccessAPI
+from .client import flow_client, AccessAPI, entities
 from .script import Script
 from .exceptions import PySDKError, NotCadenceValueError
 from .signer import SignAlgo, HashAlgo, InMemorySigner, Signer
