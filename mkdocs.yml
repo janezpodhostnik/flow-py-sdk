@@ -3,20 +3,24 @@ theme: material
 
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          rendering:
+            show_root_heading: True
+            show_root_full_path: False
+            show_if_no_docstring: True
+            show_signature_annotations: True
+            heading_level: 3
 
 nav:
-  - Overview: index.md
-  - Installation: installation.md
-  - 'Usage Overview': usage.md
-  - Examples: examples.md
-  - Concepts:
-      - Scripts: scripts.md
-      - Transactions: transactions.md
-      - 'Cadence Types': cadence_types.md
-      - Events: events.md
+  - Overview: python_SDK_guide.md
+  - 'Running Examples': examples.md
+  - 'API Docs':
+      - Client: api_docs/client.md
+      - Signer: api_docs/signer.md
+      - Keys: api_docs/keys.md
   - Contributing: contributing.md
-  - 'Working with the Flow emulator': emulator.md
   - Roadmap: roadmap.md
 
 markdown_extensions:
