@@ -28,7 +28,7 @@ class _ExampleRegistry(object):
             return
         self._examples[ex.tag] = ex
 
-    async def run_all(self, cfg: Config) -> Annotated[bool, 'Success']:
+    async def run_all(self, cfg: Config) -> Annotated[bool, "Success"]:
         """Run all of the registered examples
 
         Parameters
@@ -42,11 +42,11 @@ class _ExampleRegistry(object):
             success = success and await self._run(cfg, ex)
         return success
 
-    async def run(self, cfg: Config, tag: str) -> Annotated[bool, 'Success']:
+    async def run(self, cfg: Config, tag: str) -> Annotated[bool, "Success"]:
         ex = self._examples[tag]
         return await self._run(cfg, ex)
 
-    async def _run(self, cfg: Config, ex: "Example") -> Annotated[bool, 'Success']:
+    async def _run(self, cfg: Config, ex: "Example") -> Annotated[bool, "Success"]:
         log.info(f"=== RUNNING: [{ex.tag}] {ex.name} ===")
         # noinspection PyBroadException
         try:

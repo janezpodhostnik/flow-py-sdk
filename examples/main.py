@@ -19,7 +19,7 @@ async def run_async(ctx: Config, examples: list[str]):
 def run():
     # last index of string "examples"
     example_index = sys.argv.index("examples")
-    examples = sys.argv[example_index + 1:]
+    examples = sys.argv[example_index + 1 :]
 
     config_location = pathlib.Path(__file__).parent.resolve().joinpath("./flow.json")
     ctx = Config(config_location)
