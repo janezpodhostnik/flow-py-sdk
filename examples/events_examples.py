@@ -2,6 +2,7 @@ from flow_py_sdk import flow_client, ProposalKey, Tx, cadence
 from examples.common import Example, Config
 from examples.common.utils import random_account
 
+
 # -------------------------------------------------------------------------
 # Retrieve events by name in the block height range Class
 # In this example, an account is created and then we try to get "AccountCreated"
@@ -17,7 +18,7 @@ class GetEventByNameForHeightRangeExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             _, _, _ = await random_account(client=client, ctx=ctx)
             latest_block = await client.get_latest_block()
@@ -43,16 +44,16 @@ class GetEventByNameForBlockIdsExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             _, _, _ = await random_account(client=client, ctx=ctx)
             latest_block = await client.get_latest_block()
             events = await client.get_events_for_block_i_ds(
                 type="flow.AccountCreated", block_ids=[latest_block.id]
             )
-            print("event type: {}".format(events[0].events[0].type))
-            print("event value: {}".format(events[0].events[0].value))
-            print("event value: {}".format(events[0].events[0].transaction_id.hex()))
+            self.log.info(f"event type: {events[0].events[0].type}")
+            self.log.info(f"event value: {events[0].events[0].value}")
+            self.log.info(f"event value: {events[0].events[0].transaction_id.hex()}")
 
 
 # -------------------------------------------------------------------------
@@ -71,7 +72,7 @@ class EmitEventFromContractExample(Example):
 
     async def run(self, ctx: Config):
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             address, _, _ = await random_account(
                 client=client,
@@ -127,6 +128,6 @@ class EmitEventFromContractExample(Example):
 
             assert add_event.fields[2].as_type(cadence.Int).value == 7
 
-            print("event type: {}".format(result.events[0].type))
-            print("event value: {}".format(result.events[0].value))
-            print("event value: {}".format(result.events[0].transaction_id.hex()))
+            self.log.info(f"event type: {result.events[0].type}")
+            self.log.info(f"event value: {result.events[0].value}")
+            self.log.info(f"event value: {result.events[0].transaction_id.hex()}")

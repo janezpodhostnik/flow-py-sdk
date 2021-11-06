@@ -137,3 +137,27 @@ class TestLocation(unittest.TestCase):
                 "T",
                 identifier,
             )
+
+    def testDecodeFlowLocation(self):
+        with self.subTest(msg=f"missing prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.FlowLocation.decode("")
+
+        with self.subTest(msg=f"missing location"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.FlowLocation.decode("flow")
+
+        with self.subTest(msg=f"invalid prefix"):
+            with self.assertRaises(CadenceEncodingError):
+                cadence.FlowLocation.decode("A.test")
+
+        with self.subTest(msg=f"decode"):
+            location, identifier = cadence.FlowLocation.decode("flow.test")
+            self.assertEqual(
+                cadence.FlowLocation(),
+                location,
+            )
+            self.assertEqual(
+                "test",
+                identifier,
+            )

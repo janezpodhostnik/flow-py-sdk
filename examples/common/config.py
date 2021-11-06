@@ -16,6 +16,7 @@ class Config(object):
         self.access_node_port: int = 3569
 
         self.service_account_key_id: int = 0
+        # noinspection PyBroadException
         try:
             with open(config_location) as json_file:
                 data = json.load(json_file)

@@ -2,6 +2,7 @@ from flow_py_sdk import flow_client
 from examples.common import Example, Config
 from examples.common.utils import random_account
 
+
 # -------------------------------------------------------------------------
 # Get an account using its address.
 # -------------------------------------------------------------------------
@@ -13,15 +14,15 @@ class GetAccountExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             account = await client.get_account(
                 address=ctx.service_account_address.bytes
             )
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Contracts: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
+            self.log.info(f"Account Address: {account.address.hex()}")
+            self.log.info(f"Account Balance: {account.balance}")
+            self.log.info(f"Account Contracts: {len(account.contracts)}")
+            self.log.info(f"Account Keys: {len(account.keys)}")
 
 
 # -------------------------------------------------------------------------
@@ -37,17 +38,16 @@ class GetAccountAtLatestBlockExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             _, _, _ = await random_account(client=client, ctx=ctx)
             account = await client.get_account_at_latest_block(
                 address=ctx.service_account_address.bytes
             )
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Contracts: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
-
+            self.log.info(f"Account Address: {account.address.hex()}")
+            self.log.info(f"Account Balance: {account.balance}")
+            self.log.info(f"Account Contracts: {len(account.contracts)}")
+            self.log.info(f"Account Keys: {len(account.keys)}")
 
 # -------------------------------------------------------------------------
 # Get an account by address at the given block height.

@@ -1,6 +1,7 @@
 from flow_py_sdk import flow_client
 from examples.common import Example, Config
 
+
 # -------------------------------------------------------------------------
 # Retrieve a block by ID
 # -------------------------------------------------------------------------
@@ -12,13 +13,13 @@ class GetBlockByIdExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             latest_block = await client.get_latest_block()
             block = await client.get_block_by_i_d(id=latest_block.id)
-            print("Block ID: {}".format(block.id.hex()))
-            print("Block height: {}".format(block.height))
-            print("Block timestamp: [{}]".format(block.timestamp))
+            self.log.info(f"Block ID: {block.id.hex()}")
+            self.log.info(f"Block height: {block.height}")
+            self.log.info(f"Block timestamp: [{block.timestamp}]")
 
 
 # -------------------------------------------------------------------------
@@ -32,13 +33,13 @@ class GetBlockByHeightExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             latest_block = await client.get_latest_block()
             block = await client.get_block_by_height(height=latest_block.height)
-            print("Block ID: {}".format(block.id.hex()))
-            print("Block height: {}".format(block.height))
-            print("Block timestamp: [{}]".format(block.timestamp))
+            self.log.info(f"Block ID: {block.id.hex()}")
+            self.log.info(f"Block height: {block.height}")
+            self.log.info(f"Block timestamp: [{block.timestamp}]")
 
 
 # -------------------------------------------------------------------------
@@ -52,9 +53,9 @@ class GetLatestBlockExample(Example):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
+                host=ctx.access_node_host, port=ctx.access_node_port
         ) as client:
             block = await client.get_latest_block(is_sealed=False)
-            print("Block ID: {}".format(block.id.hex()))
-            print("Block height: {}".format(block.height))
-            print("Block timestamp: [{}]".format(block.timestamp))
+            self.log.info(f"Block ID: {block.id.hex()}")
+            self.log.info(f"Block height: {block.height}")
+            self.log.info(f"Block timestamp: [{block.timestamp}]")
