@@ -52,25 +52,26 @@ class GetAccountAtLatestBlockExample(Example):
 # -------------------------------------------------------------------------
 # Get an account by address at the given block height.
 # -------------------------------------------------------------------------
-class GetAccountAtBlockHeightExample(Example):
-    def __init__(self) -> None:
-        super().__init__(
-            tag="GA.3.", name="GetAccountAtBlockHeightExample", sort_order=903
-        )
-
-    async def run(self, ctx: Config):
-        # First Step : Create a client to connect to the flow blockchain
-        # flow_client function creates a client using the host and port
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            latest_block = await client.get_latest_block()
-            _, _, _ = await random_account(client=client, ctx=ctx)
-            account = await client.get_account_at_block_height(
-                address=ctx.service_account_address.bytes,
-                block_height=latest_block.height,
-            )
-            print("Account Address: {}".format(account.address.hex()))
-            print("Account Balance: {}".format(account.balance))
-            print("Account Contracts: {}".format(len(account.contracts)))
-            print("Account Keys: {}".format(len(account.keys)))
+# SKIP DUE TO EMULATOR BUG
+# class GetAccountAtBlockHeightExample(Example):
+#     def __init__(self) -> None:
+#         super().__init__(
+#             tag="GA.3.", name="GetAccountAtBlockHeightExample", sort_order=903
+#         )
+#
+#     async def run(self, ctx: Config):
+#         # First Step : Create a client to connect to the flow blockchain
+#         # flow_client function creates a client using the host and port
+#         async with flow_client(
+#             host=ctx.access_node_host, port=ctx.access_node_port
+#         ) as client:
+#             latest_block = await client.get_latest_block()
+#             _, _, _ = await random_account(client=client, ctx=ctx)
+#             account = await client.get_account_at_block_height(
+#                 address=ctx.service_account_address.bytes,
+#                 block_height=latest_block.height,
+#             )
+#             print("Account Address: {}".format(account.address.hex()))
+#             print("Account Balance: {}".format(account.balance))
+#             print("Account Contracts: {}".format(len(account.contracts)))
+#             print("Account Keys: {}".format(len(account.keys)))
