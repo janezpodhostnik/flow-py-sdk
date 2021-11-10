@@ -21,7 +21,11 @@ async def run_async(ctx: Config, examples: list[str]) -> Annotated[bool, "Succes
 
 def run():
     # last index of string "examples"
-    example_index = sys.argv.index("examples")
+    try:
+        example_index = sys.argv.index("examples")
+    except ValueError:
+        # used if run is called without any arguments
+        example_index = 0
     examples = sys.argv[example_index + 1 :]
 
     config_location = pathlib.Path(__file__).parent.resolve().joinpath("./flow.json")

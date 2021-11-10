@@ -4,7 +4,7 @@ from flow_py_sdk import (
     ProposalKey,
     create_account_template,
     Tx,
-    ContractTemplates,
+    TransactionTemplates,
     cadence,
     SignAlgo,
     HashAlgo,
@@ -102,7 +102,7 @@ class DeployContract(Example):
             contract_code = cadence.String(contract_source_hex)
             transaction = (
                 Tx(
-                    code=ContractTemplates.addAccountContractTemplate,
+                    code=TransactionTemplates.addAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -163,7 +163,7 @@ class UpdateContract(Example):
             contract_code = cadence.String(contract_source_hex)
             transaction = (
                 Tx(
-                    code=ContractTemplates.addAccountContractTemplate,
+                    code=TransactionTemplates.addAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -202,7 +202,7 @@ class UpdateContract(Example):
             # Update account contract with a transaction
             transaction = (
                 Tx(
-                    code=ContractTemplates.updateAccountContractTemplate,
+                    code=TransactionTemplates.updateAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -263,7 +263,7 @@ class RemoveContract(Example):
             contract_code = cadence.String(contract_source_hex)
             transaction = (
                 Tx(
-                    code=ContractTemplates.addAccountContractTemplate,
+                    code=TransactionTemplates.addAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(
@@ -292,7 +292,7 @@ class RemoveContract(Example):
 
             transaction = (
                 Tx(
-                    code=ContractTemplates.removeAccountContractTemplate,
+                    code=TransactionTemplates.removeAccountContractTemplate,
                     reference_block_id=latest_block.id,
                     payer=account_address,
                     proposal_key=ProposalKey(

@@ -29,11 +29,33 @@ async def random_account(
     ctx: Config,
     contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None,
 ) -> (cadence.Address, AccountKey, Signer):
-    pub, priv = random_key_pair(SignAlgo.ECDSA_P256)
-
-    account_key = AccountKey(
-        public_key=pub, sign_algo=SignAlgo.ECDSA_P256, hash_algo=HashAlgo.SHA3_256
+    address, keys, signers = await random_account_with_weights(
+        client=client,
+        ctx=ctx,
+        weights=[AccountKey.weight_threshold],
+        contracts=contracts,
     )
+    return address, keys[0], signers[0]
+
+
+async def random_account_with_weights(
+    *,
+    client: AccessAPI,
+    ctx: Config,
+    weights: list[int],
+    contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None,
+) -> (cadence.Address, list[AccountKey], list[Signer]):
+    keys = [random_key_pair(SignAlgo.ECDSA_P256) for _ in weights]
+
+    account_keys = [
+        AccountKey(
+            public_key=keys[i][0],
+            sign_algo=SignAlgo.ECDSA_P256,
+            hash_algo=HashAlgo.SHA3_256,
+            weight=weights[i],
+        )
+        for i in range(len(keys))
+    ]
 
     block = await client.get_latest_block()
     proposer = await client.get_account_at_latest_block(
@@ -42,7 +64,7 @@ async def random_account(
 
     tx = (
         create_account_template(
-            keys=[account_key],
+            keys=account_keys,
             contracts=contracts,
             reference_block_id=block.id,
             payer=ctx.service_account_address,
@@ -69,10 +91,13 @@ async def random_account(
 
     return (
         new_addresses[0],
-        account_key,
-        InMemorySigner(
-            sign_algo=SignAlgo.ECDSA_P256,
-            hash_algo=HashAlgo.SHA3_256,
-            private_key_hex=priv.hex(),
-        ),
+        account_keys,
+        [
+            InMemorySigner(
+                sign_algo=SignAlgo.ECDSA_P256,
+                hash_algo=HashAlgo.SHA3_256,
+                private_key_hex=priv.hex(),
+            )
+            for _, priv in keys
+        ],
     )

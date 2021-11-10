@@ -22,7 +22,7 @@ class TestInMemorySigner(TestCase):
             for hash_algo in h:
                 for tag in tags:
                     with self.subTest(
-                            f"sign_algo: {sign_algo}, hash_algo: {hash_algo}, tag: {tag}"
+                        f"sign_algo: {sign_algo}, hash_algo: {hash_algo}, tag: {tag}"
                     ):
                         private_key = ecdsa.SigningKey.generate(
                             curve=sign_algo.get_signing_curve()
@@ -63,9 +63,7 @@ class TestInMemorySigner(TestCase):
 
         for sign_algo in s:
             for hash_algo in h:
-                with self.subTest(
-                        f"sign_algo: {sign_algo}, hash_algo: {hash_algo}"
-                ):
+                with self.subTest(f"sign_algo: {sign_algo}, hash_algo: {hash_algo}"):
                     private_key = ecdsa.SigningKey.generate(
                         curve=sign_algo.get_signing_curve()
                     )

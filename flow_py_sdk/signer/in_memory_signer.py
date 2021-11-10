@@ -11,15 +11,18 @@ from flow_py_sdk.signer.verifier import Verifier
 
 class InMemorySigner(Signer, Verifier):
     def __init__(
-            self, *, hash_algo: HashAlgo, sign_algo: SignAlgo, private_key_hex: str
+        self, *, hash_algo: HashAlgo, sign_algo: SignAlgo, private_key_hex: str
     ) -> None:
         super().__init__()
         self.hash_algo = hash_algo
         self.key = ecdsa.SigningKey.from_string(
             bytes.fromhex(private_key_hex), curve=sign_algo.get_signing_curve()
         )
-        self.verifier = InMemoryVerifier(hash_algo=hash_algo, sign_algo=sign_algo,
-                                         public_key_hex=self.key.get_verifying_key().to_string().hex())
+        self.verifier = InMemoryVerifier(
+            hash_algo=hash_algo,
+            sign_algo=sign_algo,
+            public_key_hex=self.key.get_verifying_key().to_string().hex(),
+        )
 
     def sign(self, message: bytes, tag: Optional[bytes] = None) -> bytes:
         hash_ = self._hash_message(message, tag)

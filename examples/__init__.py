@@ -14,6 +14,7 @@ import examples.scripts_examples
 import examples.generate_key
 import examples.events_examples
 import examples.transactions_examples
+import examples.user_message_examples
 
 
 logging_config = toml.load(Path(__file__).parent.joinpath("./logging.toml"))

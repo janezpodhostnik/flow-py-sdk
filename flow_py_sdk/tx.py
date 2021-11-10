@@ -29,7 +29,7 @@ class TransactionStatus(Enum):
 
 class TxSignature(object):
     def __init__(
-            self, address: Address, key_id: int, signer_index: int, signature: bytes
+        self, address: Address, key_id: int, signer_index: int, signature: bytes
     ) -> None:
         super().__init__()
         self.address: Address = address
@@ -47,7 +47,7 @@ class TxSignature(object):
 
 class ProposalKey(object):
     def __init__(
-            self, *, key_address: Address, key_id: int, key_sequence_number: int
+        self, *, key_address: Address, key_id: int, key_sequence_number: int
     ) -> None:
         super().__init__()
         self.key_address: Address = key_address
@@ -65,12 +65,12 @@ class _TxSigner(object):
 
 class Tx(object):
     def __init__(
-            self,
-            *,
-            code: str,
-            reference_block_id: bytes = None,
-            payer: Address = None,
-            proposal_key: ProposalKey = None,
+        self,
+        *,
+        code: str,
+        reference_block_id: bytes = None,
+        payer: Address = None,
+        proposal_key: ProposalKey = None,
     ) -> None:
         super().__init__()
         self.code: str = code
@@ -152,7 +152,7 @@ class Tx(object):
         return signers
 
     def with_payload_signature(
-            self, address: Address, key_id: int, signer: Signer
+        self, address: Address, key_id: int, signer: Signer
     ) -> "Tx":
         if self._missing_fields_for_signing():
             raise Exception(
@@ -164,7 +164,7 @@ class Tx(object):
         return self
 
     def with_envelope_signature(
-            self, address: Address, key_id: int, signer: Signer
+        self, address: Address, key_id: int, signer: Signer
     ) -> "Tx":
         if self._missing_fields_for_signing():
             raise Exception(

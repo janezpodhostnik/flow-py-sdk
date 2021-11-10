@@ -57,21 +57,79 @@ def create_account_template(
     return tx
 
 
-class ContractTemplates:
-    updateAccountContractTemplate = """transaction(name: String, code: String) {
+class TransactionTemplates:
+    updateAccountContractTemplate = """
+    transaction(name: String, code: String) {
         prepare(signer: AuthAccount) {
             signer.contracts.update__experimental(name: name, code: code.decodeHex())
         }
-    }"""
+    }
+    """
 
-    addAccountContractTemplate = """transaction(name: String, code: String) {
+    addAccountContractTemplate = """
+    transaction(name: String, code: String) {
         prepare(signer: AuthAccount) {
             signer.contracts.add(name: name, code: code.decodeHex())
         }
-    }"""
+    }
+    """
 
-    removeAccountContractTemplate = """transaction(name: String) {
+    removeAccountContractTemplate = """
+    transaction(name: String) {
         prepare(signer: AuthAccount) {
             signer.contracts.remove(name: name)
         }
-    }"""
+    }
+    """
+
+    verifyAccountSignaturesTemplate = """
+    import Crypto
+    pub fun main(
+      address: Address,
+      signatures: [String],
+      keyIndexes: [Int],
+      message: String,
+    ): Bool {
+        let keyList = Crypto.KeyList()
+        
+        let account = getAccount(address)
+        let keys = account.keys
+        for keyIndex in keyIndexes {
+            if let key = keys.get(keyIndex: keyIndex) {
+                if key.isRevoked {
+                    // cannot verify: the key at this index is revoked
+                    return false
+                }
+                keyList.add(
+                    PublicKey(
+                        publicKey: key.publicKey.publicKey,
+                        signatureAlgorithm: key.publicKey.signatureAlgorithm
+                    ),
+                    hashAlgorithm: key.hashAlgorithm,
+                    weight: key.weight / 1000.0,
+                )
+            } else {
+                // cannot verify: they key at this index doesn't exist
+                return false
+            }
+        }
+        
+        let signatureSet: [Crypto.KeyListSignature] = []
+        
+        var i = 0
+        for signature in signatures {
+            signatureSet.append(
+                Crypto.KeyListSignature(
+                    keyIndex: i,
+                    signature: signature.decodeHex()
+                )
+            )
+            i = i + 1
+        }
+        
+        return keyList.verify(
+            signatureSet: signatureSet,
+            signedData: message.utf8,
+        )
+    }
+    """
