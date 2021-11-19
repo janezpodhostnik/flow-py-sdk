@@ -15,7 +15,7 @@ class CompositeSignature(object):
 
 
 async def verify_user_signature(
-        *, client: AccessAPI, message: bytes, composite_signatures: list[CompositeSignature]
+    *, client: AccessAPI, message: bytes, composite_signatures: list[CompositeSignature]
 ) -> bool:
     # if there is no signature return False
     if len(composite_signatures) == 0:

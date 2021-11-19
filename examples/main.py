@@ -25,6 +25,7 @@ def run():
         example_index = sys.argv.index("examples")
     except ValueError:
         # used if run is called without any arguments
+        # for example when running this file directly without the `poetry run examples` command
         example_index = 0
     examples = sys.argv[example_index + 1 :]
 

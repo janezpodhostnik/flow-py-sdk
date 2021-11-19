@@ -29,6 +29,23 @@ async def random_account(
     ctx: Config,
     contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None,
 ) -> (cadence.Address, AccountKey, Signer):
+    """
+    Generate a random account.
+    Parameters
+    ----------
+    client: AccessAPI
+        The client to use to create the account.
+    ctx: Config
+        The configuration to use.
+    contracts: dict[str, str]
+        The contracts to use for the account.
+
+    Returns
+    -------
+    (cadence.Address, AccountKey, Signer)
+        The address, account key, and signer for the new account.
+
+    """
     address, keys, signers = await random_account_with_weights(
         client=client,
         ctx=ctx,
@@ -45,6 +62,26 @@ async def random_account_with_weights(
     weights: list[int],
     contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None,
 ) -> (cadence.Address, list[AccountKey], list[Signer]):
+    """
+    Generate a random account with a given set of weights.
+
+    Parameters
+    ----------
+    client: AccessAPI
+        The client to use to create the account.
+    ctx: Config
+        The configuration to use.
+    weights: list[int]
+        The weights to use for the account.
+    contracts: dict[str, str]
+        The contracts to use for the account.
+
+    Returns
+    -------
+    (cadence.Address, list[AccountKey], list[Signer])
+        The address, account keys, and signers for the new account.
+
+    """
     keys = [random_key_pair(SignAlgo.ECDSA_P256) for _ in weights]
 
     account_keys = [
