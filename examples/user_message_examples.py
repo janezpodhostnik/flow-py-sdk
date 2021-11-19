@@ -62,38 +62,3 @@ class SignAndVerifyUserMessageExample(Example):
             )
 
             assert signature_is_valid
-
-
-class SignAndVerifyUserMessageExample(Example):
-    def __init__(self) -> None:
-        super().__init__(
-            tag="V.1.", name="SignAndVerifyUserMessageExample", sort_order=601
-        )
-
-    async def run(self, ctx: Config):
-        async with flow_client(
-            host=ctx.access_node_host, port=ctx.access_node_port
-        ) as client:
-            # create account
-            account_address, _, account_signer = await random_account(
-                client=client,
-                ctx=ctx,
-            )
-
-            # the message to sign. Could include some extra information, like the reference block id or the address.
-            message = b"Hello World!"
-
-            # sign message
-            signature = account_signer.sign_user_message(message)
-            c_signature = utils.CompositeSignature(
-                account_address.hex(), 0, signature.hex()
-            )
-
-            # verify the signature is valid
-            signature_is_valid = await utils.verify_user_signature(
-                message=message,
-                client=client,
-                composite_signatures=[c_signature],
-            )
-
-            assert signature_is_valid
