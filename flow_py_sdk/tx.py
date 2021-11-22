@@ -4,7 +4,7 @@ from enum import Enum
 import rlp
 
 from flow_py_sdk.cadence import Value, Address, encode_arguments
-from flow_py_sdk.exceptions import NotCadenceValueError, PySDKError
+from flow_py_sdk.exceptions import NotCadenceValueError
 from flow_py_sdk.frlp import rlp_encode_uint64
 from flow_py_sdk.proto.flow import entities
 from flow_py_sdk.signer import Signer
@@ -25,21 +25,6 @@ class TransactionStatus(Enum):
     TransactionStatusSealed = 4
     # TransactionStatusExpired is the status of an expired transaction.
     TransactionStatusExpired = 5
-
-
-DomainTagLength = 32
-
-
-def _padded_domain_tag(s: str) -> bytes:
-    encoded = s.encode("utf-8")
-    if len(encoded) > DomainTagLength:
-        raise PySDKError(
-            f"domain tag {s} cannot be longer than {DomainTagLength} bytes"
-        )
-    return encoded + bytearray(DomainTagLength - len(s))
-
-
-TransactionDomainTag = _padded_domain_tag("FLOW-V0.0-transaction")
 
 
 class TxSignature(object):
@@ -196,13 +181,13 @@ class Tx(object):
                 f"The transaction needs [{', '.join(self._missing_fields_for_signing())}] before it can be signed"
             )
         for s in self.payload_signers:
-            signature = s.signer.sign(self.payload_message(), TransactionDomainTag)
+            signature = s.signer.sign_transaction(self.payload_message())
             signer_index = self._signer_list().index(s.address)
             ts = TxSignature(s.address, s.key_id, signer_index, signature)
             self.payload_signatures.append(ts)
 
         for s in self.envelope_signers:
-            signature = s.signer.sign(self.envelope_message(), TransactionDomainTag)
+            signature = s.signer.sign_transaction(self.envelope_message())
             signer_index = self._signer_list().index(s.address)
             ts = TxSignature(s.address, s.key_id, signer_index, signature)
             self.envelope_signatures.append(ts)

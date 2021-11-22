@@ -50,3 +50,47 @@ class TestInMemorySigner(TestCase):
                         )
 
                         self.assertTrue(valid)
+
+    def test_sign_verify(self):
+        s = [SignAlgo.ECDSA_P256, SignAlgo.ECDSA_secp256k1]
+
+        h = [
+            HashAlgo.SHA2_256,
+            # HashAlgo.SHA2_384,
+            HashAlgo.SHA3_256,
+            # HashAlgo.SHA3_384,
+        ]
+
+        for sign_algo in s:
+            for hash_algo in h:
+                with self.subTest(f"sign_algo: {sign_algo}, hash_algo: {hash_algo}"):
+                    private_key = ecdsa.SigningKey.generate(
+                        curve=sign_algo.get_signing_curve()
+                    )
+
+                    signer = InMemorySigner(
+                        sign_algo=sign_algo,
+                        hash_algo=hash_algo,
+                        private_key_hex=private_key.to_string().hex(),
+                    )
+                    message = b"some_message"
+
+                    signature = signer.sign_user_message(message)
+                    valid = signer.verify_user_message(signature, message)
+
+                    self.assertTrue(valid)
+
+                    signature = signer.sign_transaction(message)
+                    valid = signer.verify_transaction(signature, message)
+
+                    self.assertTrue(valid)
+
+                    signature = signer.sign_transaction(message)
+                    valid = signer.verify_user_message(signature, message)
+
+                    self.assertFalse(valid)
+
+                    signature = signer.sign_user_message(message)
+                    valid = signer.verify_transaction(signature, message)
+
+                    self.assertFalse(valid)
