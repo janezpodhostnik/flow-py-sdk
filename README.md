@@ -4,7 +4,7 @@ The Flow Python SDK provides a set of packages for Python developers to build ap
 [![codecov](https://codecov.io/gh/janezpodhostnik/flow-py-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/codecov/example-go)
 
 
-See the [guide](https://janezpodhostnik.github.io/flow-py-sdk)!
+See the [guide](https://janezpodhostnik.github.io/flow-py-sdk/python_SDK_guide/)!
 
 
 Note: This SDK is also fully compatible with the Flow Emulator and can be used for local development.
