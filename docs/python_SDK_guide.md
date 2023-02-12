@@ -24,7 +24,7 @@ poetry add flow-py-sdk
 ### Importing the Library
 
 ```sh
-import flow-py-sdk
+import flow_py_sdk
 ```
 
 ## Running examples
