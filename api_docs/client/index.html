@@ -1,0 +1,2790 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>Client - Python Flow SDK</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#client-api-docs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Python Flow SDK" class="md-header__button md-logo" aria-label="Python Flow SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python Flow SDK
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Client
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Python Flow SDK" class="md-nav__button md-logo" aria-label="Python Flow SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Python Flow SDK
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python_SDK_guide/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        Running Examples
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        API Docs
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API Docs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          API Docs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Client
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Client
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-flow-client" class="md-nav__link">
+    Create a flow client
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a flow client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.flow_client" class="md-nav__link">
+    flow_client()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-blocks" class="md-nav__link">
+    Query Blocks
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header" class="md-nav__link">
+    get_latest_block_header()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_latest_block_header()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d" class="md-nav__link">
+    get_block_header_by_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_header_by_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height" class="md-nav__link">
+    get_block_header_by_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_header_by_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block" class="md-nav__link">
+    get_latest_block()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_latest_block()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d" class="md-nav__link">
+    get_block_by_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_by_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height" class="md-nav__link">
+    get_block_by_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_by_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accounts" class="md-nav__link">
+    Accounts
+  </a>
+  
+    <nav class="md-nav" aria-label="Accounts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account" class="md-nav__link">
+    get_account()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_account()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block" class="md-nav__link">
+    get_account_at_latest_block()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_account_at_latest_block()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height" class="md-nav__link">
+    get_account_at_block_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_account_at_block_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions" class="md-nav__link">
+    Transactions
+  </a>
+  
+    <nav class="md-nav" aria-label="Transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result" class="md-nav__link">
+    get_transaction_result()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_transaction_result()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction" class="md-nav__link">
+    get_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_transaction" class="md-nav__link">
+    execute_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.send_transaction" class="md-nav__link">
+    send_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="send_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.send_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.send_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    Events
+  </a>
+  
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range" class="md-nav__link">
+    get_events_for_height_range()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_events_for_height_range()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds" class="md-nav__link">
+    get_events_for_block_i_ds()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_events_for_block_i_ds()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collections" class="md-nav__link">
+    Collections
+  </a>
+  
+    <nav class="md-nav" aria-label="Collections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d" class="md-nav__link">
+    get_collection_by_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_collection_by_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripts" class="md-nav__link">
+    Scripts
+  </a>
+  
+    <nav class="md-nav" aria-label="Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block" class="md-nav__link">
+    execute_script_at_latest_block()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_script_at_latest_block()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d" class="md-nav__link">
+    execute_script_at_block_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_script_at_block_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height" class="md-nav__link">
+    execute_script_at_block_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_script_at_block_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../signer/" class="md-nav__link">
+        Signer
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../keys/" class="md-nav__link">
+        Keys
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        Roadmap
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-flow-client" class="md-nav__link">
+    Create a flow client
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a flow client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.flow_client" class="md-nav__link">
+    flow_client()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-blocks" class="md-nav__link">
+    Query Blocks
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header" class="md-nav__link">
+    get_latest_block_header()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_latest_block_header()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d" class="md-nav__link">
+    get_block_header_by_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_header_by_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height" class="md-nav__link">
+    get_block_header_by_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_header_by_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block" class="md-nav__link">
+    get_latest_block()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_latest_block()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d" class="md-nav__link">
+    get_block_by_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_by_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height" class="md-nav__link">
+    get_block_by_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_block_by_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accounts" class="md-nav__link">
+    Accounts
+  </a>
+  
+    <nav class="md-nav" aria-label="Accounts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account" class="md-nav__link">
+    get_account()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_account()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block" class="md-nav__link">
+    get_account_at_latest_block()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_account_at_latest_block()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height" class="md-nav__link">
+    get_account_at_block_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_account_at_block_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions" class="md-nav__link">
+    Transactions
+  </a>
+  
+    <nav class="md-nav" aria-label="Transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result" class="md-nav__link">
+    get_transaction_result()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_transaction_result()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction" class="md-nav__link">
+    get_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_transaction" class="md-nav__link">
+    execute_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.send_transaction" class="md-nav__link">
+    send_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="send_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.send_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.send_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    Events
+  </a>
+  
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range" class="md-nav__link">
+    get_events_for_height_range()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_events_for_height_range()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds" class="md-nav__link">
+    get_events_for_block_i_ds()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_events_for_block_i_ds()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collections" class="md-nav__link">
+    Collections
+  </a>
+  
+    <nav class="md-nav" aria-label="Collections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d" class="md-nav__link">
+    get_collection_by_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_collection_by_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripts" class="md-nav__link">
+    Scripts
+  </a>
+  
+    <nav class="md-nav" aria-label="Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block" class="md-nav__link">
+    execute_script_at_latest_block()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_script_at_latest_block()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d" class="md-nav__link">
+    execute_script_at_block_i_d()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_script_at_block_i_d()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height" class="md-nav__link">
+    execute_script_at_block_height()
+  </a>
+  
+    <nav class="md-nav" aria-label="execute_script_at_block_height()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="client-api-docs">Client API Docs<a class="headerlink" href="#client-api-docs" title="Permanent link">&para;</a></h1>
+<h2 id="create-a-flow-client">Create a flow client<a class="headerlink" href="#create-a-flow-client" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="flow_py_sdk.client.client.flow_client" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">flow_client</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">codec</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">grpclib</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">CodecBase</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">status_details_codec</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">grpclib</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">StatusDetailsCodecBase</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ssl</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">grpclib</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Configuration</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Deadline</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessAPI</span></code>
+
+
+<a href="#flow_py_sdk.client.client.flow_client" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">flow_client</span><span class="p">(</span>
+    <span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">codec</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodecBase</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">status_details_codec</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StatusDetailsCodecBase</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ssl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Configuration</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">deadline</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Deadline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessAPI</span><span class="p">:</span>
+    <span class="n">channel</span> <span class="o">=</span> <span class="n">Channel</span><span class="p">(</span>
+        <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span>
+        <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
+        <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+        <span class="n">codec</span><span class="o">=</span><span class="n">codec</span><span class="p">,</span>
+        <span class="n">status_details_codec</span><span class="o">=</span><span class="n">status_details_codec</span><span class="p">,</span>
+        <span class="n">ssl</span><span class="o">=</span><span class="n">ssl</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">AccessAPI</span><span class="p">(</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">deadline</span><span class="o">=</span><span class="n">deadline</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+<h2 id="query-blocks">Query Blocks<a class="headerlink" href="#query-blocks" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_latest_block_header" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_latest_block_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_sealed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BlockHeader</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get the full payload of the latest sealed or unsealed block header.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_latest_block_header--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header--parameters" title="Permanent link">&para;</a></h5>
+<p>is_sealed : bool
+    Determine the requested block header should be sealed or not.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_latest_block_header--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_latest_block_header--returns" title="Permanent link">&para;</a></h5>
+<p>entities.BlockHeader
+    Return requested block header.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_latest_block_header</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_sealed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">BlockHeader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the full payload of the latest sealed or unsealed block header.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    is_sealed : bool</span>
+<span class="sd">        Determine the requested block header should be sealed or not.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.BlockHeader</span>
+<span class="sd">        Return requested block header.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_latest_block_header</span><span class="p">(</span><span class="n">is_sealed</span><span class="o">=</span><span class="n">is_sealed</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">BlockHeader</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_block_header_by_i_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BlockHeader</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get a block header using its ID.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--parameters" title="Permanent link">&para;</a></h5>
+<p>id : bytes
+    ID of requested block header.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_i_d--returns" title="Permanent link">&para;</a></h5>
+<p>entities.BlockHeader
+    Return requested block header.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_block_header_by_i_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">BlockHeader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a block header using its ID.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : bytes</span>
+<span class="sd">        ID of requested block header.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.BlockHeader</span>
+<span class="sd">        Return requested block header.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_block_header_by_i_d</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">BlockHeader</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_block_header_by_height" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_block_header_by_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BlockHeader</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get a block header using its height.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--parameters" title="Permanent link">&para;</a></h5>
+<p>id : bytes
+    ID of requested block header.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_header_by_height--returns" title="Permanent link">&para;</a></h5>
+<p>entities.BlockHeader
+    Return requested block header.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_block_header_by_height</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">BlockHeader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a block header using its height.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : bytes</span>
+<span class="sd">        ID of requested block header.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.BlockHeader</span>
+<span class="sd">        Return requested block header.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_block_header_by_height</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">BlockHeader</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_latest_block" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_latest_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_sealed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Block</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_latest_block" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get the full payload of the latest sealed or unsealed block.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_latest_block--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_latest_block--parameters" title="Permanent link">&para;</a></h5>
+<p>is_sealed : bool
+    Determine the requested block should be sealed or not.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_latest_block--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_latest_block--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Block
+    Return requested block.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_latest_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_sealed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Block</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the full payload of the latest sealed or unsealed block.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    is_sealed : bool</span>
+<span class="sd">        Determine the requested block should be sealed or not.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Block</span>
+<span class="sd">        Return requested block.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">(</span><span class="n">AccessAPI</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_latest_block</span><span class="p">(</span><span class="n">is_sealed</span><span class="o">=</span><span class="n">is_sealed</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Block</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_block_by_i_d" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_block_by_i_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Block</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get a block using its ID.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--parameters" title="Permanent link">&para;</a></h5>
+<p>id : bytes
+    ID of requested block.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_by_i_d--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Block
+    Return requested block.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_block_by_i_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Block</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a block using its ID.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : bytes</span>
+<span class="sd">        ID of requested block.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Block</span>
+<span class="sd">        Return requested block.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_block_by_i_d</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Block</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_block_by_height" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_block_by_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Block</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get a block using its height.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_by_height--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height--parameters" title="Permanent link">&para;</a></h5>
+<p>height : int
+    Height of requested block.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_block_by_height--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_block_by_height--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Block
+    Return requested block.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_block_by_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Block</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a block using its height.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    height : int</span>
+<span class="sd">        Height of requested block.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Block</span>
+<span class="sd">        Return requested block.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_block_by_height</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Block</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+<h2 id="accounts">Accounts<a class="headerlink" href="#accounts" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_account" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Account</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_account" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get an account using its address.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_account--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_account--parameters" title="Permanent link">&para;</a></h5>
+<p>address : bytes
+    Address of requested account.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_account--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_account--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Account
+    Return requested account.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Account</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get an account using its address.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    address : bytes</span>
+<span class="sd">        Address of requested account.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Account</span>
+<span class="sd">        Return requested account.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_account</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">account</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_account_at_latest_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Account</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get an account by address at the latest sealed block.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--parameters" title="Permanent link">&para;</a></h5>
+<p>address : bytes
+    Address of requested account.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_account_at_latest_block--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Account
+    Return requested account.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_account_at_latest_block</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Account</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get an account by address at the latest sealed block.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    address : bytes</span>
+<span class="sd">        Address of requested account.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Account</span>
+<span class="sd">        Return requested account.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_account_at_latest_block</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">account</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_account_at_block_height" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_account_at_block_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">block_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Account</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get an account by address at the given block height.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--parameters" title="Permanent link">&para;</a></h5>
+<p>address : bytes
+    Address of requested account.
+block_height : int
+    Desired block height.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_account_at_block_height--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Account
+    Return requested account.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_account_at_block_height</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">block_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Account</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get an account by address at the given block height.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    address : bytes</span>
+<span class="sd">        Address of requested account.</span>
+<span class="sd">    block_height : int</span>
+<span class="sd">        Desired block height.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Account</span>
+<span class="sd">        Return requested account.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_account_at_block_height</span><span class="p">(</span>
+        <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">block_height</span><span class="o">=</span><span class="n">block_height</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">account</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+<h2 id="transactions">Transactions<a class="headerlink" href="#transactions" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_transaction_result" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_transaction_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransactionResultResponse</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get a transaction response.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_transaction_result--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result--parameters" title="Permanent link">&para;</a></h5>
+<p>!!! id "byte"
+    Id of requested transaction.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_transaction_result--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_transaction_result--returns" title="Permanent link">&para;</a></h5>
+<p>entities.TransactionResultResponse
+    Returns id of block</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_transaction_result</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">TransactionResultResponse</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a transaction response.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id: byte</span>
+<span class="sd">        Id of requested transaction.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.TransactionResultResponse</span>
+<span class="sd">        Returns id of block</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_transaction_result</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">TransactionResultResponse</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_transaction" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transaction</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_transaction" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get a transaction using its ID.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_transaction--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_transaction--parameters" title="Permanent link">&para;</a></h5>
+<p>ID : bytes
+    ID of requested transaction.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_transaction--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_transaction--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Transaction
+    Return requested transaction.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Transaction</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a transaction using its ID.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ID : bytes</span>
+<span class="sd">        ID of requested transaction.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Transaction</span>
+<span class="sd">        Return requested transaction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_transaction</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Transaction</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">transaction</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.execute_transaction" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">execute_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tx</span><span class="p">:</span> <span class="n">Tx</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wait_for_seal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;seconds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">30.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransactionResultResponse</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.execute_transaction" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Submit a transaction to the network and wait to return its response.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_transaction--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_transaction--parameters" title="Permanent link">&para;</a></h5>
+<p>!!! tx "entities.Transaction"
+    A transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...
+!!! wait_for_seal "bool"
+    Return response when the block is sealed.
+!!! timeout "float"
+    Time the function should wait for response</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_transaction--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_transaction--returns" title="Permanent link">&para;</a></h5>
+<p>entities.TransactionResultResponse
+    Returns id of block</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">execute_transaction</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">tx</span><span class="p">:</span> <span class="n">Tx</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wait_for_seal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">30.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">TransactionResultResponse</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Submit a transaction to the network and wait to return its response.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tx: entities.Transaction</span>
+<span class="sd">        A transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...</span>
+<span class="sd">    wait_for_seal: bool</span>
+<span class="sd">        Return response when the block is sealed.</span>
+<span class="sd">    timeout: float</span>
+<span class="sd">        Time the function should wait for response</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.TransactionResultResponse</span>
+<span class="sd">        Returns id of block</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending transaction&quot;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">tx</span><span class="o">.</span><span class="n">to_signed_grpc</span><span class="p">())</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sent transaction </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">tx_result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_transaction_result</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tx_result</span><span class="o">.</span><span class="n">error_message</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">tx_result</span><span class="o">.</span><span class="n">error_message</span><span class="p">)</span>  <span class="c1"># TODO wrap error</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">wait_for_seal</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tx_result</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting for transaction to seal&quot;</span><span class="p">)</span>
+
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">+</span> <span class="n">timeout</span>
+    <span class="k">while</span> <span class="p">(</span>
+        <span class="n">TransactionStatus</span><span class="p">(</span><span class="n">tx_result</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+        <span class="ow">is</span> <span class="ow">not</span> <span class="n">TransactionStatus</span><span class="o">.</span><span class="n">TransactionStatusSealed</span>
+        <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">end_time</span>
+    <span class="p">):</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">tx_result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_transaction_result</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">TransactionStatus</span><span class="p">(</span><span class="n">tx_result</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+        <span class="ow">is</span> <span class="ow">not</span> <span class="n">TransactionStatus</span><span class="o">.</span><span class="n">TransactionStatusSealed</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting for transaction </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span><span class="si">}</span><span class="s2"> to seal&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tx_result</span><span class="o">.</span><span class="n">error_message</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">tx_result</span><span class="o">.</span><span class="n">error_message</span><span class="p">)</span>  <span class="c1"># TODO wrap error</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got transaction seal&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tx_result</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.send_transaction" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">flow_py_sdk</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">Transaction</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SendTransactionResponse</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.send_transaction" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Submit a transaction to the network.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.send_transaction--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.send_transaction--parameters" title="Permanent link">&para;</a></h5>
+<p>!!! transaction "Optional[entities.Transaction]"
+    A transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.send_transaction--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.send_transaction--returns" title="Permanent link">&para;</a></h5>
+<p>entities.SendTransactionResponse
+    Returns id of block</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">send_transaction</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">entities</span><span class="o">.</span><span class="n">Transaction</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">SendTransactionResponse</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Submit a transaction to the network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    transaction: Optional[entities.Transaction]</span>
+<span class="sd">        A transaction object contains parameters like script, arguments, proposal_key, reference_block_id ...</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.SendTransactionResponse</span>
+<span class="sd">        Returns id of block</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">send_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">SendTransactionResponse</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+<h2 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_events_for_height_range" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_events_for_height_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Query on blocks in specific height.
+The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--parameters" title="Permanent link">&para;</a></h5>
+<p>type : str
+    Type of requested type.
+!!! start_height "int"
+    Start of desired range.
+end_height : int
+    End of desired range.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_events_for_height_range--returns" title="Permanent link">&para;</a></h5>
+<p>List[entities.EventsResponseResult]
+    Return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_events_for_height_range</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">start_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">entities</span><span class="o">.</span><span class="n">EventsResponseResult</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query on blocks in specific height.</span>
+<span class="sd">    The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    type : str</span>
+<span class="sd">        Type of requested type.</span>
+<span class="sd">    start_height: int</span>
+<span class="sd">        Start of desired range.</span>
+<span class="sd">    end_height : int</span>
+<span class="sd">        End of desired range.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    List[entities.EventsResponseResult]</span>
+<span class="sd">        Return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_events_for_height_range</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">start_height</span><span class="o">=</span><span class="n">start_height</span><span class="p">,</span> <span class="n">end_height</span><span class="o">=</span><span class="n">end_height</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">entities</span><span class="o">.</span><span class="n">EventsResponseResult</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">er</span><span class="p">)</span> <span class="k">for</span> <span class="n">er</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">results</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_events_for_block_i_ds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">block_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">list</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Query on blocks with specific IDs.
+The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--parameters" title="Permanent link">&para;</a></h5>
+<p>type : str
+    Type of requested type.
+!!! block_ids "List[bytes]"
+    List of desired blocks.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_events_for_block_i_ds--returns" title="Permanent link">&para;</a></h5>
+<p>list[entities.EventsResponseResult]
+    Return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_events_for_block_i_ds</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">block_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">entities</span><span class="o">.</span><span class="n">EventsResponseResult</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query on blocks with specific IDs.</span>
+<span class="sd">    The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    type : str</span>
+<span class="sd">        Type of requested type.</span>
+<span class="sd">    block_ids: List[bytes]</span>
+<span class="sd">        List of desired blocks.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[entities.EventsResponseResult]</span>
+<span class="sd">        Return the event results that are grouped by block, with each group specifying a block ID, height and block timestamp.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_events_for_block_i_ds</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">block_ids</span><span class="o">=</span><span class="n">block_ids</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">entities</span><span class="o">.</span><span class="n">EventsResponseResult</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">er</span><span class="p">)</span> <span class="k">for</span> <span class="n">er</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">results</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+<h2 id="collections">Collections<a class="headerlink" href="#collections" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_collection_by_i_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get a collection using its ID.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--parameters" title="Permanent link">&para;</a></h5>
+<p>ID : bytes
+    ID of requested collection.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.get_collection_by_i_d--returns" title="Permanent link">&para;</a></h5>
+<p>entities.Collection
+    Return requested collection.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_collection_by_i_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">entities</span><span class="o">.</span><span class="n">Collection</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a collection using its ID.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ID : bytes</span>
+<span class="sd">        ID of requested collection.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entities.Collection</span>
+<span class="sd">        Return requested collection.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_collection_by_i_d</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">Collection</span><span class="o">.</span><span class="n">from_proto</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+<h2 id="scripts">Scripts<a class="headerlink" href="#scripts" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">execute_script_at_latest_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">bytes</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Execute a read-only Cadence script against the latest sealed block.
+The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--parameters" title="Permanent link">&para;</a></h5>
+<p>script : bytes
+    Cadence script which is wanted to perform.
+argument : List[bytes]
+    List of argument which is need for performing script.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_latest_block--returns" title="Permanent link">&para;</a></h5>
+<p>bytes
+    Return value is encoded using the JSON-Cadence data interchange format.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">execute_script_at_latest_block</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute a read-only Cadence script against the latest sealed block.</span>
+<span class="sd">    The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    script : bytes</span>
+<span class="sd">        Cadence script which is wanted to perform.</span>
+<span class="sd">    argument : List[bytes]</span>
+<span class="sd">        List of argument which is need for performing script.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bytes</span>
+<span class="sd">        Return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">execute_script_at_latest_block</span><span class="p">(</span>
+        <span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">arguments</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">execute_script_at_block_i_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">block_id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">bytes</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Execute a read-only Cadence script against the desired block with specific ID.
+The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--parameters" title="Permanent link">&para;</a></h5>
+<p>!!! block_id "bytes"
+    ID of desired block.
+script : bytes
+    Cadence script which is wanted to perform.
+argument : List[bytes]
+    List of argument which is need for performing script.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_i_d--returns" title="Permanent link">&para;</a></h5>
+<p>bytes
+    Return value is encoded using the JSON-Cadence data interchange format.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">execute_script_at_block_i_d</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">block_id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute a read-only Cadence script against the desired block with specific ID.</span>
+<span class="sd">    The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    block_id: bytes</span>
+<span class="sd">        ID of desired block.</span>
+<span class="sd">    script : bytes</span>
+<span class="sd">        Cadence script which is wanted to perform.</span>
+<span class="sd">    argument : List[bytes]</span>
+<span class="sd">        List of argument which is need for performing script.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bytes</span>
+<span class="sd">        Return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">execute_script_at_block_i_d</span><span class="p">(</span>
+        <span class="n">block_id</span><span class="o">=</span><span class="n">block_id</span><span class="p">,</span> <span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">arguments</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">execute_script_at_block_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">block_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">bytes</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Execute a read-only Cadence script against the desired block with specific height.
+The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--parameters" title="Permanent link">&para;</a></h5>
+<p>!!! block_height "int"
+    Height of desired block.
+script : bytes
+    Cadence script which is wanted to perform.
+argument : List[bytes]
+    List of argument which is need for performing script.</p>
+<h5 id="flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--returns">Returns<a class="headerlink" href="#flow_py_sdk.client.client.AccessAPI.execute_script_at_block_height--returns" title="Permanent link">&para;</a></h5>
+<p>bytes
+    Return value is encoded using the JSON-Cadence data interchange format.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">execute_script_at_block_height</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">block_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute a read-only Cadence script against the desired block with specific height.</span>
+<span class="sd">    The script is executed on an execution node and the return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    block_height: int</span>
+<span class="sd">        Height of desired block.</span>
+<span class="sd">    script : bytes</span>
+<span class="sd">        Cadence script which is wanted to perform.</span>
+<span class="sd">    argument : List[bytes]</span>
+<span class="sd">        List of argument which is need for performing script.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bytes</span>
+<span class="sd">        Return value is encoded using the JSON-Cadence data interchange format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">execute_script_at_block_height</span><span class="p">(</span>
+        <span class="n">block_height</span><span class="o">=</span><span class="n">block_height</span><span class="p">,</span> <span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">arguments</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../../examples/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Running Examples
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../signer/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Signer
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+    
+  </body>
+</html>

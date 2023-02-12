@@ -1,0 +1,1204 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>Signer - Python Flow SDK</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#signer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Python Flow SDK" class="md-header__button md-logo" aria-label="Python Flow SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python Flow SDK
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Signer
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Python Flow SDK" class="md-nav__button md-logo" aria-label="Python Flow SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Python Flow SDK
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python_SDK_guide/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        Running Examples
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        API Docs
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API Docs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          API Docs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client/" class="md-nav__link">
+        Client
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Signer
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Signer
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#signer-base-class" class="md-nav__link">
+    Signer Base Class
+  </a>
+  
+    <nav class="md-nav" aria-label="Signer Base Class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer" class="md-nav__link">
+    Signer
+  </a>
+  
+    <nav class="md-nav" aria-label="Signer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign" class="md-nav__link">
+    sign()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_transaction" class="md-nav__link">
+    sign_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_user_message" class="md-nav__link">
+    sign_user_message()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign_user_message()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_user_message--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_user_message--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-memory-signer-implementation" class="md-nav__link">
+    In Memory signer Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="In Memory signer Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner" class="md-nav__link">
+    InMemorySigner
+  </a>
+  
+    <nav class="md-nav" aria-label="InMemorySigner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign" class="md-nav__link">
+    sign()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify" class="md-nav__link">
+    verify()
+  </a>
+  
+    <nav class="md-nav" aria-label="verify()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../keys/" class="md-nav__link">
+        Keys
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        Roadmap
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#signer-base-class" class="md-nav__link">
+    Signer Base Class
+  </a>
+  
+    <nav class="md-nav" aria-label="Signer Base Class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer" class="md-nav__link">
+    Signer
+  </a>
+  
+    <nav class="md-nav" aria-label="Signer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign" class="md-nav__link">
+    sign()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_transaction" class="md-nav__link">
+    sign_transaction()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign_transaction()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_transaction--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_transaction--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_user_message" class="md-nav__link">
+    sign_user_message()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign_user_message()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_user_message--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.signer.Signer.sign_user_message--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-memory-signer-implementation" class="md-nav__link">
+    In Memory signer Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="In Memory signer Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner" class="md-nav__link">
+    InMemorySigner
+  </a>
+  
+    <nav class="md-nav" aria-label="InMemorySigner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign" class="md-nav__link">
+    sign()
+  </a>
+  
+    <nav class="md-nav" aria-label="sign()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify" class="md-nav__link">
+    verify()
+  </a>
+  
+    <nav class="md-nav" aria-label="verify()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="signer">Signer<a class="headerlink" href="#signer" title="Permanent link">&para;</a></h1>
+<h2 id="signer-base-class">Signer Base Class<a class="headerlink" href="#signer-base-class" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="flow_py_sdk.signer.signer.Signer" class="doc doc-heading">
+        <code>Signer</code>
+
+
+
+<a href="#flow_py_sdk.signer.signer.Signer" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>The Signer class</p>
+<p>This is an abstract base class that is used for signing transactions and messages.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="flow_py_sdk.signer.signer.Signer.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#flow_py_sdk.signer.signer.Signer.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/signer/signer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="flow_py_sdk.signer.signer.Signer.sign" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span></code>
+
+
+<a href="#flow_py_sdk.signer.signer.Signer.sign" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+      <p>The sign method signs a message with a tag and returns the signature</p>
+<h6 id="flow_py_sdk.signer.signer.Signer.sign--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.signer.signer.Signer.sign--parameters" title="Permanent link">&para;</a></h6>
+<p>message : bytes
+    The message to sign.
+tag : str
+    The tag to sign with.</p>
+<h6 id="flow_py_sdk.signer.signer.Signer.sign--returns">Returns<a class="headerlink" href="#flow_py_sdk.signer.signer.Signer.sign--returns" title="Permanent link">&para;</a></h6>
+<p>bytes
+    The signed message.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/signer/signer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The sign method signs a message with a tag and returns the signature</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    message : bytes</span>
+<span class="sd">        The message to sign.</span>
+<span class="sd">    tag : str</span>
+<span class="sd">        The tag to sign with.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bytes</span>
+<span class="sd">        The signed message.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="flow_py_sdk.signer.signer.Signer.sign_transaction" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sign_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span></code>
+
+
+<a href="#flow_py_sdk.signer.signer.Signer.sign_transaction" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+      <p>The sign_user_message method signs a message with the transaction tag and returns the signature</p>
+<p>Used to sign user messages</p>
+<h6 id="flow_py_sdk.signer.signer.Signer.sign_transaction--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.signer.signer.Signer.sign_transaction--parameters" title="Permanent link">&para;</a></h6>
+<p>message : bytes
+    The message to sign.</p>
+<h6 id="flow_py_sdk.signer.signer.Signer.sign_transaction--returns">Returns<a class="headerlink" href="#flow_py_sdk.signer.signer.Signer.sign_transaction--returns" title="Permanent link">&para;</a></h6>
+<p>bytes
+    The signed message.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/signer/signer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">sign_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The sign_user_message method signs a message with the transaction tag and returns the signature</span>
+
+<span class="sd">    Used to sign user messages</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    message : bytes</span>
+<span class="sd">        The message to sign.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bytes</span>
+<span class="sd">        The signed message.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">TransactionDomainTag</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="flow_py_sdk.signer.signer.Signer.sign_user_message" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sign_user_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span></code>
+
+
+<a href="#flow_py_sdk.signer.signer.Signer.sign_user_message" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+      <p>The sign_user_message method signs a message with the user tag and returns the signature</p>
+<p>Used to sign user messages</p>
+<h6 id="flow_py_sdk.signer.signer.Signer.sign_user_message--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.signer.signer.Signer.sign_user_message--parameters" title="Permanent link">&para;</a></h6>
+<p>message : int
+    The message to sign.</p>
+<h6 id="flow_py_sdk.signer.signer.Signer.sign_user_message--returns">Returns<a class="headerlink" href="#flow_py_sdk.signer.signer.Signer.sign_user_message--returns" title="Permanent link">&para;</a></h6>
+<p>bytes
+    The signed message.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/signer/signer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">sign_user_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The sign_user_message method signs a message with the user tag and returns the signature</span>
+
+<span class="sd">    Used to sign user messages</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    message : int</span>
+<span class="sd">        The message to sign.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bytes</span>
+<span class="sd">        The signed message.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">UserDomainTag</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+<h2 id="in-memory-signer-implementation">In Memory signer Implementation<a class="headerlink" href="#in-memory-signer-implementation" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner" class="doc doc-heading">
+        <code>InMemorySigner</code>
+
+
+
+<a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hash_algo</span><span class="p">:</span> <span class="n">HashAlgo</span><span class="p">,</span> <span class="n">sign_algo</span><span class="p">:</span> <span class="n">SignAlgo</span><span class="p">,</span> <span class="n">private_key_hex</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/signer/in_memory_signer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hash_algo</span><span class="p">:</span> <span class="n">HashAlgo</span><span class="p">,</span> <span class="n">sign_algo</span><span class="p">:</span> <span class="n">SignAlgo</span><span class="p">,</span> <span class="n">private_key_hex</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">hash_algo</span> <span class="o">=</span> <span class="n">hash_algo</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">SigningKey</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
+        <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">private_key_hex</span><span class="p">),</span> <span class="n">curve</span><span class="o">=</span><span class="n">sign_algo</span><span class="o">.</span><span class="n">get_signing_curve</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">verifier</span> <span class="o">=</span> <span class="n">InMemoryVerifier</span><span class="p">(</span>
+        <span class="n">hash_algo</span><span class="o">=</span><span class="n">hash_algo</span><span class="p">,</span>
+        <span class="n">sign_algo</span><span class="o">=</span><span class="n">sign_algo</span><span class="p">,</span>
+        <span class="n">public_key_hex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_verifying_key</span><span class="p">()</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">(),</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span></code>
+
+
+<a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+      <p>The sign method signs a message with a tag and returns the signature</p>
+<h6 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--parameters" title="Permanent link">&para;</a></h6>
+<p>message : bytes
+    The message to sign.
+tag : str
+    The tag to sign with.</p>
+<h6 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--returns">Returns<a class="headerlink" href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.sign--returns" title="Permanent link">&para;</a></h6>
+<p>bytes
+    The signed message.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/signer/in_memory_signer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="n">hash_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash_message</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">sign_digest_deterministic</span><span class="p">(</span><span class="n">hash_</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signature</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+
+<a href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+      <p>The verify method signs a message with a tag and returns the signature</p>
+<h6 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--parameters">Parameters<a class="headerlink" href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--parameters" title="Permanent link">&para;</a></h6>
+<p>signature : bytes
+    The signature to verify.
+message : bytes
+    The message to verify.
+tag : str
+    The tag to verify.</p>
+<h6 id="flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--returns">Returns<a class="headerlink" href="#flow_py_sdk.signer.in_memory_signer.InMemorySigner.verify--returns" title="Permanent link">&para;</a></h6>
+<p>bool
+    Is the signature valid.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>flow_py_sdk/signer/in_memory_signer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signature</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">verifier</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../client/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Client
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../keys/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Keys
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+    
+  </body>
+</html>
