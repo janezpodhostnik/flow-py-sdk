@@ -37,7 +37,7 @@ class AccountKey(object):
         public_key: bytes,
         sign_algo: SignAlgo,
         hash_algo: HashAlgo,
-        weight: Optional[int] = None
+        weight: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.index: Optional[int] = None
@@ -95,7 +95,7 @@ class AccountKey(object):
         sign_algo: SignAlgo = SignAlgo.ECDSA_P256,
         hash_algo: HashAlgo = HashAlgo.SHA3_256,
         *,
-        seed: str = None
+        seed: str = None,
     ) -> tuple[AccountKey, in_memory_signer.InMemorySigner]:
         """
         from_seed provide a way for user to create a public and private key for an account using, seed string.

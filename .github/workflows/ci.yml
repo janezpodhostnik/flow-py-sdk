@@ -22,9 +22,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.11
       - name: Setup Poetry
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v2.2.0
       - name: Poetry - Cache
         id: poetry-cache
         uses: actions/cache@v2
@@ -46,9 +46,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.11
       - name: Setup Poetry
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v2.2.0
       - name: Poetry - Cache
         id: poetry-cache
         uses: actions/cache@v2
@@ -71,9 +71,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.11
       - name: Setup Poetry
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v2.2.0
       - name: Poetry - Cache
         id: poetry-cache
         uses: actions/cache@v2
@@ -117,9 +117,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.11
       - name: Setup Poetry
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v2.2.0
       - name: Poetry - Cache
         id: poetry-cache
         uses: actions/cache@v2

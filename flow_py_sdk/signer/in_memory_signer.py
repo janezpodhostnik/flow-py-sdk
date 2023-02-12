@@ -34,7 +34,6 @@ class InMemorySigner(Signer, Verifier):
     def _hash_message(self, message: bytes, tag: Optional[bytes] = None) -> bytes:
         m = self.hash_algo.create_hasher()
         if tag:
-            m.update(tag + message)
-        else:
-            m.update(message)
+            m.update(tag)
+        m.update(message)
         return m.digest()
