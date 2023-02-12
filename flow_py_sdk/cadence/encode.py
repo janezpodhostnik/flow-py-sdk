@@ -44,7 +44,6 @@ def encode_arguments(arguments: list[Value]) -> list[bytes]:
             json.dumps(
                 a, ensure_ascii=False, cls=CadenceJsonEncoder, separators=(",", ":")
             )
-            + "\n"
         ).encode("utf-8")
         for a in arguments
     ]

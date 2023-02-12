@@ -8,22 +8,22 @@ readme = "README.md"
 repository = "https://github.com/janezpodhostnik/flow-py-sdk"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-betterproto = {extras = ["compiler"], version = "^1.2.5"}
-grpcio-tools = "^1.33.2"
-ecdsa = "v0.17.0"
-rlp = "^2.0.1"
-grpclib = "^0.4.1"
+python = "^3.11"
+betterproto = {extras = ["compiler"], version = "v2.0.0-beta5"}
+grpcio-tools = "^1.51"
+ecdsa = "^v0.18"
+rlp = "^3.0"
+grpclib = "^0.4"
 
 [tool.poetry.dev-dependencies]
 coloredlogs = "^15.0"
-toml = "^0.10.2"
-black = "^21.4b2"
-pytest = "^6.2.3"
-mkdocs = "^1.1.2"
-mkdocs-material = "^7.1.4"
-mkdocstrings = "^0.15.0"
-coverage = "^5.5"
+toml = "^0.10"
+black = "^23.1"
+pytest = "^7.2"
+mkdocs = "^1.4"
+mkdocs-material = "^9.0"
+mkdocstrings = "^0.20"
+coverage = "^7.1"
 
 [tool.poetry-dynamic-versioning]
 enable = true
