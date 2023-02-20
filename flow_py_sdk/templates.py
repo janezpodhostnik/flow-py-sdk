@@ -14,7 +14,7 @@ def create_account_template(
     contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None
 ) -> Tx:
     if keys:
-        cadence_public_keys = cadence.Array([cadence.String(k.hex()) for k in keys])
+        cadence_public_keys = cadence.Array([k.crypto_key_list_entry() for k in keys])
     else:
         cadence_public_keys = cadence.Array([])
     if contracts:
@@ -32,19 +32,23 @@ def create_account_template(
     tx = (
         Tx(
             code="""
-                transaction(publicKeys: [String], contracts:{String: String}) {
-                    prepare(signer: AuthAccount) {
-                        let acct = AuthAccount(payer: signer)
-    
-                        for key in publicKeys {
-                            acct.addPublicKey(key.decodeHex())
-                        }
-    
-                        for contract in contracts.keys {
-                            acct.contracts.add(name: contract, code: contracts[contract]!.decodeHex())
-                        }
+            import Crypto
+            
+            transaction(publicKeys: [Crypto.KeyListEntry], contracts: {String: String}) {
+                prepare(signer: AuthAccount) {
+                    let account = AuthAccount(payer: signer)
+            
+                    // add all the keys to the account
+                    for key in publicKeys {
+                        account.keys.add(publicKey: key.publicKey, hashAlgorithm: key.hashAlgorithm, weight: key.weight)
+                    }
+                    
+                    // add contracts if provided
+                    for contract in contracts.keys {
+                        account.contracts.add(name: contract, code: contracts[contract]!.decodeHex())
                     }
                 }
+            }
             """,
             reference_block_id=reference_block_id,
             payer=payer,

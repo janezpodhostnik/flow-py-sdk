@@ -5,6 +5,7 @@ from ecdsa.util import randrange_from_seed__trytryagain
 
 import rlp
 
+from flow_py_sdk import cadence
 from flow_py_sdk.frlp import rlp_encode_uint64
 from flow_py_sdk.proto.flow import entities
 from flow_py_sdk.signer import SignAlgo, HashAlgo, in_memory_signer
@@ -60,6 +61,56 @@ class AccountKey(object):
 
     def hex(self):
         return self.rlp().hex()
+
+    def crypto_key_list_entry(self) -> cadence.Struct:
+        return cadence.Struct(
+            "I.Crypto.Crypto.KeyListEntry",
+            [
+                ("keyIndex", cadence.Int(self.index if self.index is not None else 0)),
+                (
+                    "publicKey",
+                    cadence.Struct(
+                        "PublicKey",
+                        [
+                            (
+                                "publicKey",
+                                cadence.Array(
+                                    [cadence.UInt8(b) for b in self.public_key]
+                                ),
+                            ),
+                            (
+                                "signatureAlgorithm",
+                                cadence.Enum(
+                                    "SignatureAlgorithm",
+                                    [
+                                        (
+                                            "rawValue",
+                                            cadence.UInt8(
+                                                self.sign_algo.get_cadence_enum_value()
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ],
+                    ),
+                ),
+                (
+                    "hashAlgorithm",
+                    cadence.Enum(
+                        "HashAlgorithm",
+                        [
+                            ("rawValue", cadence.UInt8(self.hash_algo.value)),
+                        ],
+                    ),
+                ),
+                ("weight", cadence.UFix64(self.weight * 100_000_000)),
+                (
+                    "isRevoked",
+                    cadence.Bool(self.revoked if self.revoked is not None else False),
+                ),
+            ],
+        )
 
     @classmethod
     def from_proto(cls, k: entities.AccountKey) -> AccountKey:
