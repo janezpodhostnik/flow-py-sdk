@@ -270,11 +270,13 @@ class GetNetworkParametersResponse(object):
 class TransactionResultResponse(object):
     def __init__(
         self,
+        id_: bytes,
         status: entities.TransactionStatus,
         status_code: int,
         error_message: str,
         events: List[Event],
     ) -> None:
+        self.id: bytes = id_
         self.status: entities.TransactionStatus = status
         self.status_code: int = status_code
         self.error_message: str = error_message
@@ -282,9 +284,12 @@ class TransactionResultResponse(object):
 
     @classmethod
     def from_proto(
-        cls, proto: access.TransactionResultResponse
+        cls,
+        proto: access.TransactionResultResponse,
+        id: bytes,
     ) -> "TransactionResultResponse":
         return TransactionResultResponse(
+            id_=id,
             status=proto.status,
             status_code=proto.status_code,
             error_message=proto.error_message,

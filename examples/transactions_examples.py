@@ -84,14 +84,58 @@ class SubmitSignedTransactionExample(Example):
 
 
 # -------------------------------------------------------------------------
+# Submit a signed transaction without a reference block.
+# the reference block will be set to the latest finalized block
+# -------------------------------------------------------------------------
+class SubmitSignedTransactionWithoutReferenceBlockExample(Example):
+    def __init__(self) -> None:
+        super().__init__(
+            tag="T.4.",
+            name="SubmitSignedTransactionWithoutReferenceBlockExample",
+            sort_order=504,
+        )
+
+    async def run(self, ctx: Config):
+        # First Step : Create a client to connect to the flow blockchain
+        # flow_client function creates a client using the host and port
+
+        async with flow_client(
+            host=ctx.access_node_host, port=ctx.access_node_port
+        ) as client:
+            account_address, _, new_signer = await random_account(
+                client=client, ctx=ctx
+            )
+            proposer = await client.get_account_at_latest_block(
+                address=account_address.bytes
+            )
+
+            transaction = Tx(
+                code="""transaction(){prepare(){log("OK")}}""",
+                payer=account_address,
+                proposal_key=ProposalKey(
+                    key_address=account_address,
+                    key_id=0,
+                    key_sequence_number=proposer.keys[0].sequence_number,
+                ),
+            ).with_envelope_signature(
+                account_address,
+                0,
+                new_signer,
+            )
+
+            result = await client.execute_transaction(transaction)
+            assert result.error_message is None or len(result.error_message) == 0
+
+
+# -------------------------------------------------------------------------
 # Submit a signed transaction with arguments
 # -------------------------------------------------------------------------
 class SubmitSignedTransactionWithArgumentsExample(Example):
     def __init__(self) -> None:
         super().__init__(
-            tag="T.4.",
+            tag="T.5.",
             name="SubmitSignedTransactionWithArgumentsExample",
-            sort_order=504,
+            sort_order=505,
         )
 
     async def run(self, ctx: Config):
@@ -137,7 +181,7 @@ class SubmitSignedTransactionWithArgumentsExample(Example):
 class SubmitMultiSignedTransactionExample(Example):
     def __init__(self) -> None:
         super().__init__(
-            tag="T.5.", name="SubmitMultiSignedTransactionExample", sort_order=505
+            tag="T.6.", name="SubmitMultiSignedTransactionExample", sort_order=506
         )
 
     async def run(self, ctx: Config):
@@ -227,10 +271,7 @@ class GetTransactionByIdExample(Example):
                 new_signer,
             )
 
-            response = await client.send_transaction(
-                transaction=transaction.to_signed_grpc()
-            )
-
+            response = await client.execute_transaction(transaction)
             transaction_id = response.id
 
             transaction = await client.get_transaction(id=transaction_id)

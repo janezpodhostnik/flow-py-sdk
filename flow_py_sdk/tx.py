@@ -207,7 +207,6 @@ class Tx(object):
     def _missing_fields_for_signing(self) -> list[str]:
         mandatory_fields = {
             "code": self.code,
-            "reference_block_id": self.reference_block_id,
             "payer": self.payer,
             "proposal_key": self.proposal_key,
         }

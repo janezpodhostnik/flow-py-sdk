@@ -480,8 +480,6 @@ class AccessAPI(AccessAPIStub):
         Returns
         -------
         entities.SendTransactionResponse
-            Returns id of block
-
         """
         response = await super().send_transaction(transaction=transaction)
         return entities.SendTransactionResponse.from_proto(response)
@@ -500,11 +498,9 @@ class AccessAPI(AccessAPIStub):
         Returns
         -------
         entities.TransactionResultResponse
-            Returns id of block
-
         """
         response = await super().get_transaction_result(id=id)
-        return entities.TransactionResultResponse.from_proto(response)
+        return entities.TransactionResultResponse.from_proto(response, id=id)
 
     async def execute_transaction(
         self, tx: Tx, *, wait_for_seal=True, timeout: Annotated[float, "seconds"] = 30.0
@@ -524,10 +520,11 @@ class AccessAPI(AccessAPIStub):
         Returns
         -------
         entities.TransactionResultResponse
-            Returns id of block
-
         """
         log.debug(f"Sending transaction")
+        if tx.reference_block_id is None:
+            tx.reference_block_id = (await self.get_latest_block(is_sealed=False)).id
+
         result = await self.send_transaction(transaction=tx.to_signed_grpc())
         log.info(f"Sent transaction {result.id.hex()}")
         tx_result = await self.get_transaction_result(id=result.id)
