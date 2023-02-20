@@ -21,3 +21,13 @@ class SignAlgo(IntEnum):
         if self == SignAlgo.ECDSA_secp256k1:
             return ecdsa.SECP256k1
         raise NotImplementedError()
+
+    def get_cadence_enum_value(self) -> int:
+        """
+        get_cadence_enum_value provide a way for user to get cadence enum value for signature algorithm.
+        For some reason this is 1 less than the enum value in the go sdk code: https://github.com/onflow/flow-go-sdk/blob/9f5d7409940a99d663b214a3ba66d477c1761409/templates/accounts.go#L60
+        Returns
+        -------
+
+        """
+        return self.value - 1
