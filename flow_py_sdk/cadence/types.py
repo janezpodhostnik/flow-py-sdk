@@ -8,6 +8,7 @@ from typing import (
 )
 
 import flow_py_sdk.cadence.constants as c
+from flow_py_sdk.cadence.kind import Kind
 from flow_py_sdk.cadence.address import Address
 from flow_py_sdk.cadence.decode import decode, add_cadence_decoder
 from flow_py_sdk.cadence.value import Value
@@ -569,36 +570,6 @@ class Dictionary(Value):
         return c.dictionaryTypeStr
 
 
-class Link(Value):
-    def __init__(self, target_path: Path, borrow_type: str) -> None:
-        super().__init__()
-        self.target_path: Path = target_path
-        self.borrow_type: str = borrow_type
-
-    def __str__(self):
-        return f"Link<{self.borrow_type}>({self.target_path})"
-
-    def encode_value(self) -> dict:
-        return {
-            c.valueKey: {
-                c.targetPathKey: self.target_path.encode(),
-                c.borrowTypeKey: self.borrow_type,
-            }
-        }
-
-    @classmethod
-    def decode(cls, value) -> Link:
-        v = value[c.valueKey]
-        return Link(
-            decode(v[c.targetPathKey]).as_type(Path),
-            v[c.borrowTypeKey],
-        )
-
-    @classmethod
-    def type_str(cls) -> str:
-        return c.linkTypeStr
-
-
 class Path(Value):
     def __init__(self, domain: str, identifier: str) -> None:
         super().__init__()
@@ -627,17 +598,17 @@ class Path(Value):
 
 
 class TypeValue(Value):
-    def __init__(self, type_name: str = None) -> None:
+    def __init__(self, type_: Kind = None) -> None:
         super().__init__()
-        self.type_name: str = type_name
+        self.type_ = type_
 
     def __str__(self):
-        return f"Type<{self.type_name}>()"
+        return f"Type<{str(self.type_) if self.type_ else ''}>()"
 
     def encode_value(self) -> dict:
         return {
             c.valueKey: {
-                c.staticTypeKey: (self.type_name if self.type_name is not None else "")
+                c.staticTypeKey: self.type_.encode() if self.type_ else "",
             }
         }
 
@@ -645,7 +616,7 @@ class TypeValue(Value):
     def decode(cls, value) -> TypeValue:
         v = value[c.valueKey]
         return TypeValue(
-            v[c.staticTypeKey] if v[c.staticTypeKey] != "" else None,
+            decode(v[c.staticTypeKey]) if v[c.staticTypeKey] else None,
         )
 
     @classmethod
@@ -654,18 +625,14 @@ class TypeValue(Value):
 
 
 class Capability(Value):
-    def __init__(self, path: Path, address: Address, borrow_type: str) -> None:
+    def __init__(self, path: Path, address: Address, borrow_type: Kind) -> None:
         super().__init__()
         self.address = address
         self.path = path
         self.borrow_type = borrow_type
 
     def __str__(self):
-        type_arg = (
-            ""
-            if self.borrow_type is None or self.borrow_type == ""
-            else f"<{self.borrow_type}>"
-        )
+        type_arg = "" if self.borrow_type is None else f"<{self.borrow_type}>"
         return f"Capability{type_arg}(address: {self.address}, path: {self.path})"
 
     def encode_value(self) -> dict:
@@ -673,9 +640,7 @@ class Capability(Value):
             c.valueKey: {
                 c.pathKey: self.path.encode(),
                 c.addressKey: self.address.encode_value()[c.valueKey],
-                c.borrowTypeKey: self.borrow_type
-                if self.borrow_type is not None
-                else "",
+                c.borrowTypeKey: self.borrow_type.encode(),
             }
         }
 
@@ -684,11 +649,37 @@ class Capability(Value):
         v = value[c.valueKey]
         path = decode(v[c.pathKey]).as_type(Path)
         address = Address.decode({c.valueKey: v[c.addressKey]})
-        return Capability(path, address, v[c.borrowTypeKey])
+        return Capability(path, address, decode(v[c.borrowTypeKey]))
 
     @classmethod
     def type_str(cls) -> str:
         return c.capabilityTypeStr
+
+
+class Function(Value):
+    def __init__(self, function_type: Kind) -> None:
+        super().__init__()
+        self.function_type = function_type
+
+    def __str__(self):
+        return f"Function{self.function_type}"
+
+    def encode_value(self) -> dict:
+        return {
+            c.valueKey: {
+                c.functionTypeKey: self.function_type.encode(),
+            }
+        }
+
+    @classmethod
+    def decode(cls, value) -> Function:
+        v = value[c.valueKey]
+        type_ = v[c.functionTypeKey]
+        return Function(decode(type_))
+
+    @classmethod
+    def type_str(cls) -> str:
+        return c.functionTypeStr
 
 
 cadence_types: list[pyType[Value]] = [
@@ -720,9 +711,9 @@ cadence_types: list[pyType[Value]] = [
     Array,
     Dictionary,
     TypeValue,
-    Link,
     Path,
     Capability,
+    Function,
 ]
 
 for t in cadence_types:

@@ -126,7 +126,7 @@ class EmitEventFromContractExample(Example):
                 e.value for e in result.events if isinstance(e.value, cadence.Event)
             ][0]
 
-            assert add_event.fields[2].as_type(cadence.Int).value == 7
+            assert add_event.sum.as_type(cadence.Int).value == 7
 
             self.log.info(f"event type: {result.events[0].type}")
             self.log.info(f"event value: {result.events[0].value}")

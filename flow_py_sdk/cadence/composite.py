@@ -1,251 +1,90 @@
 from __future__ import annotations
 
-from abc import ABC
-from typing import Tuple, Type as pyType
-
-from flow_py_sdk.cadence.decode import decode, add_cadence_decoder
-from flow_py_sdk.cadence.location import Location, decode_location
-from flow_py_sdk.cadence.value import Value
+from abc import ABCMeta
 
 import flow_py_sdk.cadence.constants as c
+from flow_py_sdk.cadence.decode import decode, add_cadence_decoder
+from flow_py_sdk.cadence.value import Value
 
 
-class CompositeType(ABC):
-    def __init__(
-        self,
-        location: Location,
-        qualified_identifier: str,
-        fields: list[Field],
-        initializer: list[list[Parameter]] = None,
-    ):
-        self.location: Location = location
-        self.qualified_identifier: str = qualified_identifier
-        self.fields: list[Field] = fields
-        self.initializers: list[list[Parameter]] = initializer
-
-    def id(self) -> str:
-        return self.location.type_id(self.qualified_identifier)
-
-
-class StructType(CompositeType):
-    pass
-
-
-class Struct(Value):
-    def __init__(self, fields: list[Value], struct_type: StructType) -> None:
+class Composite(Value, metaclass=ABCMeta):
+    def __init__(self, id_: str, field_pairs: list[(str, Value)]):
         super().__init__()
-        self.struct_type: StructType = struct_type
-        self.fields: list[Value] = fields
 
-    def __str__(self):
-        return Composite.format_composite(
-            self.struct_type.id(),
-            self.struct_type.fields,
-            self.fields,
-        )
-
-    def encode_value(self) -> dict:
-        return Composite.encode_composite(
-            c.structTypeStr,
-            self.struct_type.id(),
-            self.struct_type.fields,
-            self.fields,
-        )
-
-    @classmethod
-    def decode(cls, value) -> Struct:
-        composite = Composite.decode(value[c.valueKey])
-
-        struct_type = StructType(
-            composite.location,
-            composite.qualified_identifier,
-            composite.field_types,
-        )
-
-        return Struct(composite.field_values, struct_type)
-
-    @classmethod
-    def type_str(cls) -> str:
-        return c.structTypeStr
-
-
-class ResourceType(CompositeType):
-    pass
-
-
-class Resource(Value):
-    def __init__(self, fields: list[Value], resource_type: ResourceType) -> None:
-        super().__init__()
-        self.resource_type: ResourceType = resource_type
-        self.fields: list[Value] = fields
-
-    def __str__(self):
-        return Composite.format_composite(
-            self.resource_type.id(),
-            self.resource_type.fields,
-            self.fields,
-        )
-
-    def encode_value(self) -> dict:
-        return Composite.encode_composite(
-            c.resourceTypeStr,
-            self.resource_type.id(),
-            self.resource_type.fields,
-            self.fields,
-        )
-
-    @classmethod
-    def decode(cls, value) -> Resource:
-        composite = Composite.decode(value[c.valueKey])
-
-        resource_type = ResourceType(
-            composite.location,
-            composite.qualified_identifier,
-            composite.field_types,
-        )
-
-        return Resource(composite.field_values, resource_type)
-
-    @classmethod
-    def type_str(cls) -> str:
-        return c.resourceTypeStr
-
-
-class ContractType(CompositeType):
-    pass
-
-
-class Contract(Value):
-    def __init__(self, fields: list[Value], resource_type: ContractType) -> None:
-        super().__init__()
-        self.resource_type: ContractType = resource_type
-        self.fields: list[Value] = fields
-
-    def __str__(self):
-        return Composite.format_composite(
-            self.resource_type.id(),
-            self.resource_type.fields,
-            self.fields,
-        )
-
-    def encode_value(self) -> dict:
-        return Composite.encode_composite(
-            c.contractTypeStr,
-            self.resource_type.id(),
-            self.resource_type.fields,
-            self.fields,
-        )
-
-    @classmethod
-    def decode(cls, value) -> Contract:
-        composite = Composite.decode(value[c.valueKey])
-
-        contract_type = ContractType(
-            composite.location,
-            composite.qualified_identifier,
-            composite.field_types,
-        )
-
-        return Contract(composite.field_values, contract_type)
-
-    @classmethod
-    def type_str(cls) -> str:
-        return c.contractTypeStr
-
-
-class Field(object):
-    def __init__(self, identifier: str, _type) -> None:
-        super().__init__()
-        self.identifier: str = identifier
-        # not used anywhere yet! not typed
-        self.type = _type
-
-
-class Composite(object):
-    def __init__(
-        self,
-        location: Location,
-        qualified_identifier: str,
-        field_values: list[Value],
-        field_types: list[Field],
-    ) -> None:
-        super().__init__()
-        self.location: Location = location
-        self.qualified_identifier: str = qualified_identifier
-        self.field_values: list[Value] = field_values
-        self.field_types: list[Field] = field_types
-
-    @classmethod
-    def encode_composite(
-        cls, kind: str, _id: str, fields: list[Field], values: list[Value]
-    ) -> dict:
-        return {
-            c.typeKey: kind,
-            c.valueKey: {
-                c.idKey: _id,
-                c.fieldsKey: [
-                    {c.nameKey: f.identifier, c.valueKey: v.encode()}
-                    for f, v in zip(fields, values)
-                ],
-            },
-        }
+        self.fields: dict[str, Value] = {f[0]: f[1] for f in field_pairs}
+        self.field_order = [f[0] for f in field_pairs]
+        self.id = id_
 
     @classmethod
     def decode(cls, value) -> "Composite":
-        type_id = value[c.idKey]
-        location, qualified_identifier = decode_location(type_id)
-        fields = value[c.fieldsKey]
+        v = value[c.valueKey]
+        field_pairs = [(f[c.nameKey], decode(f[c.valueKey])) for f in v[c.fieldsKey]]
+        id_ = v[c.idKey]
+        return cls(id_, field_pairs)
 
-        field_values = []
-        field_types = []
+    def encode_value(self):
+        return {
+            c.valueKey: {
+                c.idKey: self.id,
+                c.fieldsKey: [
+                    {c.nameKey: f, c.valueKey: self.fields[f].encode()}
+                    for f in self.field_order
+                ],
+            }
+        }
 
-        for field in fields:
-            field_value, field_type = Composite._decode_composite_field(field)
-            field_values.append(field_value)
-            field_types.append(field_type)
+    def __str__(self):
+        return f"{self.type_str()}({','.join([f'{k}:{v}' for k, v in self.fields.items()])})"
 
-        return Composite(location, qualified_identifier, field_values, field_types)
+    def __setattr__(self, key, value):
+        if key != "fields" and key in self.fields:
+            self.fields[key] = value
+        else:
+            super().__setattr__(key, value)
 
-    @classmethod
-    def _decode_composite_field(cls, value) -> Tuple[Value, Field]:
-        name = value[c.nameKey]
-        field_value = decode(value[c.valueKey])
+    def __getattr__(self, key):
+        if key != "fields" and key in self.fields:
+            return self.fields[key]
+        else:
+            super(Value, self).__getattribute__(key)
 
-        field = Field(name, type(field_value))
 
-        return field_value, field
-
-    @classmethod
-    def format_composite(
-        cls, type_id: str, fields: list[Field], values: list[Value]
-    ) -> str:
-        prepared_fields: list[Tuple[str, str]] = []
-        for v, f in zip(values, fields):
-            prepared_fields.append((f.identifier, str(v)))
-
-        return f"{type_id}({str.join(', ', [f'{n}: {v}' for n, v in prepared_fields])})"
-
+class Struct(Composite):
     @classmethod
     def type_str(cls) -> str:
-        return c.eventTypeStr
+        return "Struct"
 
 
-class Type(object):
-    pass
+class Resource(Composite):
+    @classmethod
+    def type_str(cls) -> str:
+        return "Resource"
 
 
-class Parameter(object):
-    def __init__(self) -> None:
-        super().__init__()
-        self.label: str
-        self.identifier: str
-        self.type: Type
+class Event(Composite):
+    @classmethod
+    def type_str(cls) -> str:
+        return "Event"
 
 
-cadence_types: list[pyType[Value]] = [
+class Contract(Composite):
+    @classmethod
+    def type_str(cls) -> str:
+        return "Contract"
+
+
+class Enum(Composite):
+    @classmethod
+    def type_str(cls) -> str:
+        return "Enum"
+
+
+cadence_types = [
     Struct,
     Resource,
+    Event,
     Contract,
+    Enum,
 ]
 
 for t in cadence_types:
