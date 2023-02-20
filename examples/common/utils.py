@@ -121,9 +121,7 @@ async def random_account_with_weights(
 
     result = await client.execute_transaction(tx)
     new_addresses = [
-        e.value.address
-        for e in result.events
-        if isinstance(e.value, cadence.AccountCreatedEvent)
+        e.value.address for e in result.events if e.value.id == "flow.AccountCreated"
     ]
 
     return (

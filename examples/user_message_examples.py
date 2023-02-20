@@ -1,14 +1,10 @@
+from examples.common import Example, Config
+from examples.common.utils import random_account_with_weights
 from flow_py_sdk import (
-    SignAlgo,
-    HashAlgo,
-    InMemorySigner,
-    InMemoryVerifier,
     flow_client,
     AccountKey,
     utils,
 )
-from examples.common.utils import random_account, random_account_with_weights
-from examples.common import Example, Config
 
 
 # -------------------------------------------------------------------------

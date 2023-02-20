@@ -1,14 +1,13 @@
 import json
 import unittest
 from dataclasses import dataclass
-
 from flow_py_sdk import cadence
 
 
 @dataclass
 class _EncodeTestParams:
     name: str
-    val: cadence.Value
+    val: cadence.Value | cadence.Kind
     expected: str
 
 
@@ -33,17 +32,13 @@ class TestEncode(unittest.TestCase):
             cls=cadence.CadenceJsonEncoder,
             separators=(",", ":"),
         )
-
         expected = json.loads(expected_json)
         actual = json.loads(actual_json)
-
         self.assertDictEqual(expected, actual)
-
         return actual_json
 
     def _decode(self, actual_json: str, expected_val: cadence.Value):
         cadence_val = json.loads(actual_json, object_hook=cadence.cadence_object_hook)
-
         self.assertEqual(expected_val, cadence_val)
 
     def testEncodeOptional(self):
@@ -510,7 +505,6 @@ class TestEncode(unittest.TestCase):
             cadence.Array([]),
             '{"type":"Array","value":[]}',
         )
-
         int_array = _EncodeTestParams(
             "Integers",
             cadence.Array(
@@ -523,14 +517,13 @@ class TestEncode(unittest.TestCase):
             """{"type":"Array",
                 "value":[{"type":"Int","value":"1"},{"type":"Int","value":"2"},{"type":"Int","value":"3"}]}""",
         )
-
         resource_array = _EncodeTestParams(
             "Resources",
             cadence.Array(
                 [
-                    cadence.Resource([cadence.Int(1)], _foo_resource_type),
-                    cadence.Resource([cadence.Int(2)], _foo_resource_type),
-                    cadence.Resource([cadence.Int(3)], _foo_resource_type),
+                    cadence.Resource("S.test.Foo", [("bar", cadence.Int(1))]),
+                    cadence.Resource("S.test.Foo", [("bar", cadence.Int(2))]),
+                    cadence.Resource("S.test.Foo", [("bar", cadence.Int(3))]),
                 ]
             ),
             """{"type":"Array","value":[
@@ -542,7 +535,6 @@ class TestEncode(unittest.TestCase):
                     "fields":[{"name":"bar","value":{"type":"Int","value":"3"}}]}}
             ]}""",
         )
-
         self._encodeAndDecodeAll(
             [
                 empty_array,
@@ -576,7 +568,6 @@ class TestEncode(unittest.TestCase):
                 {"key":{"type":"String","value":"c"},"value":{"type":"Int","value":"3"}}
             ]}""",
         )
-
         nested_dict = _EncodeTestParams(
             "Nested",
             cadence.Dictionary(
@@ -660,22 +651,21 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
         resource_dict = _EncodeTestParams(
             "Resources",
             cadence.Dictionary(
                 [
                     cadence.KeyValuePair(
                         cadence.String("a"),
-                        cadence.Resource([cadence.Int(1)], _foo_resource_type),
+                        cadence.Resource("S.test.Foo", [("bar", cadence.Int(1))]),
                     ),
                     cadence.KeyValuePair(
                         cadence.String("b"),
-                        cadence.Resource([cadence.Int(2)], _foo_resource_type),
+                        cadence.Resource("S.test.Foo", [("bar", cadence.Int(2))]),
                     ),
                     cadence.KeyValuePair(
                         cadence.String("c"),
-                        cadence.Resource([cadence.Int(3)], _foo_resource_type),
+                        cadence.Resource("S.test.Foo", [("bar", cadence.Int(3))]),
                     ),
                 ]
             ),
@@ -723,7 +713,6 @@ class TestEncode(unittest.TestCase):
                 }
             """,
         )
-
         self._encodeAndDecodeAll(
             [
                 simple_dict,
@@ -733,24 +722,15 @@ class TestEncode(unittest.TestCase):
         )
 
     def testEncodeResource(self):
-        foo_resource_type = cadence.ResourceType(
-            _test_location,
-            "Foo",
-            [
-                cadence.Field(
-                    "uuid",
-                    type(cadence.UInt64),
-                ),
-                cadence.Field(
-                    "bar",
-                    type(cadence.Int),
-                ),
-            ],
-        )
-
         simple_resource = _EncodeTestParams(
             "Simple",
-            cadence.Resource([cadence.UInt64(0), cadence.Int(42)], foo_resource_type),
+            cadence.Resource(
+                "S.test.Foo",
+                [
+                    ("uuid", cadence.UInt64(0)),
+                    ("bar", cadence.Int(42)),
+                ],
+            ),
             """
             {
               "type": "Resource",
@@ -764,47 +744,20 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
-        bar_resource_type = cadence.ResourceType(
-            _test_location,
-            "Bar",
-            [
-                cadence.Field(
-                    "uuid",
-                    type(cadence.UInt64),
-                ),
-                cadence.Field(
-                    "x",
-                    type(cadence.Int),
-                ),
-            ],
-        )
-
-        foo_resource_type = cadence.ResourceType(
-            _test_location,
-            "Foo",
-            [
-                cadence.Field(
-                    "uuid",
-                    type(cadence.UInt64),
-                ),
-                cadence.Field(
-                    "bar",
-                    bar_resource_type,
-                ),
-            ],
-        )
-
         nested_resource = _EncodeTestParams(
             "Nested resource",
             cadence.Resource(
+                "S.test.Foo",
                 [
-                    cadence.UInt64(0),
-                    cadence.Resource(
-                        [cadence.UInt64(0), cadence.Int(42)], bar_resource_type
+                    ("uuid", cadence.UInt64(0)),
+                    (
+                        "bar",
+                        cadence.Resource(
+                            "S.test.Bar",
+                            [("uuid", cadence.UInt64(0)), ("x", cadence.Int(42))],
+                        ),
                     ),
                 ],
-                foo_resource_type,
             ),
             """
             {
@@ -831,28 +784,15 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
         self._encodeAndDecodeAll([simple_resource, nested_resource])
 
     def testEncodeStruct(self):
-        simple_struct_type = cadence.StructType(
-            _test_location,
-            "FooStruct",
-            [
-                cadence.Field(
-                    "a",
-                    type(cadence.Int),
-                ),
-                cadence.Field(
-                    "b",
-                    type(cadence.String),
-                ),
-            ],
-        )
-
         simple_struct = _EncodeTestParams(
             "Simple",
-            cadence.Struct([cadence.Int(1), cadence.String("foo")], simple_struct_type),
+            cadence.Struct(
+                "S.test.FooStruct",
+                [("a", cadence.Int(1)), ("b", cadence.String("foo"))],
+            ),
             """
             {
               "type": "Struct",
@@ -866,30 +806,14 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
-        resource_struct_type = cadence.StructType(
-            _test_location,
-            "FooStruct",
-            [
-                cadence.Field(
-                    "a",
-                    type(cadence.String),
-                ),
-                cadence.Field(
-                    "b",
-                    _foo_resource_type,
-                ),
-            ],
-        )
-
         resource_struct = _EncodeTestParams(
             "Resources",
             cadence.Struct(
+                "S.test.FooStruct",
                 [
-                    cadence.String("foo"),
-                    cadence.Resource([cadence.Int(42)], _foo_resource_type),
+                    ("a", cadence.String("foo")),
+                    ("b", cadence.Resource("S.test.Foo", [("bar", cadence.Int(42))])),
                 ],
-                resource_struct_type,
             ),
             """
             {
@@ -915,27 +839,14 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
         self._encodeAndDecodeAll([simple_struct, resource_struct])
 
     def testEncodeEvent(self):
-        simple_event_type = cadence.EventType(
-            _test_location,
-            "FooEvent",
-            [
-                cadence.Field(
-                    "a",
-                    type(cadence.Int),
-                ),
-                cadence.Field(
-                    "b",
-                    type(cadence.String),
-                ),
-            ],
-        )
         simple_event = _EncodeTestParams(
             "Simple",
-            cadence.Event([cadence.Int(1), cadence.String("foo")], simple_event_type),
+            cadence.Event(
+                "S.test.FooEvent", [("a", cadence.Int(1)), ("b", cadence.String("foo"))]
+            ),
             """
             {
               "type": "Event",
@@ -949,30 +860,14 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
-        resource_event_type = cadence.EventType(
-            _test_location,
-            "FooEvent",
-            [
-                cadence.Field(
-                    "a",
-                    type(cadence.Int),
-                ),
-                cadence.Field(
-                    "b",
-                    _foo_resource_type,
-                ),
-            ],
-        )
-
         resource_event = _EncodeTestParams(
             "Resources",
             cadence.Event(
+                "S.test.FooEvent",
                 [
-                    cadence.String("foo"),
-                    cadence.Resource([cadence.Int(42)], _foo_resource_type),
+                    ("a", cadence.String("foo")),
+                    ("b", cadence.Resource("S.test.Foo", [("bar", cadence.Int(42))])),
                 ],
-                resource_event_type,
             ),
             """
             {
@@ -998,28 +893,17 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
         self._encodeAndDecodeAll([simple_event, resource_event])
 
     def testEncodeContract(self):
-        simple_contract_type = cadence.ContractType(
-            _test_location,
-            "FooContract",
-            [
-                cadence.Field(
-                    "a",
-                    type(cadence.Int),
-                ),
-                cadence.Field(
-                    "b",
-                    type(cadence.String),
-                ),
-            ],
-        )
         simple_contract = _EncodeTestParams(
             "Simple",
             cadence.Contract(
-                [cadence.Int(1), cadence.String("foo")], simple_contract_type
+                "S.test.FooContract",
+                [
+                    ("a", cadence.Int(1)),
+                    ("b", cadence.String("foo")),
+                ],
             ),
             """
             {
@@ -1034,30 +918,14 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
-        resource_contract_type = cadence.ContractType(
-            _test_location,
-            "FooContract",
-            [
-                cadence.Field(
-                    "a",
-                    type(cadence.Int),
-                ),
-                cadence.Field(
-                    "b",
-                    _foo_resource_type,
-                ),
-            ],
-        )
-
         resource_contract = _EncodeTestParams(
             "Resources",
             cadence.Contract(
+                "S.test.FooContract",
                 [
-                    cadence.String("foo"),
-                    cadence.Resource([cadence.Int(42)], _foo_resource_type),
+                    ("a", cadence.String("foo")),
+                    ("b", cadence.Resource("S.test.Foo", [("bar", cadence.Int(42))])),
                 ],
-                resource_contract_type,
             ),
             """
             {
@@ -1083,55 +951,34 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-
         self._encodeAndDecodeAll([simple_contract, resource_contract])
-
-    def testEncodeLink(self):
-        link = _EncodeTestParams(
-            "Link",
-            cadence.Link(
-                cadence.Path("storage", "foo"),
-                "Bar",
-            ),
-            """
-            {
-              "type": "Link",
-              "value": {
-                "targetPath": {
-                  "type": "Path",
-                  "value": { "domain": "storage", "identifier": "foo" }
-                },
-                "borrowType": "Bar"
-              }
-            }
-            """,
-        )
-
-        self._encodeAndDecodeAll([link])
 
     def testEncodeType(self):
         static_type = _EncodeTestParams(
             "Static Type",
             cadence.TypeValue(
-                "Int",
+                cadence.IntKind(),
             ),
-            """{"type":"Type","value":{"staticType":"Int"}}""",
+            """
+            {
+              "type": "Type",
+              "value": {
+                "staticType": {
+                  "kind": "Int"
+                }
+              }
+            }
+            """,
         )
-        no_static_type = _EncodeTestParams(
-            "No Static Type",
-            cadence.TypeValue(),
-            """{"type":"Type","value":{"staticType":""}}""",
-        )
-
-        self._encodeAndDecodeAll([static_type, no_static_type])
+        self._encodeAndDecodeAll([static_type])
 
     def testEncodeCapability(self):
         capability = _EncodeTestParams(
             "Capability",
             cadence.Capability(
-                cadence.Path("storage", "foo"),
-                cadence.Address.from_hex("0x0000000102030405"),
-                "Int",
+                cadence.Path("public", "someInteger"),
+                cadence.Address.from_hex("0x0000000000000001"),
+                cadence.IntKind(),
             ),
             """
             {
@@ -1139,43 +986,559 @@ class TestEncode(unittest.TestCase):
               "value": {
                 "path": {
                   "type": "Path",
-                  "value": { "domain": "storage", "identifier": "foo" }
+                  "value": {
+                    "domain": "public",
+                    "identifier": "someInteger"
+                  }
                 },
-                "borrowType": "Int",
-                "address": "0x0000000102030405"
+                "address": "0x0000000000000001",
+                "borrowType": {
+                  "kind": "Int"
+                }
               }
             }
             """,
         )
-
         self._encodeAndDecodeAll([capability])
 
+    def testEncodeFunction(self):
+        capability = _EncodeTestParams(
+            "Function",
+            cadence.Function(
+                cadence.FunctionKind(
+                    "fun():Void",
+                    [],
+                    cadence.VoidKind(),
+                ),
+            ),
+            """
+            {
+              "type": "Function",
+              "value": {
+                "functionType": {
+                  "kind": "Function",
+                  "typeID": "fun():Void",
+                  "parameters": [],
+                  "return": {
+                    "kind": "Void"
+                  }
+                }
+              }
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([capability])
 
-# func TestEncodeCapability(t *testing.T) {
-#
-# 	t.Parallel()
-#
-# 	testEncodeAndDecode(
-# 		t,
-# 		cadence.Capability{
-# 			Path:       cadence.Path{Domain: "storage", Identifier: "foo"},
-# 			Address:    cadence.BytesToAddress([]byte{1, 2, 3, 4, 5}),
-# 			BorrowType: "Int",
-# 		},
-# 		`{"type":"Capability","value":{"path":{"type":"Path","value":{"domain":"storage","identifier":"foo"}},"borrowType":"Int","address":"0x0000000102030405"}}`,
-# 	)
-# }
+    def testEncodeSimpleKind(self):
+        simple_kind = _EncodeTestParams(
+            "Simple Kind",
+            cadence.UInt8Kind(),
+            """
+            {
+              "kind": "UInt8"
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([simple_kind])
 
+    def testEncodeOptionalKind(self):
+        optional_kind = _EncodeTestParams(
+            "Optional Kind",
+            cadence.OptionalKind(cadence.StringKind()),
+            """
+            {
+              "kind": "Optional",
+              "type": {
+                "kind": "String"
+              }
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([optional_kind])
 
-_test_location = cadence.StringLocation("test")
+    def testVariableSizedArrayKind(self):
+        kind = _EncodeTestParams(
+            "VariableSizedArray Kind",
+            cadence.VariableSizedArrayKind(cadence.StringKind()),
+            """
+            {
+              "kind": "VariableSizedArray",
+              "type": {
+                "kind": "String"
+              }
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
 
-_foo_resource_type = cadence.ResourceType(
-    _test_location,
-    "Foo",
-    [
-        cadence.Field(
-            "bar",
-            type(cadence.Int),
-        ),
-    ],
-)
+    def testConstSizedArrayKind(self):
+        kind = _EncodeTestParams(
+            "ConstantSizedArray Kind",
+            cadence.ConstantSizedArrayKind(cadence.StringKind(), 3),
+            """
+            {
+              "kind": "ConstantSizedArray",
+              "type": {
+                "kind": "String"
+              },
+              "size":3
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testDictionaryKind(self):
+        kind = _EncodeTestParams(
+            "Dictionary Kind",
+            cadence.DictionaryKind(cadence.StringKind(), cadence.UInt16Kind()),
+            """
+            {
+              "kind": "Dictionary",
+              "key": {
+                "kind": "String"
+              }, 
+              "value": {
+                "kind": "UInt16"
+              }
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testCompositeKind(self):
+        kind = _EncodeTestParams(
+            "Resource Kind",
+            cadence.ResourceKind(
+                "0x3.GreatContract.GreatNFT",
+                [
+                    [
+                        cadence.ParameterKind(
+                            "foo",
+                            "bar",
+                            cadence.StringKind(),
+                        )
+                    ]
+                ],
+                [
+                    cadence.FieldKind(
+                        "foo",
+                        cadence.StringKind(),
+                    ),
+                ],
+            ),
+            """
+            {
+              "kind": "Resource",
+              "type": "",
+              "typeID": "0x3.GreatContract.GreatNFT",
+              "initializers":[
+                [
+                  {
+                    "label": "foo",
+                    "id": "bar",
+                    "type": {
+                      "kind": "String"
+                    }
+                  }
+                ]
+              ],
+              "fields": [
+                {
+                  "id": "foo",
+                  "type": {
+                    "kind": "String"
+                  }
+                }
+              ]
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testFunctionKind(self):
+        kind = _EncodeTestParams(
+            "Function Kind",
+            cadence.FunctionKind(
+                "foo",
+                [
+                    cadence.ParameterKind(
+                        "foo",
+                        "bar",
+                        cadence.StringKind(),
+                    )
+                ],
+                cadence.StringKind(),
+            ),
+            """
+            {
+              "kind": "Function",
+              "typeID": "foo",
+              "parameters": [
+                {
+                  "label": "foo",
+                  "id": "bar",
+                  "type": {
+                    "kind": "String"
+                  }
+                } 
+              ], 
+              "return": {
+                "kind": "String"
+              }
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testReferenceKind(self):
+        kind = _EncodeTestParams(
+            "Reference Kind",
+            cadence.ReferenceKind(
+                True,
+                cadence.StringKind(),
+            ),
+            """
+            {
+              "kind": "Reference",
+              "authorized": true,
+              "type": {
+                "kind": "String"
+              }
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testRestrictedKind(self):
+        kind = _EncodeTestParams(
+            "Restricted Kind",
+            cadence.RestrictedKind(
+                "0x3.GreatContract.GreatNFT",
+                cadence.AnyResourceKind(),
+                [
+                    cadence.ResourceInterfaceKind(
+                        "0x1.FungibleToken.Receiver",
+                        [],
+                        [
+                            cadence.FieldKind(
+                                "uuid",
+                                cadence.UInt64Kind(),
+                            )
+                        ],
+                    )
+                ],
+            ),
+            """
+            {
+              "kind": "Restriction",
+              "typeID": "0x3.GreatContract.GreatNFT",
+              "type": {
+                "kind": "AnyResource"
+              },
+              "restrictions": [
+                {
+                  "kind": "ResourceInterface",
+                  "typeID": "0x1.FungibleToken.Receiver",
+                  "initializers": [],
+                  "fields": [
+                    {
+                      "id": "uuid",
+                      "type": {
+                        "kind": "UInt64"
+                      }
+                    }
+                  ],
+                  "type": ""
+                }
+              ]
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testCapabilityKind(self):
+        kind = _EncodeTestParams(
+            "Capability Kind",
+            cadence.CapabilityKind(
+                cadence.ReferenceKind(
+                    True,
+                    cadence.StringKind(),
+                )
+            ),
+            """
+            {
+              "kind": "Capability",
+              "type": {
+                "kind": "Reference",
+                "authorized": true,
+                "type": {
+                  "kind": "String"
+                }
+              }
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testEnumKind(self):
+        kind = _EncodeTestParams(
+            "Enum Kind",
+            cadence.EnumKind(
+                "0x3.GreatContract.GreatEnum",
+                cadence.StringKind(),
+                [
+                    cadence.FieldKind(
+                        "rawValue",
+                        cadence.StringKind(),
+                    )
+                ],
+            ),
+            """
+            {
+              "kind": "Enum",
+              "type": {
+                "kind": "String"
+              },
+              "typeID": "0x3.GreatContract.GreatEnum",
+              "initializers":[],
+              "fields": [
+                {
+                  "id": "rawValue",
+                  "type": {
+                    "kind": "String"
+                  }
+                }
+              ]
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testStorefrontEvent(self):
+        self.maxDiff = None
+        event = _EncodeTestParams(
+            "StorefrontEvent",
+            cadence.Event(
+                "A.4eb8a10cb9f87357.NFTStorefrontV2.ListingAvailable",
+                [
+                    (
+                        "storefrontAddress",
+                        cadence.Address.from_hex("0xe037c7e7cd998a9c"),
+                    ),
+                    ("listingResourceID", cadence.UInt64(897392501)),
+                    (
+                        "nftType",
+                        cadence.TypeValue(
+                            cadence.ResourceKind(
+                                "A.87ca73a41bb50ad5.Golazos.NFT",
+                                [],
+                                [
+                                    cadence.FieldKind("uuid", cadence.UInt64Kind()),
+                                    cadence.FieldKind("id", cadence.UInt64Kind()),
+                                    cadence.FieldKind(
+                                        "editionID", cadence.UInt64Kind()
+                                    ),
+                                    cadence.FieldKind(
+                                        "serialNumber", cadence.UInt64Kind()
+                                    ),
+                                    cadence.FieldKind(
+                                        "mintingDate", cadence.UFix64Kind()
+                                    ),
+                                ],
+                            )
+                        ),
+                    ),
+                    ("nftUUID", cadence.UInt64(885861011)),
+                    ("nftID", cadence.UInt64(885861011)),
+                    (
+                        "salePaymentVaultType",
+                        cadence.TypeValue(
+                            cadence.ResourceKind(
+                                "A.ead892083b3e2c6c.DapperUtilityCoin.Vault",
+                                [],
+                                [
+                                    cadence.FieldKind("uuid", cadence.UInt64Kind()),
+                                    cadence.FieldKind("balance", cadence.UFix64Kind()),
+                                ],
+                            )
+                        ),
+                    ),
+                    ("salePrice", cadence.UFix64(200000000)),
+                    (
+                        "customID",
+                        cadence.Optional(cadence.String("DAPPER_MARKETPLACE")),
+                    ),
+                    ("commissionAmount", cadence.UFix64(0)),
+                    (
+                        "commissionReceivers",
+                        cadence.Optional(
+                            cadence.Array(
+                                [
+                                    cadence.Address.from_hex("0x87ca73a41bb50ad5"),
+                                ]
+                            )
+                        ),
+                    ),
+                    ("expiry", cadence.UInt64(33233716780)),
+                ],
+            ),
+            """
+            {
+              "value": {
+                "id": "A.4eb8a10cb9f87357.NFTStorefrontV2.ListingAvailable",
+                "fields": [
+                  {
+                    "value": {
+                      "value": "0xe037c7e7cd998a9c",
+                      "type": "Address"
+                    },
+                    "name": "storefrontAddress"
+                  },
+                  {
+                    "value": {
+                      "value": "897392501",
+                      "type": "UInt64"
+                    },
+                    "name": "listingResourceID"
+                  },
+                  {
+                    "value": {
+                      "value": {
+                        "staticType": {
+                          "type": "",
+                          "kind": "Resource",
+                          "typeID": "A.87ca73a41bb50ad5.Golazos.NFT",
+                          "fields": [
+                            {
+                              "type": {
+                                "kind": "UInt64"
+                              },
+                              "id": "uuid"
+                            },
+                            {
+                              "type": {
+                                "kind": "UInt64"
+                              },
+                              "id": "id"
+                            },
+                            {
+                              "type": {
+                                "kind": "UInt64"
+                              },
+                              "id": "editionID"
+                            },
+                            {
+                              "type": {
+                                "kind": "UInt64"
+                              },
+                              "id": "serialNumber"
+                            },
+                            {
+                              "type": {
+                                "kind": "UFix64"
+                              },
+                              "id": "mintingDate"
+                            }
+                          ],
+                          "initializers": []
+                        }
+                      },
+                      "type": "Type"
+                    },
+                    "name": "nftType"
+                  },
+                  {
+                    "value": {
+                      "value": "885861011",
+                      "type": "UInt64"
+                    },
+                    "name": "nftUUID"
+                  },
+                  {
+                    "value": {
+                      "value": "885861011",
+                      "type": "UInt64"
+                    },
+                    "name": "nftID"
+                  },
+                  {
+                    "value": {
+                      "value": {
+                        "staticType": {
+                          "type": "",
+                          "kind": "Resource",
+                          "typeID": "A.ead892083b3e2c6c.DapperUtilityCoin.Vault",
+                          "fields": [
+                            {
+                              "type": {
+                                "kind": "UInt64"
+                              },
+                              "id": "uuid"
+                            },
+                            {
+                              "type": {
+                                "kind": "UFix64"
+                              },
+                              "id": "balance"
+                            }
+                          ],
+                          "initializers": []
+                        }
+                      },
+                      "type": "Type"
+                    },
+                    "name": "salePaymentVaultType"
+                  },
+                  {
+                    "value": {
+                      "value": "2.00000000",
+                      "type": "UFix64"
+                    },
+                    "name": "salePrice"
+                  },
+                  {
+                    "value": {
+                      "value": {
+                        "value": "DAPPER_MARKETPLACE",
+                        "type": "String"
+                      },
+                      "type": "Optional"
+                    },
+                    "name": "customID"
+                  },
+                  {
+                    "value": {
+                      "value": "0.00000000",
+                      "type": "UFix64"
+                    },
+                    "name": "commissionAmount"
+                  },
+                  {
+                    "value": {
+                      "value": {
+                        "value": [
+                          {
+                            "value": "0x87ca73a41bb50ad5",
+                            "type": "Address"
+                          }
+                        ],
+                        "type": "Array"
+                      },
+                      "type": "Optional"
+                    },
+                    "name": "commissionReceivers"
+                  },
+                  {
+                    "value": {
+                      "value": "33233716780",
+                      "type": "UInt64"
+                    },
+                    "name": "expiry"
+                  }
+                ]
+              },
+              "type": "Event"
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([event])
