@@ -10,6 +10,7 @@ from grpclib.config import Configuration
 from grpclib.encoding.base import CodecBase, StatusDetailsCodecBase
 from grpclib.metadata import Deadline
 
+from flow_py_sdk import cadence
 from flow_py_sdk.cadence import Value, cadence_object_hook, encode_arguments
 from flow_py_sdk.client import entities
 from flow_py_sdk.proto.flow.access import (
@@ -194,14 +195,17 @@ class AccessAPI(AccessAPIStub):
         response = await super().get_transaction(id=id)
         return entities.Transaction.from_proto(response.transaction)
 
-    async def get_account(self, *, address: bytes = b"") -> entities.Account:
+    async def get_account(
+        self, *, address: bytes | cadence.Address | str = b""
+    ) -> entities.Account:
         """
         Get an account using its address.
 
         Parameters
         ----------
-        address : bytes
+        address : bytes | cadence.Address | str
             Address of requested account.
+            Can be a bytes, cadence.Address or hex str.
 
         Returns
         -------
@@ -209,19 +213,21 @@ class AccessAPI(AccessAPIStub):
             Return requested account.
 
         """
+        address = cadence.Address.convert_to_bytes(address)
         response = await super().get_account(address=address)
         return entities.Account.from_proto(response.account)
 
     async def get_account_at_latest_block(
-        self, *, address: bytes = b""
+        self, *, address: bytes | cadence.Address | str = b""
     ) -> entities.Account:
         """
         Get an account by address at the latest sealed block.
 
         Parameters
         ----------
-        address : bytes
+        address : bytes | cadence.Address | str
             Address of requested account.
+            Can be a bytes, cadence.Address or hex str.
 
         Returns
         -------
@@ -229,19 +235,21 @@ class AccessAPI(AccessAPIStub):
             Return requested account.
 
         """
+        address = cadence.Address.convert_to_bytes(address)
         response = await super().get_account_at_latest_block(address=address)
         return entities.Account.from_proto(response.account)
 
     async def get_account_at_block_height(
-        self, *, address: bytes = b"", block_height: int = 0
+        self, *, address: bytes | cadence.Address | str = b"", block_height: int = 0
     ) -> entities.Account:
         """
         Get an account by address at the given block height.
 
         Parameters
         ----------
-        address : bytes
+        address : bytes | cadence.Address | str
             Address of requested account.
+            Can be a bytes, cadence.Address or hex str.
         block_height : int
             Desired block height.
 
@@ -251,6 +259,7 @@ class AccessAPI(AccessAPIStub):
             Return requested account.
 
         """
+        address = cadence.Address.convert_to_bytes(address)
         response = await super().get_account_at_block_height(
             address=address, block_height=block_height
         )
