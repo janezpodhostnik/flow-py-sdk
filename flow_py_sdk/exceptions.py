@@ -24,3 +24,9 @@ class CadenceEncodingError(PySDKError):
 
 class CadenceIncorrectTypeError(PySDKError):
     pass
+
+
+class NotAddressError(PySDKError):
+    @classmethod
+    def from_value(cls, value) -> "NotAddressError":
+        return NotAddressError(f"Value {value} is not a cadence address.")
