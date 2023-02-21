@@ -12,7 +12,9 @@ categories:
   - title: ':rocket: Features'
     labels: 'enhancement'
   - title: ':beetle: Fixes'
-    label: 'bug'
+    labels:
+      - 'bugfix'
+      - 'bug'
   - title: ':racehorse: Performance'
     label: 'performance'
   - title: ':hammer: Refactoring'
