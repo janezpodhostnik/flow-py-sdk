@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 from types import TracebackType
-from typing import Optional, Type, Annotated, List
+from typing import Optional, Type, Annotated, List, Union
 
 import time
 from grpclib.client import Channel
@@ -196,7 +196,7 @@ class AccessAPI(AccessAPIStub):
         return entities.Transaction.from_proto(response.transaction)
 
     async def get_account(
-        self, *, address: bytes | cadence.Address | str = b""
+        self, *, address: Union[bytes, cadence.Address, str] = b""
     ) -> entities.Account:
         """
         Get an account using its address.
@@ -218,7 +218,7 @@ class AccessAPI(AccessAPIStub):
         return entities.Account.from_proto(response.account)
 
     async def get_account_at_latest_block(
-        self, *, address: bytes | cadence.Address | str = b""
+        self, *, address: Union[bytes, cadence.Address, str] = b""
     ) -> entities.Account:
         """
         Get an account by address at the latest sealed block.
@@ -240,7 +240,10 @@ class AccessAPI(AccessAPIStub):
         return entities.Account.from_proto(response.account)
 
     async def get_account_at_block_height(
-        self, *, address: bytes | cadence.Address | str = b"", block_height: int = 0
+        self,
+        *,
+        address: Union[bytes, cadence.Address, str] = b"",
+        block_height: int = 0,
     ) -> entities.Account:
         """
         Get an account by address at the given block height.

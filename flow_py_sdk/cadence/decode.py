@@ -1,4 +1,4 @@
-from typing import Any, Callable, Type
+from typing import Any, Callable, Type, Union
 
 from flow_py_sdk.cadence.value import Value
 from flow_py_sdk.cadence.kind import Kind
@@ -17,7 +17,7 @@ def add_cadence_kind_decoder(t: Type[Kind]):
     _cadence_kind_decoders[t.kind_str()] = t.decode
 
 
-def decode(obj: [dict[Any, Any]]) -> Value | Kind:
+def decode(obj: [dict[Any, Any]]) -> Union[Value, Kind]:
     # json decoder starts from bottom up, so it's possible that this is already decoded
     if isinstance(obj, Value) or isinstance(obj, Kind):
         return obj
