@@ -1,5 +1,6 @@
 import json
 import unittest
+from ctypes import Union
 from dataclasses import dataclass
 from flow_py_sdk import cadence
 
@@ -7,7 +8,7 @@ from flow_py_sdk import cadence
 @dataclass
 class _EncodeTestParams:
     name: str
-    val: cadence.Value | cadence.Kind
+    val: any
     expected: str
 
 

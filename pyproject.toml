@@ -8,7 +8,7 @@ readme = "README.md"
 repository = "https://github.com/janezpodhostnik/flow-py-sdk"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.9"
 betterproto = {extras = ["compiler"], version = "v2.0.0-beta5"}
 grpcio-tools = "^1.51"
 ecdsa = "^v0.18"
