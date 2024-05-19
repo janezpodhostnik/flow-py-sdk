@@ -6,12 +6,12 @@ from flow_py_sdk.tx import Tx, ProposalKey
 
 
 def create_account_template(
-        *,
-        keys: list[AccountKey],
-        reference_block_id: bytes = None,
-        payer: cadence.Address = None,
-        proposal_key: ProposalKey = None,
-        contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None
+    *,
+    keys: list[AccountKey],
+    reference_block_id: bytes = None,
+    payer: cadence.Address = None,
+    proposal_key: ProposalKey = None,
+    contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None
 ) -> Tx:
     if keys:
         cadence_public_keys = cadence.Array([k.crypto_key_list_entry() for k in keys])
