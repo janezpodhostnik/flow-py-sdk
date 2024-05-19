@@ -18,7 +18,7 @@ class ExecuteScriptExample(Example):
         # --------------------------------
         script = Script(
             code="""
-                    pub fun main(): Int {
+                    access(all) fun main(): Int {
                         let a = 1
                         let b = 1
                         return a + b
@@ -54,7 +54,7 @@ class ExecuteScriptWithArgumentExample(Example):
         # --------------------------------
         script = Script(
             code="""
-                    pub fun main(a: Int, b: Int): Int {
+                    access(all) fun main(a: Int, b: Int): Int {
                         return a + b
                     }
                 """,
@@ -83,10 +83,10 @@ class ExecuteComplexScriptWithArgumentExample(Example):
     async def run(self, ctx: Config):
         script = Script(
             code="""
-                    pub struct User {
-                        pub var balance: UFix64
-                        pub var address: Address
-                        pub var name: String
+                    access(all) struct User {
+                        access(all) var balance: UFix64
+                        access(all) var address: Address
+                        access(all) var name: String
 
                         init(name: String, address: Address, balance: UFix64) {
                             self.name = name
@@ -95,7 +95,7 @@ class ExecuteComplexScriptWithArgumentExample(Example):
                         }
                     }
 
-                    pub fun main(name: String): User {
+                    access(all) fun main(name: String): User {
                         return User(
                             name: name,
                             address: 0x1,

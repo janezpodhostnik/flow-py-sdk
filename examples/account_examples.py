@@ -80,8 +80,8 @@ class DeployContract(Example):
         # A test Contract define for this example, you can modify it by your self
         contract = {
             "Name": "TestOne",
-            "source": """pub contract TestOne {
-                                pub fun add(a: Int, b: Int): Int {
+            "source": """access(all) contract TestOne {
+                                access(all) fun add(a: Int, b: Int): Int {
                                     return a + b
                                 }
                                 }""",
@@ -141,8 +141,8 @@ class UpdateContract(Example):
         # A test Contract define for this example, you can modify it by your self
         contract = {
             "Name": "TestOne",
-            "source": """pub contract TestOne {
-                                pub fun add(a: Int, b: Int): Int {
+            "source": """access(all) contract TestOne {
+                                access(all) fun add(a: Int, b: Int): Int {
                                     return a + b
                                 }
                                 }""",
@@ -190,8 +190,8 @@ class UpdateContract(Example):
             # Updated Contract
             contract = {
                 "Name": "TestOne",
-                "source": """pub contract TestOne {
-                                pub fun add(a: Int, b: Int): Int {
+                "source": """access(all) contract TestOne {
+                                access(all) fun add(a: Int, b: Int): Int {
                                     return a * b
                                 }
                                 }""",
@@ -241,8 +241,8 @@ class RemoveContract(Example):
         # A test Contract define for this example, you can modify it by your self
         contract = {
             "Name": "TestOne",
-            "source": """pub contract TestOne {
-                                pub fun add(a: Int, b: Int): Int {
+            "source": """access(all) contract TestOne {
+                                access(all) fun add(a: Int, b: Int): Int {
                                     return a + b
                                 }
                                 }""",

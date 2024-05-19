@@ -6,12 +6,12 @@ from flow_py_sdk.tx import Tx, ProposalKey
 
 
 def create_account_template(
-    *,
-    keys: list[AccountKey],
-    reference_block_id: bytes = None,
-    payer: cadence.Address = None,
-    proposal_key: ProposalKey = None,
-    contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None
+        *,
+        keys: list[AccountKey],
+        reference_block_id: bytes = None,
+        payer: cadence.Address = None,
+        proposal_key: ProposalKey = None,
+        contracts: dict[Annotated[str, "name"], Annotated[str, "source"]] = None
 ) -> Tx:
     if keys:
         cadence_public_keys = cadence.Array([k.crypto_key_list_entry() for k in keys])
@@ -33,10 +33,10 @@ def create_account_template(
         Tx(
             code="""
             import Crypto
-            
+
             transaction(publicKeys: [Crypto.KeyListEntry], contracts: {String: String}) {
-                prepare(signer: AuthAccount) {
-                    let account = AuthAccount(payer: signer)
+                prepare(signer: auth(BorrowValue) &Account) {
+                    let account = Account(payer: signer)
             
                     // add all the keys to the account
                     for key in publicKeys {
@@ -56,6 +56,7 @@ def create_account_template(
         )
         .add_arguments(cadence_public_keys)
         .add_arguments(cadence_contracts)
+        .with_gas_limit(9999)
     )
 
     return tx
@@ -64,15 +65,15 @@ def create_account_template(
 class TransactionTemplates:
     updateAccountContractTemplate = """
     transaction(name: String, code: String) {
-        prepare(signer: AuthAccount) {
-            signer.contracts.update__experimental(name: name, code: code.decodeHex())
+        prepare(signer: auth(UpdateContract) &Account) {
+            signer.contracts.update(name: name, code: code.decodeHex())
         }
     }
     """
 
     addAccountContractTemplate = """
     transaction(name: String, code: String) {
-        prepare(signer: AuthAccount) {
+        prepare(signer: auth(AddContract) &Account) {
             signer.contracts.add(name: name, code: code.decodeHex())
         }
     }
@@ -80,7 +81,7 @@ class TransactionTemplates:
 
     removeAccountContractTemplate = """
     transaction(name: String) {
-        prepare(signer: AuthAccount) {
+        prepare(signer: auth(RemoveContract) &Account) {
             signer.contracts.remove(name: name)
         }
     }
@@ -88,7 +89,7 @@ class TransactionTemplates:
 
     verifyAccountSignaturesTemplate = """
     import Crypto
-    pub fun main(
+    access(all) fun main(
       address: Address,
       signatures: [String],
       keyIndexes: [Int],
@@ -134,6 +135,7 @@ class TransactionTemplates:
         return keyList.verify(
             signatureSet: signatureSet,
             signedData: message.utf8,
+            domainSeparationTag: "FLOW-V0.0-user",
         )
     }
     """
