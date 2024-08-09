@@ -1,4 +1,5 @@
 from abc import ABCMeta, ABC
+from typing import Optional
 
 from flow_py_sdk.cadence import Kind
 import flow_py_sdk.cadence.constants as c
@@ -230,7 +231,7 @@ class FunctionKind(Kind):
         self,
         type_id: str,
         parameters: list[ParameterKind],
-        purity: str | None,
+        purity: Optional[str],
         return_: Kind,
     ) -> None:
         super().__init__()
