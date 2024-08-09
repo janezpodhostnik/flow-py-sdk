@@ -9,21 +9,21 @@ repository = "https://github.com/janezpodhostnik/flow-py-sdk"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-betterproto = {extras = ["compiler"], version = "v2.0.0-beta5"}
-grpcio-tools = "^1.51"
-ecdsa = "^v0.18"
-rlp = "^3.0"
+betterproto = {extras = ["compiler"], version = "v2.0.0-beta6"}
+grpcio-tools = "^1.65"
+ecdsa = "^v0.19"
+rlp = "^4.0"
 grpclib = "^0.4"
 
 [tool.poetry.dev-dependencies]
 coloredlogs = "^15.0"
 toml = "^0.10"
-black = "^23.1"
-pytest = "^7.2"
-mkdocs = "^1.4"
-mkdocs-material = "^9.0"
-mkdocstrings = "^0.20"
-coverage = "^7.1"
+black = "^24.8"
+pytest = "^8.3"
+mkdocs = "^1.6"
+mkdocs-material = "^9.5"
+mkdocstrings = "^0.25"
+coverage = "^7.6"
 
 [tool.poetry-dynamic-versioning]
 enable = true

@@ -205,7 +205,7 @@ class SubmitMultiSignedTransactionExample(Example):
             transaction = (
                 Tx(
                     code="""transaction {
-                    prepare(signer1: AuthAccount, signer2: AuthAccount) { 
+                    prepare(signer1: &Account, signer2: &Account) { 
                         log(signer1.address) 
                         log(signer2.address)
                     }

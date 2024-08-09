@@ -34,6 +34,7 @@ from .types import (
     Function,
     KeyValuePair,
     TypeValue,
+    InclusiveRange,
 )
 from .composite import (
     Struct,
@@ -115,7 +116,15 @@ from .kinds import (
     ContractInterfaceKind,
     FunctionKind,
     ReferenceKind,
-    RestrictedKind,
+    IntersectionKind,
     CapabilityKind,
     EnumKind,
+    InclusiveRangeKind,
+    EntitlementConjunctionSetKind,
+    EntitlementDisjunctionSetKind,
+    EntitlementMapAuthorization,
+    EntitlementUnauthorizedKind,
+    EntitlementMapKind,
+    EntitlementKind,
+    EntitlementsKind,
 )

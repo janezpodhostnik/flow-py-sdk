@@ -79,10 +79,10 @@ class EmitEventFromContractExample(Example):
                 ctx=ctx,
                 contracts={
                     "EventDemo": """
-                        pub contract EventDemo {
-                            pub event Add(x: Int, y: Int, sum: Int)
+                        access(all) contract EventDemo {
+                            access(all) event Add(x: Int, y: Int, sum: Int)
 
-                            pub fun add(_ x: Int, _ y: Int) {
+                            access(all) fun add(_ x: Int, _ y: Int) {
                                 let sum = x + y
                                 emit Add(x: x, y: y, sum: sum)
                             }
