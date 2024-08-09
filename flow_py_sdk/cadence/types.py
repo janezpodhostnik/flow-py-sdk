@@ -545,15 +545,17 @@ class Dictionary(Value):
 
     def encode_value(self) -> dict:
         return {
-            c.valueKey: [
-                {
-                    c.keyKey: i.key.encode(),
-                    c.valueKey: i.value.encode(),
-                }
-                for i in self.value
-            ]
-            if self.value is not None
-            else None
+            c.valueKey: (
+                [
+                    {
+                        c.keyKey: i.key.encode(),
+                        c.valueKey: i.value.encode(),
+                    }
+                    for i in self.value
+                ]
+                if self.value is not None
+                else None
+            )
         }
 
     @classmethod
@@ -624,21 +626,63 @@ class TypeValue(Value):
         return c.typeTypeStr
 
 
-class Capability(Value):
-    def __init__(self, path: Path, address: Address, borrow_type: Kind) -> None:
+class InclusiveRange(Value):
+    def __init__(self, start: Value, end: Value, step: Value) -> None:
         super().__init__()
-        self.address = address
-        self.path = path
-        self.borrow_type = borrow_type
+        self.start = start
+        self.end = end
+        self.step = step
 
     def __str__(self):
-        type_arg = "" if self.borrow_type is None else f"<{self.borrow_type}>"
-        return f"Capability{type_arg}(address: {self.address}, path: {self.path})"
+        fields = {}
+
+        if self.start is not None:
+            fields["start"] = self.start
+        if self.end is not None:
+            fields["end"] = self.end
+        if self.step is not None:
+            fields["step"] = self.step
+
+        return f"{self.type_str()}({','.join([f'{k}:{v}' for k, v in fields.items()])})"
 
     def encode_value(self) -> dict:
         return {
             c.valueKey: {
-                c.pathKey: self.path.encode(),
+                c.startKey: self.start.encode(),
+                c.endKey: self.end.encode(),
+                c.stepKey: self.step.encode(),
+            }
+        }
+
+    @classmethod
+    def decode(cls, value) -> InclusiveRange:
+        v = value[c.valueKey]
+        return InclusiveRange(
+            decode(v[c.startKey]),
+            decode(v[c.endKey]),
+            decode(v[c.stepKey]),
+        )
+
+    @classmethod
+    def type_str(cls) -> str:
+        return c.inclusiveRangeTypeStr
+
+
+class Capability(Value):
+    def __init__(self, id_: int, address: Address, borrow_type: Kind) -> None:
+        super().__init__()
+        self.id_ = id_
+        self.address = address
+        self.borrow_type = borrow_type
+
+    def __str__(self):
+        type_arg = "" if self.borrow_type is None else f"<{self.borrow_type}>"
+        return f"Capability{type_arg}(address: {self.address}, id: {self.id_})"
+
+    def encode_value(self) -> dict:
+        return {
+            c.valueKey: {
+                c.idKey: self.id_,
                 c.addressKey: self.address.encode_value()[c.valueKey],
                 c.borrowTypeKey: self.borrow_type.encode(),
             }
@@ -647,9 +691,9 @@ class Capability(Value):
     @classmethod
     def decode(cls, value) -> Capability:
         v = value[c.valueKey]
-        path = decode(v[c.pathKey]).as_type(Path)
+        id_ = v[c.idKey]
         address = Address.decode({c.valueKey: v[c.addressKey]})
-        return Capability(path, address, decode(v[c.borrowTypeKey]))
+        return Capability(id_, address, decode(v[c.borrowTypeKey]))
 
     @classmethod
     def type_str(cls) -> str:
@@ -711,6 +755,7 @@ cadence_types: list[pyType[Value]] = [
     Array,
     Dictionary,
     TypeValue,
+    InclusiveRange,
     Path,
     Capability,
     Function,

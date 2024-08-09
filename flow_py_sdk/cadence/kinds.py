@@ -1,4 +1,4 @@
-from abc import ABCMeta
+from abc import ABCMeta, ABC
 
 from flow_py_sdk.cadence import Kind
 import flow_py_sdk.cadence.constants as c
@@ -227,11 +227,16 @@ class ContractInterfaceKind(CompositeKind):
 
 class FunctionKind(Kind):
     def __init__(
-        self, type_id: str, parameters: list[ParameterKind], return_: Kind
+        self,
+        type_id: str,
+        parameters: list[ParameterKind],
+        purity: str | None,
+        return_: Kind,
     ) -> None:
         super().__init__()
         self.type_id = type_id
         self.parameters = parameters
+        self.purity = purity
         self.return_ = return_
 
     @classmethod
@@ -239,18 +244,25 @@ class FunctionKind(Kind):
         type_id = str(value[c.typeIdKey])
         parameters = value[c.parametersKey]
         return_ = value[c.returnKey]
+        purity = value[c.purityKey] if c.purityKey in value else None
         return FunctionKind(
             type_id,
             [ParameterKind.decode(i) for i in parameters],
+            purity,
             decode(return_),
         )
 
     def encode_kind(self) -> dict:
-        return {
+        enc = {
             c.typeIdKey: self.type_id,
             c.parametersKey: [i.encode() for i in self.parameters],
             c.returnKey: self.return_.encode(),
         }
+
+        if self.purity is not None:
+            enc[c.purityKey] = self.purity
+
+        return enc
 
     def __str__(self):
         return f"(({', '.join([str(p) for p in self.parameters])}): {self.return_})"
@@ -260,62 +272,170 @@ class FunctionKind(Kind):
         return "Function"
 
 
-class ReferenceKind(Kind):
-    def __init__(self, authorized: bool, type_: Kind) -> None:
+class EntitlementUnauthorizedKind(Kind):
+    def __init__(self) -> None:
         super().__init__()
-        self.authorized = authorized
+
+    @classmethod
+    def decode(cls, _value) -> "Kind":
+        return cls()
+
+    def encode_kind(self) -> dict:
+        return {"entitlements": None}
+
+    def __str__(self):
+        return f"Unauthorized"
+
+    @classmethod
+    def kind_str(cls) -> str:
+        return "Unauthorized"
+
+
+class EntitlementBaseKind(Kind, ABC):
+    def __init__(self) -> None:
+        super().__init__()
+
+
+class EntitlementMapKind(EntitlementBaseKind):
+    def __init__(self, type_id: str) -> None:
+        super().__init__()
+        self.type_id = type_id
+
+    @classmethod
+    def decode(cls, value) -> "Kind":
+        type_id = value[c.typeIdKey]
+        return cls(type_id)
+
+    def encode_kind(self) -> dict:
+        return {
+            c.typeIdKey: self.type_id,
+        }
+
+    def __str__(self):
+        return f"{self.kind_str()} {self.type_id}"
+
+    @classmethod
+    def kind_str(cls) -> str:
+        return "EntitlementMap"
+
+
+class EntitlementKind(EntitlementBaseKind):
+    def __init__(self, type_id: str) -> None:
+        super().__init__()
+        self.type_id = type_id
+
+    @classmethod
+    def decode(cls, value) -> "Kind":
+        type_id = value[c.typeIdKey]
+        return cls(type_id)
+
+    def encode_kind(self) -> dict:
+        return {
+            c.typeIdKey: self.type_id,
+        }
+
+    def __str__(self):
+        return f"{self.kind_str()} {self.type_id}"
+
+    @classmethod
+    def kind_str(cls) -> str:
+        return "Entitlement"
+
+
+class EntitlementsKind(Kind, ABC):
+    def __init__(self, entitlements: list[EntitlementBaseKind]) -> None:
+        super().__init__()
+        self.entitlements = entitlements
+
+    @classmethod
+    def decode(cls, value) -> "Kind":
+        entitlements_val = value[c.entitlementsKey]
+        entitlements = [
+            decode(v).as_kind(EntitlementBaseKind) for v in entitlements_val
+        ]
+        return cls(
+            entitlements,
+        )
+
+    def encode_kind(self) -> dict:
+        return {c.entitlementsKey: [e.encode() for e in self.entitlements]}
+
+    def __str__(self):
+        return (
+            f"{self.kind_str()}({', '.join([e.kind_str() for e in self.entitlements])})"
+        )
+
+
+class EntitlementConjunctionSetKind(EntitlementsKind):
+    @classmethod
+    def kind_str(cls) -> str:
+        return "EntitlementConjunctionSet"
+
+
+class EntitlementDisjunctionSetKind(EntitlementsKind):
+    @classmethod
+    def kind_str(cls) -> str:
+        return "EntitlementDisjunctionSet"
+
+
+class EntitlementMapAuthorization(EntitlementsKind):
+    @classmethod
+    def kind_str(cls) -> str:
+        return "EntitlementMapAuthorization"
+
+
+class ReferenceKind(Kind):
+    def __init__(self, authorization: Kind, type_: Kind) -> None:
+        super().__init__()
+        self.authorization = authorization
         self.type = type_
 
     @classmethod
     def decode(cls, value) -> "Kind":
-        authorized = bool(value[c.authorizedKey])
+        authorization = decode(value[c.authorizationKey])
         type_ = value[c.typeKey]
         return ReferenceKind(
-            authorized,
+            authorization,
             decode(type_),
         )
 
     def encode_kind(self) -> dict:
         return {
-            c.authorizedKey: self.authorized,
+            c.authorizationKey: self.authorization.encode(),
             c.typeKey: self.type.encode(),
         }
 
     def __str__(self):
-        return f"&{'auth' if self.authorized else ''}{self.type}"
+        return f"&{self.type}"
 
     @classmethod
     def kind_str(cls) -> str:
         return "Reference"
 
 
-class RestrictedKind(Kind):
-    def __init__(self, type_id: str, type_: Kind, restrictions: list[Kind]) -> None:
+class IntersectionKind(Kind):
+    def __init__(self, type_id: str, types: list[Kind]) -> None:
         super().__init__()
         self.type_id = type_id
-        self.type = type_
-        self.restrictions = restrictions
+        self.types = types
 
     @classmethod
     def decode(cls, value) -> "Kind":
         type_id = str(value[c.typeIdKey])
-        type_ = value[c.typeKey]
-        restrictions = value[c.restrictionsKey]
-        return RestrictedKind(
+        types = value[c.typesKey]
+        return IntersectionKind(
             type_id,
-            decode(type_),
-            [decode(i) for i in restrictions],
+            [decode(i) for i in types],
         )
 
     def encode_kind(self) -> dict:
         return {
             c.typeIdKey: self.type_id,
-            c.typeKey: self.type.encode(),
-            c.restrictionsKey: [i.encode() for i in self.restrictions],
+            c.typesKey: [i.encode() for i in self.types],
         }
 
     def __str__(self):
-        return f"{self.type}{{{', '.join([str(r) for r in self.restrictions])}}}"
+        return f"{{{', '.join([str(r) for r in self.types])}}}"
 
     @classmethod
     def kind_str(cls) -> str:
@@ -381,6 +501,31 @@ class EnumKind(Kind):
         return "Enum"
 
 
+class InclusiveRangeKind(Kind):
+    def __init__(self, element: Kind) -> None:
+        super().__init__()
+        self.element = element
+
+    @classmethod
+    def decode(cls, value) -> "Kind":
+        element = value[c.elementKey]
+        return cls(
+            decode(element),
+        )
+
+    def encode_kind(self) -> dict:
+        return {
+            c.elementKey: self.element.encode(),
+        }
+
+    def __str__(self):
+        return f"InclusiveRange<{self.element}>"
+
+    @classmethod
+    def kind_str(cls) -> str:
+        return "InclusiveRange"
+
+
 cadence_kinds = [
     OptionalKind,
     VariableSizedArrayKind,
@@ -395,10 +540,19 @@ cadence_kinds = [
     ContractInterfaceKind,
     FunctionKind,
     ReferenceKind,
-    RestrictedKind,
+    IntersectionKind,
     CapabilityKind,
     EnumKind,
+    InclusiveRangeKind,
+    EntitlementConjunctionSetKind,
+    EntitlementDisjunctionSetKind,
+    EntitlementMapAuthorization,
+    EntitlementUnauthorizedKind,
+    EntitlementMapKind,
+    EntitlementKind,
 ]
 
 for t in cadence_kinds:
     add_cadence_kind_decoder(t)
+
+# Reference Types

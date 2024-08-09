@@ -1,6 +1,5 @@
 import json
 import unittest
-from ctypes import Union
 from dataclasses import dataclass
 from flow_py_sdk import cadence
 
@@ -973,11 +972,40 @@ class TestEncode(unittest.TestCase):
         )
         self._encodeAndDecodeAll([static_type])
 
+    def testEncodeInclusiveRange(self):
+        range = _EncodeTestParams(
+            "Inclusive Range",
+            cadence.InclusiveRange(
+                cadence.Int256(10), cadence.Int256(20), cadence.Int256(5)
+            ),
+            """
+            {
+              "type": "InclusiveRange",
+              "value": {
+                "start": {
+                  "type": "Int256",
+                  "value": "10"
+                },
+                "end": {
+                  "type": "Int256",
+                  "value": "20"
+                },
+                "step": {
+                  "type": "Int256",
+                  "value": "5"
+                }
+              }
+            }
+            """,
+        )
+
+        self._encodeAndDecodeAll([range])
+
     def testEncodeCapability(self):
         capability = _EncodeTestParams(
             "Capability",
             cadence.Capability(
-                cadence.Path("public", "someInteger"),
+                1,
                 cadence.Address.from_hex("0x0000000000000001"),
                 cadence.IntKind(),
             ),
@@ -985,13 +1013,7 @@ class TestEncode(unittest.TestCase):
             {
               "type": "Capability",
               "value": {
-                "path": {
-                  "type": "Path",
-                  "value": {
-                    "domain": "public",
-                    "identifier": "someInteger"
-                  }
-                },
+                "id": 1,
                 "address": "0x0000000000000001",
                 "borrowType": {
                   "kind": "Int"
@@ -1003,12 +1025,13 @@ class TestEncode(unittest.TestCase):
         self._encodeAndDecodeAll([capability])
 
     def testEncodeFunction(self):
-        capability = _EncodeTestParams(
+        func = _EncodeTestParams(
             "Function",
             cadence.Function(
                 cadence.FunctionKind(
                     "fun():Void",
                     [],
+                    None,
                     cadence.VoidKind(),
                 ),
             ),
@@ -1028,7 +1051,7 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-        self._encodeAndDecodeAll([capability])
+        self._encodeAndDecodeAll([func])
 
     def testEncodeSimpleKind(self):
         simple_kind = _EncodeTestParams(
@@ -1168,6 +1191,7 @@ class TestEncode(unittest.TestCase):
                         cadence.StringKind(),
                     )
                 ],
+                None,
                 cadence.StringKind(),
             ),
             """
@@ -1189,19 +1213,66 @@ class TestEncode(unittest.TestCase):
             }
             """,
         )
-        self._encodeAndDecodeAll([kind])
+        view_kind = _EncodeTestParams(
+            "Function Kind",
+            cadence.FunctionKind(
+                "foo",
+                [
+                    cadence.ParameterKind(
+                        "foo",
+                        "bar",
+                        cadence.StringKind(),
+                    )
+                ],
+                "view",
+                cadence.StringKind(),
+            ),
+            """
+            {
+              "kind": "Function",
+              "typeID": "foo",
+              "parameters": [
+                {
+                  "label": "foo",
+                  "id": "bar",
+                  "type": {
+                    "kind": "String"
+                  }
+                } 
+              ], 
+              "purity": "view",
+              "return": {
+                "kind": "String"
+              }
+            }
+            """,
+        )
+
+        self._encodeAndDecodeAll([kind, view_kind])
 
     def testReferenceKind(self):
         kind = _EncodeTestParams(
             "Reference Kind",
             cadence.ReferenceKind(
-                True,
+                cadence.EntitlementMapAuthorization(
+                    [
+                        cadence.EntitlementMapKind("foo"),
+                    ]
+                ),
                 cadence.StringKind(),
             ),
             """
             {
               "kind": "Reference",
-              "authorized": true,
+              "authorization": {
+                  "kind": "EntitlementMapAuthorization",
+                  "entitlements": [
+                    {
+                      "kind": "EntitlementMap",
+                      "typeID": "foo"
+                    }
+                  ]
+              },
               "type": {
                 "kind": "String"
               }
@@ -1213,9 +1284,8 @@ class TestEncode(unittest.TestCase):
     def testRestrictedKind(self):
         kind = _EncodeTestParams(
             "Restricted Kind",
-            cadence.RestrictedKind(
+            cadence.IntersectionKind(
                 "0x3.GreatContract.GreatNFT",
-                cadence.AnyResourceKind(),
                 [
                     cadence.ResourceInterfaceKind(
                         "0x1.FungibleToken.Receiver",
@@ -1233,10 +1303,7 @@ class TestEncode(unittest.TestCase):
             {
               "kind": "Restriction",
               "typeID": "0x3.GreatContract.GreatNFT",
-              "type": {
-                "kind": "AnyResource"
-              },
-              "restrictions": [
+              "types": [
                 {
                   "kind": "ResourceInterface",
                   "typeID": "0x1.FungibleToken.Receiver",
@@ -1262,7 +1329,7 @@ class TestEncode(unittest.TestCase):
             "Capability Kind",
             cadence.CapabilityKind(
                 cadence.ReferenceKind(
-                    True,
+                    cadence.EntitlementUnauthorizedKind(),
                     cadence.StringKind(),
                 )
             ),
@@ -1271,7 +1338,10 @@ class TestEncode(unittest.TestCase):
               "kind": "Capability",
               "type": {
                 "kind": "Reference",
-                "authorized": true,
+                "authorization": {
+                    "kind": "Unauthorized",
+                    "entitlements": null
+                },
                 "type": {
                   "kind": "String"
                 }
@@ -1310,6 +1380,21 @@ class TestEncode(unittest.TestCase):
                   }
                 }
               ]
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
+    def testInclusiveRangeKind(self):
+        kind = _EncodeTestParams(
+            "Inclusive Range Kind",
+            cadence.InclusiveRangeKind(cadence.UInt64Kind()),
+            """
+            {
+              "kind": "InclusiveRange",
+              "element": {
+                "kind": "UInt64"
+              }
             }
             """,
         )
