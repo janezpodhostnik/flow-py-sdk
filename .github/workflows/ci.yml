@@ -102,7 +102,9 @@ jobs:
     needs: test
     services:
       emulator:
-        image: gcr.io/flow-container-registry/emulator:latest
+        #image: gcr.io/flow-container-registry/emulator:latest
+        # temporarily changed because the latest emulator is not 1.0
+        image: gcr.io/flow-container-registry/emulator:v1.0.0-preview.38
         ports:
           - 3569:3569
         env:
