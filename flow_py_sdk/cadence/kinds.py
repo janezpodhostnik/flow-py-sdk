@@ -440,7 +440,7 @@ class IntersectionKind(Kind):
 
     @classmethod
     def kind_str(cls) -> str:
-        return "Restriction"
+        return "Intersection"
 
 
 class CapabilityKind(Kind):

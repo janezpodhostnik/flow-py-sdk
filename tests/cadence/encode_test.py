@@ -1281,9 +1281,9 @@ class TestEncode(unittest.TestCase):
         )
         self._encodeAndDecodeAll([kind])
 
-    def testRestrictedKind(self):
+    def testIntersectionKind(self):
         kind = _EncodeTestParams(
-            "Restricted Kind",
+            "Intersection Kind",
             cadence.IntersectionKind(
                 "0x3.GreatContract.GreatNFT",
                 [
@@ -1301,7 +1301,7 @@ class TestEncode(unittest.TestCase):
             ),
             """
             {
-              "kind": "Restriction",
+              "kind": "Intersection",
               "typeID": "0x3.GreatContract.GreatNFT",
               "types": [
                 {
