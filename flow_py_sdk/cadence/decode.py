@@ -49,9 +49,6 @@ def decode(obj: [dict[Any, Any]]) -> Union[Value, Kind]:
         elif isinstance(value, list):
             obj[key] = [decode(item) for item in value]
 
-    # Logging for further troubleshooting
-    print(f"Unhandled structure: {obj}")
-
     raise NotImplementedError()
 
 
