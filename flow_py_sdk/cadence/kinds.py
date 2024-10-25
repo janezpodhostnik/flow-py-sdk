@@ -350,13 +350,15 @@ class EntitlementsKind(Kind, ABC):
 
     @classmethod
     def decode(cls, value) -> "Kind":
-        entitlements_val = value[c.entitlementsKey]
-        entitlements = [
-            decode(v).as_kind(EntitlementBaseKind) for v in entitlements_val
-        ]
-        return cls(
-            entitlements,
-        )
+        try:
+            entitlements_val = value[c.entitlementsKey]
+            entitlements = [
+                decode(v).as_kind(EntitlementBaseKind) for v in entitlements_val
+            ]
+            return cls(entitlements)
+        except Exception as e:
+            print(f"Error decoding entitlements for {cls.kind_str()}: {value}. Error: {e}")
+            return None
 
     def encode_kind(self) -> dict:
         return {c.entitlementsKey: [e.encode() for e in self.entitlements]}

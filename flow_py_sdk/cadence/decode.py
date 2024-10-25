@@ -42,6 +42,16 @@ def decode(obj: [dict[Any, Any]]) -> Union[Value, Kind]:
             decoder = _cadence_decoders[type_]
             return decoder(obj)
 
+    # Recursively handle nested dictionaries and lists
+    for key, value in obj.items():
+        if isinstance(value, dict):
+            obj[key] = decode(value)
+        elif isinstance(value, list):
+            obj[key] = [decode(item) for item in value]
+
+    # Logging for further troubleshooting
+    print(f"Unhandled structure: {obj}")
+
     raise NotImplementedError()
 
 

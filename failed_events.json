@@ -1,0 +1,291 @@
+[
+    {
+        "value": {
+            "id": "flow.AccountCapabilityControllerIssued",
+            "fields": [
+                {
+                    "name": "id",
+                    "value": {
+                        "value": "3",
+                        "type": "UInt64"
+                    }
+                },
+                {
+                    "name": "address",
+                    "value": {
+                        "value": "0x646997908e65fb70",
+                        "type": "Address"
+                    }
+                },
+                {
+                    "name": "type",
+                    "value": {
+                        "value": {
+                            "staticType": {
+                                "type": {
+                                    "kind": "Account"
+                                },
+                                "kind": "Reference",
+                                "authorization": {
+                                    "kind": "EntitlementConjunctionSet",
+                                    "entitlements": [
+                                        { "kind": "Entitlement", "typeID": "Storage" },
+                                        { "kind": "Entitlement", "typeID": "Contracts" },
+                                        { "kind": "Entitlement", "typeID": "Keys" },
+                                        { "kind": "Entitlement", "typeID": "Inbox" },
+                                        { "kind": "Entitlement", "typeID": "Capabilities" }
+                                    ]
+                                }
+                            }
+                        },
+                        "type": "Type"
+                    }
+                }
+            ]
+        },
+        "type": "Event"
+    },
+    {
+        "value": {
+            "id": "flow.StorageCapabilityControllerIssued",
+            "fields": [
+                {
+                    "name": "id",
+                    "value": {
+                        "value": "148",
+                        "type": "UInt64"
+                    }
+                },
+                {
+                    "name": "address",
+                    "value": {
+                        "value": "0x0342200ce19810f6",
+                        "type": "Address"
+                    }
+                },
+                {
+                    "name": "type",
+                    "value": {
+                        "value": {
+                            "staticType": {
+                                "type": {
+                                    "type": "",
+                                    "kind": "Resource",
+                                    "typeID": "A.befbaccb5032a457.ContractManager.Manager",
+                                    "fields": [
+                                        { "type": { "kind": "UInt64" }, "id": "uuid" },
+                                        {
+                                            "type": {
+                                                "type": {
+                                                    "kind": "Account"
+                                                },
+                                                "kind": "Reference",
+                                                "authorization": {
+                                                    "kind": "EntitlementConjunctionSet",
+                                                    "entitlements": [
+                                                        { "kind": "Entitlement", "typeID": "Storage" },
+                                                        { "kind": "Entitlement", "typeID": "Contracts" },
+                                                        { "kind": "Entitlement", "typeID": "Keys" },
+                                                        { "kind": "Entitlement", "typeID": "Inbox" },
+                                                        { "kind": "Entitlement", "typeID": "Capabilities" }
+                                                    ]
+                                                }
+                                            },
+                                            "kind": "Capability",
+                                            "id": "acct"
+                                        },
+                                        {
+                                            "type": {
+                                                "type": {
+                                                    "type": "",
+                                                    "kind": "Resource",
+                                                    "typeID": "A.707c0b39a8d689cb.FungibleTokenRouter.Router",
+                                                    "fields": [
+                                                        { "type": { "kind": "UInt64" }, "id": "uuid" },
+                                                        { "type": { "kind": "Address" }, "id": "defaultAddress" },
+                                                        {
+                                                            "type": {
+                                                                "key": { "kind": "String" },
+                                                                "value": { "kind": "Address" },
+                                                                "kind": "Dictionary"
+                                                            },
+                                                            "id": "addressOverrides"
+                                                        }
+                                                    ]
+                                                },
+                                                "kind": "Reference",
+                                                "authorization": {
+                                                    "kind": "EntitlementConjunctionSet",
+                                                    "entitlements": [
+                                                        {
+                                                            "kind": "Entitlement",
+                                                            "typeID": "A.707c0b39a8d689cb.FungibleTokenRouter.Owner"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "kind": "Capability",
+                                            "id": "routerCap"
+                                        },
+                                        {
+                                            "type": {
+                                                "key": { "kind": "String" },
+                                                "value": { "kind": "AnyStruct" },
+                                                "kind": "Dictionary"
+                                            },
+                                            "id": "data"
+                                        },
+                                        {
+                                            "type": {
+                                                "key": { "kind": "String" },
+                                                "value": { "kind": "AnyResource" },
+                                                "kind": "Dictionary"
+                                            },
+                                            "id": "resources"
+                                        }
+                                    ]
+                                },
+                                "kind": "Reference",
+                                "authorization": {
+                                    "kind": "Unauthorized",
+                                    "entitlements": null
+                                }
+                            }
+                        },
+                        "type": "Type"
+                    }
+                },
+                {
+                    "name": "path",
+                    "value": {
+                        "value": {
+                            "domain": "storage",
+                            "identifier": "ContractManager_0xbefbaccb5032a457"
+                        },
+                        "type": "Path"
+                    }
+                }
+            ]
+        },
+        "type": "Event"
+    },
+    {
+        "value": {
+            "id": "flow.CapabilityPublished",
+            "fields": [
+                {
+                    "name": "address",
+                    "value": {
+                        "value": "0x0342200ce19810f6",
+                        "type": "Address"
+                    }
+                },
+                {
+                    "name": "path",
+                    "value": {
+                        "value": {
+                            "domain": "public",
+                            "identifier": "ContractManager_0xbefbaccb5032a457"
+                        },
+                        "type": "Path"
+                    }
+                },
+                {
+                    "name": "capability",
+                    "value": {
+                        "value": {
+                            "borrowType": {
+                                "type": {
+                                    "type": "",
+                                    "kind": "Resource",
+                                    "typeID": "A.befbaccb5032a457.ContractManager.Manager",
+                                    "fields": [
+                                        { "type": { "kind": "UInt64" }, "id": "uuid" },
+                                        {
+                                            "type": {
+                                                "type": {
+                                                    "kind": "Account"
+                                                },
+                                                "kind": "Reference",
+                                                "authorization": {
+                                                    "kind": "EntitlementConjunctionSet",
+                                                    "entitlements": [
+                                                        { "kind": "Entitlement", "typeID": "Storage" },
+                                                        { "kind": "Entitlement", "typeID": "Contracts" },
+                                                        { "kind": "Entitlement", "typeID": "Keys" },
+                                                        { "kind": "Entitlement", "typeID": "Inbox" },
+                                                        { "kind": "Entitlement", "typeID": "Capabilities" }
+                                                    ]
+                                                }
+                                            },
+                                            "kind": "Capability",
+                                            "id": "acct"
+                                        },
+                                        {
+                                            "type": {
+                                                "type": {
+                                                    "type": "",
+                                                    "kind": "Resource",
+                                                    "typeID": "A.707c0b39a8d689cb.FungibleTokenRouter.Router",
+                                                    "fields": [
+                                                        { "type": { "kind": "UInt64" }, "id": "uuid" },
+                                                        { "type": { "kind": "Address" }, "id": "defaultAddress" },
+                                                        {
+                                                            "type": {
+                                                                "key": { "kind": "String" },
+                                                                "value": { "kind": "Address" },
+                                                                "kind": "Dictionary"
+                                                            },
+                                                            "id": "addressOverrides"
+                                                        }
+                                                    ]
+                                                },
+                                                "kind": "Reference",
+                                                "authorization": {
+                                                    "kind": "EntitlementConjunctionSet",
+                                                    "entitlements": [
+                                                        {
+                                                            "kind": "Entitlement",
+                                                            "typeID": "A.707c0b39a8d689cb.FungibleTokenRouter.Owner"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "kind": "Capability",
+                                            "id": "routerCap"
+                                        },
+                                        {
+                                            "type": {
+                                                "key": { "kind": "String" },
+                                                "value": { "kind": "AnyStruct" },
+                                                "kind": "Dictionary"
+                                            },
+                                            "id": "data"
+                                        },
+                                        {
+                                            "type": {
+                                                "key": { "kind": "String" },
+                                                "value": { "kind": "AnyResource" },
+                                                "kind": "Dictionary"
+                                            },
+                                            "id": "resources"
+                                        }
+                                    ]
+                                },
+                                "kind": "Reference",
+                                "authorization": {
+                                    "kind": "Unauthorized",
+                                    "entitlements": null
+                                }
+                            },
+                            "address": "0x0342200ce19810f6",
+                            "id": "148"
+                        },
+                        "type": "Capability"
+                    }
+                }
+            ]
+        },
+        "type": "Event"
+    }
+]
