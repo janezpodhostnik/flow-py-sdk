@@ -8,8 +8,6 @@ from flow_py_sdk.account_key import AccountKey
 from flow_py_sdk.cadence import cadence_object_hook
 from flow_py_sdk.proto.flow import entities, access
 
-log = logging.getLogger(__name__)
-
 class Account(object):
     def __init__(
         self,
@@ -152,25 +150,15 @@ class Event(object):
         self.event_index: int = event_index
         self.payload: bytes = payload
 
-        # Add error handling for deserializing payload
-        max_payload_size = 1 * 1024 * 1024  # 1 MB size limit for payload
-        if len(payload) > max_payload_size:
-            logging.warning(f"Payload too large for event {event_index}: {len(payload)} bytes. Skipping deserialization.")
+        try:
+            # Attempt to decode the payload
+            self.value: cadence.Event = json.loads(payload, object_hook=cadence_object_hook)
+        except json.JSONDecodeError as e:
+            logging.error(f"JSON decode error for event {event_index} with payload: {payload[:100]}... Error: {str(e)}")
             self.value = None
-        else:
-            try:
-                # Attempt to decode the payload
-                self.value: cadence.Event = json.loads(payload, object_hook=cadence_object_hook)
-            except json.JSONDecodeError as e:
-                # Handle JSON decode errors specifically
-                print(payload)
-                # logging.error(f"JSON decode error for event {event_index} with payload: {payload[:100]}... Error: {str(e)}")
-                self.value = None
-            except Exception as e:
-                print(payload)
-                # Log the full payload and exception details for unexpected errors
-                # logging.error(f"Unexpected error deserializing payload for event {event_index} with payload: {payload[:100]}... Error: {str(e)}")
-                self.value = None
+        except Exception as e:
+            logging.error(f"Unexpected error deserializing payload for event {event_index} with payload: {payload[:100]}... Error: {str(e)}")
+            self.value = None
 
     @classmethod
     def from_proto(cls, proto: entities.Event) -> "Event":
@@ -312,19 +300,15 @@ class TransactionResultResponse(object):
         cls,
         proto: access.TransactionResultResponse,
         id: bytes,
-        max_events: int = 50
     ) -> "TransactionResultResponse":
         events = []
-        for i, event_proto in enumerate(proto.events[:max_events]): 
+        for i, event_proto in enumerate(proto.events): 
             try:
                 events.append(Event.from_proto(event_proto))
             except Exception as e:
                 print(f"Failed to deserialize event {i}: {e}")
                 continue
     
-        if len(proto.events) > max_events:
-            print(f"Only processed {max_events} out of {len(proto.events)} events due to size limits.")
-
         return TransactionResultResponse(
             id_=id,
             status=proto.status,
