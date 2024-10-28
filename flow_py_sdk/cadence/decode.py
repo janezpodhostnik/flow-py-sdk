@@ -46,16 +46,20 @@ def decode(obj: dict[Any, Any]) -> Union[Value, Kind, dict]:
                 if isinstance(value, dict):
                     obj[key] = decode(value)  # Recursive call for nested dict
                 elif isinstance(value, list):
-                    obj[key] = [decode(item) for item in value]  # Recursive list handling
+                    obj[key] = [
+                        decode(item) for item in value
+                    ]  # Recursive list handling
 
         elif isinstance(obj, list):
-            obj = [decode(item) for item in obj]  # Handle obj itself as a list if list type
+            obj = [
+                decode(item) for item in obj
+            ]  # Handle obj itself as a list if list type
 
         return obj  # Return the object if no decoder applies
 
     except KeyError as e:
         logging.error(f"Unhandled key during decode: {e}. Returning raw object.")
-        return obj 
+        return obj
 
     except NotImplementedError:
         logging.error(f"Decoding not implemented for object: {obj}")

@@ -8,6 +8,7 @@ from examples.common import Config, example_registry
 
 log = logging.getLogger(__name__)
 
+
 async def run_async(ctx: Config, examples: list[str]) -> Annotated[bool, "Success"]:
     if not examples:
         return await example_registry.run_all(ctx)

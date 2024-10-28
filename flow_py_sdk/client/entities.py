@@ -8,6 +8,7 @@ from flow_py_sdk.account_key import AccountKey
 from flow_py_sdk.cadence import cadence_object_hook
 from flow_py_sdk.proto.flow import entities, access
 
+
 class Account(object):
     def __init__(
         self,
@@ -152,12 +153,18 @@ class Event(object):
 
         try:
             # Attempt to decode the payload
-            self.value: cadence.Event = json.loads(payload, object_hook=cadence_object_hook)
+            self.value: cadence.Event = json.loads(
+                payload, object_hook=cadence_object_hook
+            )
         except json.JSONDecodeError as e:
-            logging.error(f"JSON decode error for event {event_index} with payload: {payload[:100]}... Error: {str(e)}")
+            logging.error(
+                f"JSON decode error for event {event_index} with payload: {payload[:100]}... Error: {str(e)}"
+            )
             self.value = None
         except Exception as e:
-            logging.error(f"Unexpected error deserializing payload for event {event_index} with payload: {payload[:100]}... Error: {str(e)}")
+            logging.error(
+                f"Unexpected error deserializing payload for event {event_index} with payload: {payload[:100]}... Error: {str(e)}"
+            )
             self.value = None
 
     @classmethod
@@ -302,7 +309,7 @@ class TransactionResultResponse(object):
         id: bytes,
     ) -> "TransactionResultResponse":
         events = []
-        for i, event_proto in enumerate(proto.events): 
+        for i, event_proto in enumerate(proto.events):
             try:
                 event = Event.from_proto(event_proto)
                 if event is not None:
@@ -310,7 +317,7 @@ class TransactionResultResponse(object):
             except Exception as e:
                 logging.error(f"Failed to deserialize event {i}: {e}")
                 continue
-    
+
         return TransactionResultResponse(
             id_=id,
             status=proto.status,

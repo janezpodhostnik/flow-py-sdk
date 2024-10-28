@@ -285,16 +285,19 @@ class GetTransactionByIdExample(Example):
 
 class DebuggingFetchTransactionByIdExample(Example):
     def __init__(self) -> None:
-        super().__init__(tag="T.LL.", name="DebuggingFetchTransactionByIdExample", sort_order=501)
+        super().__init__(
+            tag="T.LL.", name="DebuggingFetchTransactionByIdExample", sort_order=501
+        )
 
     async def run(self, ctx: Config):
         # First Step : Create a client to connect to the flow blockchain
         # flow_client function creates a client using the host and port
         async with flow_client(
             # host=ctx.access_node_host, port=ctx.access_node_port
-            host="access.mainnet.nodes.onflow.org", port=9000
+            host="access.mainnet.nodes.onflow.org",
+            port=9000,
         ) as client:
-            
+
             tx_id = "ef6e6dcba87c5f853e0ec940dd382d609ffe11109c28ed239843d71618fa1d71"
 
             transaction = await client.get_transaction_result(id=bytes.fromhex(tx_id))
