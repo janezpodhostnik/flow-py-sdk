@@ -65,8 +65,6 @@ typeTypeStr = "Type"
 inclusiveRangeTypeStr = "InclusiveRange"
 capabilityTypeStr = "Capability"
 functionTypeStr = "Function"
-entitlementConjunctionSetStr = "EntitlementConjunctionSet"
-entitlementKey = "Entitlement"
 
 fix64_scale = int(8)
 fix64_factor = int(100_000_000)

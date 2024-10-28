@@ -304,9 +304,11 @@ class TransactionResultResponse(object):
         events = []
         for i, event_proto in enumerate(proto.events): 
             try:
-                events.append(Event.from_proto(event_proto))
+                event = Event.from_proto(event_proto)
+                if event is not None:
+                    events.append(event)
             except Exception as e:
-                print(f"Failed to deserialize event {i}: {e}")
+                logging.error(f"Failed to deserialize event {i}: {e}")
                 continue
     
         return TransactionResultResponse(
