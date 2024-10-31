@@ -58,12 +58,12 @@ def decode(obj: dict[Any, Any]) -> Union[Value, Kind, dict]:
         return obj  # Return the object if no decoder applies
 
     except KeyError as e:
-        logging.error(f"Unhandled key during decode: {e}. Returning raw object.")
-        return obj
+        logging.error(f"Unhandled key during decode: {e}. Object: {obj}")
+        raise
 
     except NotImplementedError:
         logging.error(f"Decoding not implemented for object: {obj}")
-        return obj
+        raise
 
 
 def cadence_object_hook(obj: [dict[Any, Any]]) -> Any:
