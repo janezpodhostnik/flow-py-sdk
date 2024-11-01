@@ -90,7 +90,7 @@ from .simple_kinds import (
     StoragePathKind,
     PublicPathKind,
     PrivatePathKind,
-    AuthAccountKind,
+    AccountKind,
     PublicAccountKind,
     AuthAccountKeysKind,
     PublicAccountKeysKind,
