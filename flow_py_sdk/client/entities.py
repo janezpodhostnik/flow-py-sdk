@@ -314,7 +314,7 @@ class TransactionResultResponse(object):
                 event = Event.from_proto(event_proto)
                 events.append(event)
             except Exception as e:
-                logging.error(f"Failed to deserialize event {i}: {e}")
+                logging.error(f"Failed to deserialize event {i}/{len(proto.events)}: {str(e)}")
                 raise
 
         return TransactionResultResponse(
