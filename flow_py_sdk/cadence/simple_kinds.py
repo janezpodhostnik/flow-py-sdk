@@ -275,10 +275,10 @@ class PrivatePathKind(SimpleKind):
         return "PrivatePath"
 
 
-class AuthAccountKind(SimpleKind):
+class AccountKind(SimpleKind):
     @classmethod
     def kind_str(cls) -> str:
-        return "AuthAccount"
+        return "Account"
 
 
 class PublicAccountKind(SimpleKind):
@@ -372,7 +372,7 @@ cadence_kinds = [
     StoragePathKind,
     PublicPathKind,
     PrivatePathKind,
-    AuthAccountKind,
+    AccountKind,
     PublicAccountKind,
     AuthAccountKeysKind,
     PublicAccountKeysKind,

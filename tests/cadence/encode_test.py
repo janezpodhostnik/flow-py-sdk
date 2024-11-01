@@ -1400,6 +1400,68 @@ class TestEncode(unittest.TestCase):
         )
         self._encodeAndDecodeAll([kind])
 
+    def testAccountCapabilityControllerIssued(self):
+        kind = _EncodeTestParams(
+            "AccountCapabilityControllerIssued event",
+            cadence.Event(
+                "flow.AccountCapabilityControllerIssued",
+                [
+                    (
+                        "type",
+                        cadence.TypeValue(
+                            cadence.ReferenceKind(
+                                cadence.EntitlementConjunctionSetKind(
+                                    [
+                                        cadence.EntitlementKind("Storage"),
+                                        cadence.EntitlementKind("Contracts"),
+                                        cadence.EntitlementKind("Keys"),
+                                        cadence.EntitlementKind("Inbox"),
+                                        cadence.EntitlementKind("Capabilities"),
+                                    ]
+                                ),
+                                cadence.AccountKind()
+                            ),
+                        ),
+                    )
+                ]
+            ),
+            """
+            {
+                "value": {
+                    "id": "flow.AccountCapabilityControllerIssued",
+                    "fields": [
+                        {
+                            "name": "type",
+                            "value": {
+                                "value": {
+                                    "staticType": {
+                                        "type": {
+                                            "kind": "Account"
+                                        },
+                                        "kind": "Reference",
+                                        "authorization": {
+                                            "kind": "EntitlementConjunctionSet",
+                                            "entitlements": [
+                                                { "kind": "Entitlement", "typeID": "Storage" },
+                                                { "kind": "Entitlement", "typeID": "Contracts" },
+                                                { "kind": "Entitlement", "typeID": "Keys" },
+                                                { "kind": "Entitlement", "typeID": "Inbox" },
+                                                { "kind": "Entitlement", "typeID": "Capabilities" }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "type": "Type"
+                            }
+                        }
+                    ]
+                },
+                "type": "Event"
+            }
+            """,
+        )
+        self._encodeAndDecodeAll([kind])
+
     def testStorefrontEvent(self):
         self.maxDiff = None
         event = _EncodeTestParams(
