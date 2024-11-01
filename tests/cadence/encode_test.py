@@ -1419,11 +1419,11 @@ class TestEncode(unittest.TestCase):
                                         cadence.EntitlementKind("Capabilities"),
                                     ]
                                 ),
-                                cadence.AccountKind()
+                                cadence.AccountKind(),
                             ),
                         ),
                     )
-                ]
+                ],
             ),
             """
             {

@@ -317,7 +317,6 @@ class TransactionResultResponse(object):
                 logging.error(f"Failed to deserialize event {i}: {e}")
                 raise
 
-
         return TransactionResultResponse(
             id_=id,
             status=proto.status,
