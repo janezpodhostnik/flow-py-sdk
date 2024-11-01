@@ -160,12 +160,12 @@ class Event(object):
             logging.error(
                 f"JSON decode error for event {event_index} with payload: {payload[:100]}... Error: {str(e)}"
             )
-            self.value = None
+            raise
         except Exception as e:
             logging.error(
                 f"Unexpected error deserializing payload for event {event_index} with payload: {payload[:100]}... Error: {str(e)}"
             )
-            self.value = None
+            raise
 
     @classmethod
     def from_proto(cls, proto: entities.Event) -> "Event":
@@ -179,7 +179,7 @@ class Event(object):
             )
         except Exception as e:
             logging.error(f"Failed to deserialize event {proto.event_index}: {str(e)}")
-            return None  # Returning None if deserialization fails
+            raise
 
 
 class Transaction(object):
@@ -312,11 +312,11 @@ class TransactionResultResponse(object):
         for i, event_proto in enumerate(proto.events):
             try:
                 event = Event.from_proto(event_proto)
-                if event is not None:
-                    events.append(event)
+                events.append(event)
             except Exception as e:
                 logging.error(f"Failed to deserialize event {i}: {e}")
-                continue
+                raise
+
 
         return TransactionResultResponse(
             id_=id,
