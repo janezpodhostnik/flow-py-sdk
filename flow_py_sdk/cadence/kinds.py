@@ -354,9 +354,7 @@ class EntitlementsKind(Kind, ABC):
         entitlements = [
             decode(v).as_kind(EntitlementBaseKind) for v in entitlements_val
         ]
-        return cls(
-            entitlements,
-        )
+        return cls(entitlements)
 
     def encode_kind(self) -> dict:
         return {c.entitlementsKey: [e.encode() for e in self.entitlements]}

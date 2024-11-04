@@ -2,7 +2,7 @@ from typing import Any, Callable, Type, Union
 
 from flow_py_sdk.cadence.value import Value
 from flow_py_sdk.cadence.kind import Kind
-
+import logging
 import flow_py_sdk.cadence.constants as c
 
 _cadence_decoders: dict[str, Callable[[Any], Value]] = {}
@@ -17,32 +17,44 @@ def add_cadence_kind_decoder(t: Type[Kind]):
     _cadence_kind_decoders[t.kind_str()] = t.decode
 
 
-def decode(obj: [dict[Any, Any]]) -> Union[Value, Kind]:
-    # json decoder starts from bottom up, so it's possible that this is already decoded
-    if isinstance(obj, Value) or isinstance(obj, Kind):
-        return obj
+def decode(obj: dict[Any, Any]) -> Union[Value, Kind, dict]:
+    try:
+        # Check if already decoded
+        if isinstance(obj, Value) or isinstance(obj, Kind):
+            return obj
 
-    # if there is an id key, it's already decoded and it is either a field or a parameter
-    if c.idKey in obj:
-        return obj
+        # If obj has an idKey, treat as already decoded field or parameter
+        if c.idKey in obj:
+            return obj
 
-    # if there is no type key we cant decode it directly, but it could be part of a dictionary or composite or path
-    if c.kindKey not in obj and c.typeKey not in obj:
-        return obj
+        # Check for kindKey or typeKey to determine appropriate decoder
+        if c.kindKey in obj:
+            kind = obj[c.kindKey]
+            if kind in _cadence_kind_decoders:
+                decoder = _cadence_kind_decoders[kind]
+                return decoder(obj)
 
-    if c.kindKey in obj:
-        kind = obj[c.kindKey]
-        if kind in _cadence_kind_decoders:
-            decoder = _cadence_kind_decoders[kind]
-            return decoder(obj)
+        if c.typeKey in obj:
+            type_ = obj[c.typeKey]
+            if type_ in _cadence_decoders:
+                decoder = _cadence_decoders[type_]
+                return decoder(obj)
 
-    if c.typeKey in obj:
-        type_ = obj[c.typeKey]
-        if type_ in _cadence_decoders:
-            decoder = _cadence_decoders[type_]
-            return decoder(obj)
+        return obj  # Return the object if no decoder applies
 
-    raise NotImplementedError()
+    except KeyError as e:
+        logging.error(
+            f"Unhandled key '{e}' during decode of {type(obj).__name__}. "
+            + f"Value: {obj}"
+        )
+        raise
+
+    except NotImplementedError:
+        logging.error(
+            f"Decoding not implemented for type {type(obj).__name__}. "
+            + f"Value: {obj}"
+        )
+        raise
 
 
 def cadence_object_hook(obj: [dict[Any, Any]]) -> Any:

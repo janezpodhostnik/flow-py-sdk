@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import datetime
 from typing import Dict, List
 
@@ -149,17 +150,36 @@ class Event(object):
         self.transaction_index: int = transaction_index
         self.event_index: int = event_index
         self.payload: bytes = payload
-        self.value: cadence.Event = json.loads(payload, object_hook=cadence_object_hook)
+
+        try:
+            # Attempt to decode the payload
+            self.value: cadence.Event = json.loads(
+                payload, object_hook=cadence_object_hook
+            )
+        except json.JSONDecodeError as e:
+            logging.error(
+                f"JSON decode error for event {event_index} with payload: {payload[:100]}... Error: {str(e)}"
+            )
+            raise
+        except Exception as e:
+            logging.error(
+                f"Unexpected error deserializing payload for event {event_index} with payload: {payload[:100]}... Error: {str(e)}"
+            )
+            raise
 
     @classmethod
     def from_proto(cls, proto: entities.Event) -> "Event":
-        return Event(
-            _type=proto.type,
-            transaction_id=proto.transaction_id,
-            transaction_index=proto.transaction_index,
-            event_index=proto.event_index,
-            payload=proto.payload,
-        )
+        try:
+            return Event(
+                _type=proto.type,
+                transaction_id=proto.transaction_id,
+                transaction_index=proto.transaction_index,
+                event_index=proto.event_index,
+                payload=proto.payload,
+            )
+        except Exception as e:
+            logging.error(f"Failed to deserialize event {proto.event_index}: {str(e)}")
+            raise
 
 
 class Transaction(object):
@@ -288,12 +308,23 @@ class TransactionResultResponse(object):
         proto: access.TransactionResultResponse,
         id: bytes,
     ) -> "TransactionResultResponse":
+        events = []
+        for i, event_proto in enumerate(proto.events):
+            try:
+                event = Event.from_proto(event_proto)
+                events.append(event)
+            except Exception as e:
+                logging.error(
+                    f"Failed to deserialize event {i}/{len(proto.events)}: {str(e)}"
+                )
+                raise
+
         return TransactionResultResponse(
             id_=id,
             status=proto.status,
             status_code=proto.status_code,
             error_message=proto.error_message,
-            events=[Event.from_proto(e) for e in proto.events],
+            events=events,
         )
 
 
